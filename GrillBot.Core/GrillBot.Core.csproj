@@ -4,6 +4,12 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Authors>GrillBot</Authors>
+    <Description>Core library for all .NET projects of GrillBot infrastrucure.</Description>
+    <Copyright>All rights reserved</Copyright>
+    <PackageProjectUrl>https://grillbot.cloud/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/GrillBot/GrillBot.Core</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
   </PropertyGroup>
 
 </Project>
