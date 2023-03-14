@@ -1,0 +1,11 @@
+name: Build and push to NuGet
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+  workflow_dispatch:
+
+jobs:
+  
