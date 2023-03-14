@@ -14,6 +14,23 @@ public abstract class RepositoryBase<TContext> where TContext : DbContext
         CounterManager = counterManager;
     }
 
+    protected IQueryable<TEntity> CreateQuery<TEntity>(IQueryableModel<TEntity> parameters, bool disableTracking = false,
+        bool splitQuery = false) where TEntity : class
+    {
+        var query = Context.Set<TEntity>().AsQueryable();
+
+        query = parameters.SetIncludes(query);
+        query = parameters.SetQuery(query);
+        query = parameters.SetSort(query);
+
+        if (disableTracking)
+            query = query.AsNoTracking();
+        if (splitQuery)
+            query = query.AsSplitQuery();
+
+        return query;
+    }
+
     protected CounterItem CreateCounter()
         => CounterManager.Create($"Repository.{GetType().Name.Replace("Repository", "")}");
 }
