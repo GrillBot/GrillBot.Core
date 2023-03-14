@@ -2,6 +2,7 @@
 using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Managers.Discord;
 using GrillBot.Core.Managers.Performance;
+using GrillBot.Core.Managers.Random;
 using GrillBot.Core.Services.Diagnostics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,7 @@ public static class CoreExtensions
     {
         services.AddSingleton<ICounterManager, CounterManager>();
         services.AddScoped<IEmoteManager, EmoteManager>();
+        services.AddSingleton<IRandomManager, RandomManager>();
 
         return services;
     }
