@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GrillBot.Core.Api.Validation;
+namespace GrillBot.Core.Validation;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class DiscordIdAttribute : ValidationAttribute
