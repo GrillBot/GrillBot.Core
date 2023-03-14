@@ -1,6 +1,6 @@
 ﻿namespace GrillBot.Core.Managers.Performance;
 
-public class CounterManager
+public class CounterManager : ICounterManager
 {
     private List<CounterItem> ActiveCounters { get; } = new();
     private Dictionary<string, CounterStats> Stats { get; } = new();
@@ -42,7 +42,7 @@ public class CounterManager
         }
     }
 
-    public IEnumerable<CounterStats> GetStatistics()
+    public List<CounterStats> GetStatistics()
     {
         lock (_lock)
         {
