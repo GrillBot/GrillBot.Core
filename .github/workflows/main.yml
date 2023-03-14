@@ -30,7 +30,7 @@ jobs:
   PublishToNuGet:
     runs-on: ubuntu-latest
     needs: Build
-    if: github.ref == 'refs/head/master'
+    if: github.ref == 'refs/heads/master'
     permissions:
       packages: write
       contents: read
