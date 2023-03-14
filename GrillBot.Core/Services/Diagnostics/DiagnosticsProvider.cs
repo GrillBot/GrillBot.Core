@@ -28,7 +28,6 @@ public class DiagnosticsProvider : IDiagnosticsProvider
         {
             Endpoints = Manager.Statistics,
             Uptime = Convert.ToInt64((DateTime.Now - process.StartTime).TotalMilliseconds),
-            Version = GetType().Assembly.GetName().Version!.ToString(),
             CpuTime = Convert.ToInt64(process.TotalProcessorTime.TotalMilliseconds),
             MeasuredFrom = process.StartTime,
             RequestsCount = Manager.Statistics.Sum(o => o.Count),
