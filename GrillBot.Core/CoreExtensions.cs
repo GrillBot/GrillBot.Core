@@ -3,7 +3,9 @@ using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Managers.Discord;
 using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Services.Diagnostics;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GrillBot.Core;
@@ -36,5 +38,27 @@ public static class CoreExtensions
         services.AddScoped<IEmoteManager, EmoteManager>();
 
         return services;
+    }
+
+    public static IServiceCollection AddDatabaseContext<TContext>(this IServiceCollection services, Func<DbContextOptionsBuilder, DbContextOptionsBuilder> useProvider) where TContext : DbContext
+        => services.AddDbContext<TContext>(builder => useProvider(builder).EnableDetailedErrors().EnableThreadSafetyChecks());
+
+    public static void InitDatabase<TContext>(this IApplicationBuilder app) where TContext : DbContext
+    {
+        using var scope = app.ApplicationServices.CreateScope();
+
+        var context = scope.ServiceProvider.GetRequiredService<TContext>();
+        if (context.Database.GetPendingMigrations().Any())
+            context.Database.Migrate();
+    }
+
+    public static async Task InitDatabaseAsync<TContext>(this IApplicationBuilder app) where TContext : DbContext
+    {
+        using var scope = app.ApplicationServices.CreateScope();
+
+        var context = scope.ServiceProvider.GetRequiredService<TContext>();
+        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        if (pendingMigrations.Any())
+            await context.Database.MigrateAsync();
     }
 }
