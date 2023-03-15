@@ -43,7 +43,7 @@ public static class CoreExtensions
     }
 
     public static IServiceCollection AddDatabaseContext<TContext>(this IServiceCollection services, Func<DbContextOptionsBuilder, DbContextOptionsBuilder> useProvider) where TContext : DbContext
-        => services.AddDbContext<TContext>(builder => useProvider(builder).EnableDetailedErrors().EnableThreadSafetyChecks());
+        => services.AddDbContext<TContext>(builder => useProvider(builder).EnableDetailedErrors().EnableThreadSafetyChecks(), ServiceLifetime.Scoped, ServiceLifetime.Singleton);
 
     public static void InitDatabase<TContext>(this IApplicationBuilder app) where TContext : DbContext
     {
