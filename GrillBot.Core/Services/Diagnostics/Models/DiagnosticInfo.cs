@@ -1,4 +1,6 @@
-﻿namespace GrillBot.Core.Services.Diagnostics.Models;
+﻿using GrillBot.Core.Managers.Performance;
+
+namespace GrillBot.Core.Services.Diagnostics.Models;
 
 public class DiagnosticInfo
 {
@@ -9,4 +11,5 @@ public class DiagnosticInfo
     public DateTime MeasuredFrom { get; set; }
     public List<RequestStatistics> Endpoints { get; set; } = new();
     public Dictionary<string, long>? DatabaseStatistics { get; set; }
+    public List<OperationStatItem> Operations { get; set; } = new();
 }
