@@ -51,7 +51,7 @@ jobs:
       - name: Create the package
         run: dotnet pack -c Release GrillBot.Core/
       - name: Publish the package to GPR
-        run: dotnet nuget push GrillBot.Core/bin/Release/*.nupkg
+        run: dotnet nuget push GrillBot.Core/bin/Release/*.nupkg --skip-duplicate
         
       
       
