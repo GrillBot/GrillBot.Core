@@ -1,4 +1,5 @@
-﻿using GrillBot.Core.Database;
+﻿using Discord;
+using GrillBot.Core.Database;
 using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Managers.Discord;
 using GrillBot.Core.Managers.Performance;
@@ -63,4 +64,10 @@ public static class CoreExtensions
         if (pendingMigrations.Any())
             await context.Database.MigrateAsync();
     }
+
+    /// <summary>
+    /// Adds fake discord client for correct loading of managers using IDiscordClient.
+    /// </summary>
+    public static IServiceCollection AddFakeDiscordClient(this IServiceCollection services, ServiceLifetime lifetime)
+        => services.AddSingleton<IDiscordClient>(_ => null!);
 }
