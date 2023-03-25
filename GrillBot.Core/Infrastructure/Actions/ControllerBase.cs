@@ -5,7 +5,7 @@ namespace GrillBot.Core.Infrastructure.Actions;
 
 [ApiController]
 [Route("api/[controller]")]
-public abstract class ControllerBase
+public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
 {
     protected IServiceProvider ServiceProvider { get; }
 
@@ -14,10 +14,11 @@ public abstract class ControllerBase
         ServiceProvider = serviceProvider;
     }
 
-    protected async Task<IActionResult> ProcessAsync<TAction>(params object?[] parameters) where TAction : IApiAction
+    protected async Task<IActionResult> ProcessAsync<TAction>(params object?[] parameters) where TAction : ApiActionBase
     {
         var action = ServiceProvider.GetRequiredService<TAction>();
-        var result = await action.ProcessAsync(parameters);
+        action.Init(HttpContext, parameters);
+        var result = await action.ProcessAsync();
 
         return result.ToApiResult();
     }
