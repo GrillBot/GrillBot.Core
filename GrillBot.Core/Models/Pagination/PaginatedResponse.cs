@@ -16,7 +16,7 @@ public class PaginatedResponse<TModel>
             TotalItemsCount = await query.CountAsync()
         };
 
-        if (result.TotalItemsCount == 0)
+        if (result.TotalItemsCount == 0 || @params.OnlyCount)
             return result;
 
         query = query.Skip(@params.Skip()).Take(@params.PageSize);
@@ -42,11 +42,16 @@ public class PaginatedResponse<TModel>
 
     public static PaginatedResponse<TModel> Create(List<TModel> data, PaginatedParams request)
     {
-        return new PaginatedResponse<TModel>
+        var result = new PaginatedResponse<TModel>
         {
             Page = Math.Max(request.Page, 0),
-            TotalItemsCount = data.Count,
-            Data = data.Skip(request.Skip()).Take(request.PageSize).ToList()
+            TotalItemsCount = data.Count
         };
+
+        if (result.TotalItemsCount == 0 || request.OnlyCount)
+            return result;
+
+        result.Data = data.Skip(request.Skip()).Take(request.PageSize).ToList();
+        return result;
     }
 }
