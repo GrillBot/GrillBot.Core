@@ -1,6 +1,6 @@
 ﻿namespace GrillBot.Core.Extensions;
 
-public static class CollectionExtensions
+public static class EnumerableExtensions
 {
     public static async Task<List<T>> FindAllAsync<T>(this IEnumerable<T> collection, Func<T, Task<bool>> func)
     {

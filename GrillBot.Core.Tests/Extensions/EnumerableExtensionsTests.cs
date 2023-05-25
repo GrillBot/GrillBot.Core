@@ -1,0 +1,54 @@
+﻿using GrillBot.Core.Extensions;
+using GrillBot.Core.Tests.TestCore;
+
+namespace GrillBot.Core.Tests.Extensions;
+
+[TestClass]
+public class EnumerableExtensionsTests
+{
+    [TestMethod]
+    public async Task FindAllAsync()
+    {
+        var collection = new List<int> { 1, 2, 3, 4, 5 };
+
+        var result = await collection.FindAllAsync(i => Task.FromResult(i % 2 == 0));
+        var expected = new List<int> { 2, 4 };
+
+        Assert.AreEqual(2, result.Count);
+        Assert.IsTrue(result.SequenceEqual(expected));
+    }
+
+    [TestMethod]
+    public void Flatten()
+    {
+        var collection = new List<FlattenClass>
+        {
+            new()
+            {
+                X = 1,
+                SubItems = new List<FlattenClass> { new() { X = 2 } }
+            },
+            new()
+            {
+                X = 3,
+                SubItems = new List<FlattenClass> { new() { X = 4 } }
+            },
+            new() { X = 5 }
+        };
+
+        var expected = new List<FlattenClass>
+        {
+            new() { X = 1 },
+            new() { X = 2 },
+            new() { X = 3 },
+            new() { X = 4 },
+            new() { X = 5 }
+        };
+
+        var result = collection.Flatten(o => o.SubItems).ToList();
+
+        Assert.AreEqual(expected.Count, result.Count);
+        for (var i = 0; i < result.Count; i++)
+            Assert.AreEqual(expected[i].X, result[i].X);
+    }
+}

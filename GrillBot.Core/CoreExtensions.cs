@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace GrillBot.Core;
 
@@ -19,6 +20,8 @@ public static class CoreExtensions
         services
             .AddSingleton<DiagnosticsManager>()
             .AddScoped<IDiagnosticsProvider, DiagnosticsProvider>();
+
+        services.TryAddSingleton<ICounterManager, CounterManager>();
         return services;
     }
 
@@ -36,9 +39,12 @@ public static class CoreExtensions
 
     public static IServiceCollection AddCoreManagers(this IServiceCollection services)
     {
-        services.AddSingleton<ICounterManager, CounterManager>();
+        services.TryAddSingleton<ICounterManager, CounterManager>();
         services.AddScoped<IEmoteManager, EmoteManager>();
         services.AddSingleton<IRandomManager, RandomManager>();
+
+        if (services.All(o => o.ServiceType != typeof(IDiscordClient)))
+            services.AddFakeDiscordClient();
 
         return services;
     }
@@ -68,6 +74,12 @@ public static class CoreExtensions
     /// <summary>
     /// Adds fake discord client for correct loading of managers using IDiscordClient.
     /// </summary>
-    public static IServiceCollection AddFakeDiscordClient(this IServiceCollection services, ServiceLifetime lifetime)
-        => services.AddSingleton<IDiscordClient>(_ => null!);
+    public static IServiceCollection AddFakeDiscordClient(this IServiceCollection services)
+    {
+        if (services.Any(o => o.ServiceType == typeof(IDiscordClient)))
+            return services;
+
+        services.AddSingleton<IDiscordClient>(_ => null!);
+        return services;
+    }
 }
