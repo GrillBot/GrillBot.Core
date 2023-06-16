@@ -17,11 +17,13 @@ public class RequestFilter : IAsyncActionFilter
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         var startAt = DateTime.Now;
-        await Task.WhenAll(Filters.Select(o => o.BeforeExecutionAsync()));
+        foreach (var filter in Filters)
+            await filter.BeforeExecutionAsync();
 
         var result = await next();
 
-        await Task.WhenAll(Filters.Select(o => o.AfterExecutionAsync()));
+        foreach (var filter in Filters)
+            await filter.AfterExecutionAsync();
         await DiagnosticsManager.OnRequestEndAsync(context, result, startAt);
     }
 }
