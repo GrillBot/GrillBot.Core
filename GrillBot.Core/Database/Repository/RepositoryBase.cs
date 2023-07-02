@@ -6,7 +6,7 @@ namespace GrillBot.Core.Database.Repository;
 public abstract class RepositoryBase<TContext> where TContext : DbContext
 {
     protected TContext Context { get; }
-    private ICounterManager CounterManager { get; }
+    protected ICounterManager CounterManager { get; }
 
     protected RepositoryBase(TContext context, ICounterManager counterManager)
     {
@@ -14,23 +14,31 @@ public abstract class RepositoryBase<TContext> where TContext : DbContext
         CounterManager = counterManager;
     }
 
-    protected IQueryable<TEntity> CreateQuery<TEntity>(IQueryableModel<TEntity> parameters, bool disableTracking = false,
-        bool splitQuery = false) where TEntity : class
+    public Task AddAsync<TEntity>(TEntity entity) where TEntity : class
+        => Context.Set<TEntity>().AddAsync(entity).AsTask();
+
+    public Task AddCollectionAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+        => Context.Set<TEntity>().AddRangeAsync(entities);
+
+    public void Remove<TEntity>(TEntity entity) where TEntity : class
+        => Context.Set<TEntity>().Remove(entity);
+
+    public void RemoveCollection<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+        => Context.Set<TEntity>().RemoveRange(entities);
+
+    public async Task<int> CommitAsync()
     {
-        var query = Context.Set<TEntity>().AsQueryable();
-
-        query = parameters.SetIncludes(query);
-        query = parameters.SetQuery(query);
-        query = parameters.SetSort(query);
-
-        if (disableTracking)
-            query = query.AsNoTracking();
-        if (splitQuery)
-            query = query.AsSplitQuery();
-
-        return query;
+        using (CounterManager.Create("Repository.Commit"))
+        {
+            return await Context.SaveChangesAsync();
+        }
     }
 
-    protected CounterItem CreateCounter()
-        => CounterManager.Create($"Repository.{GetType().Name.Replace("Repository", "")}");
+    public async Task<bool> IsPendingMigrationsAsync()
+    {
+        using (CounterManager.Create("Repository.Migrations"))
+        {
+            return (await Context.Database.GetPendingMigrationsAsync()).Any();
+        }
+    }
 }
