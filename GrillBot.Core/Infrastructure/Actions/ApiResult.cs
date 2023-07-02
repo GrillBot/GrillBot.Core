@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GrillBot.Core.Infrastructure.Actions;
 
@@ -20,4 +21,7 @@ public class ApiResult
 
         return Data == null ? new StatusCodeResult(StatusCode) : new ObjectResult(Data) { StatusCode = StatusCode };
     }
+
+    public static ApiResult FromSuccess(object? data = null) 
+        => new(StatusCodes.Status200OK, data);
 }
