@@ -27,7 +27,7 @@ jobs:
           dotnet build -c Debug --no-self-contained GrillBot.Core.Tests/
       - name: Build as Release
         run: 
-          dotnet build -c Release --no-self-contained GrillBot.Core/
+          dotnet build -c Release --no-self-contained GrillBot.Core/;
           dotnet build -c Release --no-self-contained GrillBot.Core.Tests/
       - name: Run unit tests
         run: dotnet test -c Debug GrillBot.Core.Services/
