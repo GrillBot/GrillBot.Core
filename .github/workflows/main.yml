@@ -12,7 +12,7 @@ env:
   DOTNET_NOLOGO: true
 
 jobs:
-  Build:
+  BuildCoreLibrary:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -22,14 +22,18 @@ jobs:
         with:
           dotnet-version: 7.0.x
       - name: Build as Debug
-        run: dotnet build -c Debug --no-self-contained
+        run: 
+          dotnet build -c Debug --no-self-contained GrillBot.Core/;
+          dotnet build -c Debug --no-self-contained GrillBot.Core.Tests/
       - name: Build as Release
-        run: dotnet build -c Release --no-self-contained
+        run: 
+          dotnet build -c Release --no-self-contained GrillBot.Core/
+          dotnet build -c Release --no-self-contained GrillBot.Core.Tests/
       - name: Run unit tests
-        run: dotnet test -c Debug
-  PublishToNuGet:
+        run: dotnet test -c Debug GrillBot.Core.Services/
+  PublishCoreLibrary:
     runs-on: ubuntu-latest
-    needs: Build
+    needs: BuildCoreLibrary
     if: github.ref == 'refs/heads/master'
     permissions:
       packages: write
@@ -52,6 +56,41 @@ jobs:
         run: dotnet pack -c Release GrillBot.Core/
       - name: Publish the package to GPR
         run: dotnet nuget push GrillBot.Core/bin/Release/*.nupkg --skip-duplicate
-        
-      
-      
+  BuildCoreServicesLibrary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Build as Debug
+        run: dotnet build -c Debug --no-self-contained GrillBot.Core.Services/
+      - name: Build as Release
+        run: dotnet build -c Release --no-self-contained GrillBot.Core.Services/
+  PublishCoreServicesLibrary:
+    runs-on: ubuntu-latest
+    needs: BuildCoreServicesLibrary
+    if: github.ref == 'refs/heads/master'
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+          source-url: https://nuget.pkg.github.com/GrillBot/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Install dependencies
+        run: dotnet restore -r linux-x64 GrillBot.Core.Services/
+      - name: Build
+        run: dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.Services/
+      - name: Create the package
+        run: dotnet pack -c Release GrillBot.Core.Services/
+      - name: Publish the package to GPR
+        run: dotnet nuget push GrillBot.Core.Services/bin/Release/*.nupkg --skip-duplicate
