@@ -12,7 +12,7 @@ namespace GrillBot.Core.Services;
 
 public static class ServicesExtensions
 {
-    private static void AddHttpClient(this IServiceCollection services, IConfiguration configuration, string serviceId)
+    public static void AddHttpClient(this IServiceCollection services, IConfiguration configuration, string serviceId)
     {
         services.AddHttpClient(serviceId, client =>
         {
@@ -21,7 +21,7 @@ public static class ServicesExtensions
         });
     }
 
-    private static void AddService<TInterface, TImplementation>(this IServiceCollection services, IConfiguration configuration, string serviceName)
+    public static void AddService<TInterface, TImplementation>(this IServiceCollection services, IConfiguration configuration, string serviceName)
         where TInterface : class
         where TImplementation : class, TInterface
     {
