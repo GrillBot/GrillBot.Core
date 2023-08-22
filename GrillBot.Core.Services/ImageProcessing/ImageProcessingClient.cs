@@ -52,7 +52,8 @@ public class ImageProcessingClient : RestServiceBase, IImageProcessingClient
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("api/image/chart", request, cancellationToken),
-            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!
+            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!,
+            timeout: TimeSpan.FromMinutes(5)
         );
     }
 }
