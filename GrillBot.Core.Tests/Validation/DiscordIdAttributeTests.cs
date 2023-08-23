@@ -5,6 +5,8 @@ namespace GrillBot.Core.Tests.Validation;
 [TestClass]
 public class DiscordIdAttributeTests : ValidationAttributeTestBase<DiscordIdAttribute>
 {
+    protected override DiscordIdAttribute CreateAttribute() => new();
+
     [TestMethod]
     public void UnknownIdentifier()
     {

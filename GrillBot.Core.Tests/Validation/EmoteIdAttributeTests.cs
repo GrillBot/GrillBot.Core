@@ -5,6 +5,8 @@ namespace GrillBot.Core.Tests.Validation;
 [TestClass]
 public class EmoteIdAttributeTests : ValidationAttributeTestBase<EmoteIdAttribute>
 {
+    protected override EmoteIdAttribute CreateAttribute() => new();
+
     [TestMethod]
     public void NotString()
         => Assert.IsNull(Attribute.GetValidationResult(12345, Context));

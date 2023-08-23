@@ -2,16 +2,18 @@
 
 namespace GrillBot.Core.Tests.Validation;
 
-public class ValidationAttributeTestBase<TAttribute> where TAttribute : ValidationAttribute, new()
+public abstract class ValidationAttributeTestBase<TAttribute> where TAttribute : ValidationAttribute
 {
-    protected TAttribute Attribute { get; private set; } = null!;
+    protected TAttribute Attribute { get; set; } = null!;
 
     protected ValidationContext Context { get; private set; } = null!;
+
+    protected abstract TAttribute CreateAttribute();
 
     [TestInitialize]
     public void Initialize()
     {
-        Attribute = new TAttribute();
+        Attribute = CreateAttribute();
         Context = new ValidationContext(this) { MemberName = "Test" };
     }
 }

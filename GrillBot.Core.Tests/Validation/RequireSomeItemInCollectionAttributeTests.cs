@@ -5,6 +5,8 @@ namespace GrillBot.Core.Tests.Validation;
 [TestClass]
 public class RequireSomeItemInCollectionAttributeTests : ValidationAttributeTestBase<RequireSomeItemInCollectionAttribute>
 {
+    protected override RequireSomeItemInCollectionAttribute CreateAttribute() => new();
+
     [TestMethod]
     public void NullValue()
         => Assert.IsNull(Attribute.GetValidationResult(null, Context));
