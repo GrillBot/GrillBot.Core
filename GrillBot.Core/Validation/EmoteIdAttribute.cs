@@ -8,7 +8,7 @@ public class EmoteIdAttribute : ValidationAttribute
 {
     public EmoteIdAttribute()
     {
-        ErrorMessage = @"Emote ID is in an invalid format.";
+        ErrorMessage = "Emote ID is in an invalid format.";
     }
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
@@ -16,6 +16,6 @@ public class EmoteIdAttribute : ValidationAttribute
         if (value is not string val)
             return ValidationResult.Success;
 
-        return !Emote.TryParse(val, out _) ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
+        return !Emote.TryParse(val, out _) ? new ValidationResult(ErrorMessage, new[] { validationContext.MemberName! }) : ValidationResult.Success;
     }
 }
