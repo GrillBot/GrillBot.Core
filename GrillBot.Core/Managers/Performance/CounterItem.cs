@@ -2,10 +2,10 @@
 
 public sealed class CounterItem : IDisposable
 {
-    public Guid Id { get; set;  }
-    public string Section { get;  }
+    public Guid Id { get; set; }
+    public string Section { get; }
     public DateTime StartAt { get; }
-    
+
     private CounterManager CounterManager { get; }
 
     public CounterItem(CounterManager counterManager, string section)

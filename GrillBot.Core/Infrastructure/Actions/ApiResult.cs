@@ -22,6 +22,12 @@ public class ApiResult
         return Data == null ? new StatusCodeResult(StatusCode) : new ObjectResult(Data) { StatusCode = StatusCode };
     }
 
-    public static ApiResult FromSuccess(object? data = null) 
+    public static ApiResult Ok(object? data = null)
         => new(StatusCodes.Status200OK, data);
+
+    public static ApiResult NotFound(object? data = null)
+        => new(StatusCodes.Status404NotFound, data);
+
+    public static ApiResult BadRequest(ValidationProblemDetails? validationErrors = null)
+        => new(StatusCodes.Status400BadRequest, validationErrors);
 }

@@ -12,7 +12,7 @@ public static class NumberExtensions
         var type = typeof(T);
         if (type == typeof(sbyte) || type == typeof(byte))
             return "{0:###}";
-        if (type == typeof(short) || type == typeof(short))
+        if (type == typeof(short) || type == typeof(ushort))
             return "{0:## ###}";
         if (type == typeof(int) || type == typeof(uint))
             return "{0:# ### ### ###}";

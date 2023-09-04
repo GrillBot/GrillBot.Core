@@ -49,7 +49,7 @@ public static class OperationCounterConverter
         var fields = stats.Section.Split('.');
         var levels = fields.Select(o => new OperationStatItem { Section = o }).ToList();
 
-        var lastLevel = levels.Last();
+        var lastLevel = levels[^1];
         lastLevel.Count = stats.Count;
         lastLevel.TotalTime = stats.TotalTime;
 

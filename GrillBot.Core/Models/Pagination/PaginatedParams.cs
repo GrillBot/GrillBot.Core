@@ -10,7 +10,7 @@ public class PaginatedParams : IDictionaryObject
 
     [Range(0, int.MaxValue)]
     public int PageSize { get; set; } = 25;
-    
+
     public bool OnlyCount { get; set; }
 
     public int Skip()

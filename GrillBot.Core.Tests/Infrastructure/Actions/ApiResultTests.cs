@@ -8,9 +8,9 @@ namespace GrillBot.Core.Tests.Infrastructure.Actions;
 public class ApiResultTests
 {
     [TestMethod]
-    public void FromSuccess()
+    public void Ok()
     {
-        var result = ApiResult.FromSuccess();
+        var result = ApiResult.Ok();
 
         Assert.IsNotNull(result);
         Assert.IsNull(result.Data);
@@ -48,5 +48,25 @@ public class ApiResultTests
         Assert.IsInstanceOfType<ObjectResult>(result);
         Assert.AreEqual(StatusCodes.Status200OK, ((ObjectResult)result).StatusCode);
         Assert.AreEqual("Test", ((ObjectResult)result).Value);
+    }
+
+    [TestMethod]
+    public void NotFound()
+    {
+        var result = ApiResult.NotFound();
+
+        Assert.IsNotNull(result);
+        Assert.IsNull(result.Data);
+        Assert.AreEqual(StatusCodes.Status404NotFound, result.StatusCode);
+    }
+
+    [TestMethod]
+    public void BadRequest()
+    {
+        var result = ApiResult.BadRequest();
+
+        Assert.IsNotNull(result);
+        Assert.IsNull(result.Data);
+        Assert.AreEqual(StatusCodes.Status400BadRequest, result.StatusCode);
     }
 }
