@@ -27,4 +27,5 @@ public class LogRequest
     public ThreadInfoRequest? ThreadInfo { get; set; }
     public DiffRequest<ThreadInfoRequest>? ThreadUpdated { get; set; }
     public MemberUpdatedRequest? MemberUpdated { get; set; }
+    public RoleDeletedRequest? RoleDeleted { get; set; }
 }
