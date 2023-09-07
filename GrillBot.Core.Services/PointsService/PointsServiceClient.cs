@@ -55,7 +55,7 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
             { "skip", skip },
             { "count", count },
             { "columns", (int)columns },
-            { "sortOptions", (int)sortOptions }
+            { "sort", (int)sortOptions }
         };
 
         var queryParams = string.Join("&", queryFields.Select(o => $"{o.Key}={o.Value}"));
