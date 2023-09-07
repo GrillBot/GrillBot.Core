@@ -4,6 +4,7 @@ using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Diagnostics.Models;
+using GrillBot.Core.Services.PointsService.Enums;
 using GrillBot.Core.Services.PointsService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -47,10 +48,20 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
     public async Task<DiagnosticInfo> GetDiagAsync()
         => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync("api/diag", cancellationToken), ReadJsonAsync<DiagnosticInfo>);
 
-    public async Task<RestResponse<List<BoardItem>>> GetLeaderboardAsync(string guildId, int skip, int count, bool simple)
+    public async Task<RestResponse<List<BoardItem>>> GetLeaderboardAsync(string guildId, int skip, int count, LeaderboardColumnFlag columns, LeaderboardSortOptions sortOptions)
     {
+        var queryFields = new Dictionary<string, object>()
+        {
+            { "skip", skip },
+            { "count", count },
+            { "columns", (int)columns },
+            { "sortOptions", (int)sortOptions }
+        };
+
+        var queryParams = string.Join("&", queryFields.Select(o => $"{o.Key}={o.Value}"));
+
         return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync($"api/leaderboard/{guildId}?skip={skip}&count={count}&simple={(simple ? "true" : "false")}", cancellationToken),
+            cancellationToken => HttpClient.GetAsync($"api/leaderboard/{guildId}?{queryParams}", cancellationToken),
             ReadRestResponseAsync<List<BoardItem>>,
             async (response, cancellationToken) =>
             {

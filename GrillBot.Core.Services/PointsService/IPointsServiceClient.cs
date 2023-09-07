@@ -1,6 +1,7 @@
 ﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Diagnostics.Models;
+using GrillBot.Core.Services.PointsService.Enums;
 using GrillBot.Core.Services.PointsService.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ public interface IPointsServiceClient : IClient
     Task<RestResponse<PaginatedResponse<TransactionItem>>> GetTransactionListAsync(AdminListRequest request);
     Task<RestResponse<List<PointsChartItem>>> GetChartDataAsync(AdminListRequest request);
     Task<DiagnosticInfo> GetDiagAsync();
-    Task<RestResponse<List<BoardItem>>> GetLeaderboardAsync(string guildId, int skip, int count, bool simple);
+    Task<RestResponse<List<BoardItem>>> GetLeaderboardAsync(string guildId, int skip, int count, LeaderboardColumnFlag columns, LeaderboardSortOptions sortOptions);
     Task<int> GetLeaderboardCountAsync(string guildId);
     Task<MergeResult?> MergeTransctionsAsync();
     Task<PointsStatus> GetStatusOfPointsAsync(string guildId, string userId);
