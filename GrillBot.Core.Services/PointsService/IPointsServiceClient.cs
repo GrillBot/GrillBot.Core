@@ -3,6 +3,7 @@ using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Diagnostics.Models;
 using GrillBot.Core.Services.PointsService.Enums;
 using GrillBot.Core.Services.PointsService.Models;
+using GrillBot.Core.Services.PointsService.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GrillBot.Core.Services.PointsService;
@@ -26,4 +27,5 @@ public interface IPointsServiceClient : IClient
     Task<ValidationProblemDetails?> TransferPointsAsync(TransferPointsRequest request);
     Task<bool> ExistsAnyTransactionAsync(string guildId, string userId);
     Task<StatusInfo> GetStatusInfoAsync();
+    Task<PaginatedResponse<UserListItem>> GetUserListAsync(UserListRequest request);
 }

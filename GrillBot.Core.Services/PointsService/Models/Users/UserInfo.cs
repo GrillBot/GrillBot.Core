@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.PointsService.Models;
+﻿namespace GrillBot.Core.Services.PointsService.Models.Users;
 
 public class UserInfo
 {

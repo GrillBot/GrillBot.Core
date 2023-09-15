@@ -6,6 +6,7 @@ using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Diagnostics.Models;
 using GrillBot.Core.Services.PointsService.Enums;
 using GrillBot.Core.Services.PointsService.Models;
+using GrillBot.Core.Services.PointsService.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -170,4 +171,12 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
 
     public async Task<StatusInfo> GetStatusInfoAsync()
         => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync("api/diag/status", cancellationToken), ReadJsonAsync<StatusInfo>);
+
+    public async Task<PaginatedResponse<UserListItem>> GetUserListAsync(UserListRequest request)
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.PostAsJsonAsync("api/users/list", request, cancellationToken),
+            ReadJsonAsync<PaginatedResponse<UserListItem>>
+        );
+    }
 }

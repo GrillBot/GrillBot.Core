@@ -1,4 +1,6 @@
-﻿namespace GrillBot.Core.Services.PointsService.Models;
+﻿using GrillBot.Core.Services.PointsService.Models.Users;
+
+namespace GrillBot.Core.Services.PointsService.Models;
 
 public class SynchronizationRequest
 {
