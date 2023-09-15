@@ -175,7 +175,7 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
     public async Task<PaginatedResponse<UserListItem>> GetUserListAsync(UserListRequest request)
     {
         return await ProcessRequestAsync(
-            cancellationToken => HttpClient.PostAsJsonAsync("api/users/list", request, cancellationToken),
+            cancellationToken => HttpClient.PostAsJsonAsync("api/user/list", request, cancellationToken),
             ReadJsonAsync<PaginatedResponse<UserListItem>>
         );
     }
