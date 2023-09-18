@@ -2,6 +2,7 @@
 using GrillBot.Core.Services.AuditLog.Models.Request.CreateItems;
 using GrillBot.Core.Services.AuditLog.Models.Request.Search;
 using GrillBot.Core.Services.AuditLog.Models.Response;
+using GrillBot.Core.Services.AuditLog.Models.Response.Delete;
 using GrillBot.Core.Services.AuditLog.Models.Response.Detail;
 using GrillBot.Core.Services.AuditLog.Models.Response.Info;
 using GrillBot.Core.Services.AuditLog.Models.Response.Info.Dashboard;
@@ -33,4 +34,5 @@ public interface IAuditLogServiceClient : IClient
     Task<List<DashboardInfoRow>> GetJobsDashboardAsync();
     Task<TodayAvgTimes> GetTodayAvgTimes();
     Task<StatusInfo> GetStatusInfoAsync();
+    Task<BulkDeleteResponse> BulkDeleteAsync(List<Guid> ids);
 }

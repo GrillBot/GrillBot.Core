@@ -14,10 +14,13 @@ public static class ServicesExtensions
 {
     public static void AddHttpClient(this IServiceCollection services, IConfiguration configuration, string serviceId)
     {
+        var timeoutValue = configuration[$"Services:{serviceId}:Timeout"];
+        var timeout = string.IsNullOrEmpty(timeoutValue) ? Timeout.InfiniteTimeSpan : TimeSpan.FromMilliseconds(timeoutValue.ToInt());
+
         services.AddHttpClient(serviceId, client =>
         {
             client.BaseAddress = new Uri(configuration[$"Services:{serviceId}:Api"]!);
-            client.Timeout = TimeSpan.FromMilliseconds(configuration[$"Services:{serviceId}:Timeout"]!.ToInt());
+            client.Timeout = timeout;
         });
     }
 

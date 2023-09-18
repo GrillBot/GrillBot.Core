@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.AuditLog.Models.Response;
+﻿namespace GrillBot.Core.Services.AuditLog.Models.Response.Delete;
 
 public class DeleteItemResponse
 {
