@@ -14,13 +14,20 @@ public class ImageProcessingClient : RestServiceBase, IImageProcessingClient
     }
 
     public async Task<DiagnosticInfo> GetDiagAsync()
-        => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync("api/diag", cancellationToken), ReadJsonAsync<DiagnosticInfo>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync("api/diag", cancellationToken),
+            ReadJsonAsync<DiagnosticInfo>,
+            timeout: TimeSpan.FromSeconds(60)
+        );
+    }
 
     public async Task<byte[]> CreatePeepoloveImageAsync(PeepoRequest request)
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("api/image/peepolove", request, cancellationToken),
-            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!
+            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!,
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
@@ -28,7 +35,8 @@ public class ImageProcessingClient : RestServiceBase, IImageProcessingClient
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("api/image/peepoangry", request, cancellationToken),
-            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!
+            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!,
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
@@ -36,7 +44,8 @@ public class ImageProcessingClient : RestServiceBase, IImageProcessingClient
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("api/image/points", request, cancellationToken),
-            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!
+            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!,
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
@@ -44,7 +53,8 @@ public class ImageProcessingClient : RestServiceBase, IImageProcessingClient
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("api/image/without-accident", request, cancellationToken),
-            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!
+            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!,
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
@@ -53,7 +63,7 @@ public class ImageProcessingClient : RestServiceBase, IImageProcessingClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("api/image/chart", request, cancellationToken),
             (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!,
-            timeout: TimeSpan.FromMinutes(5)
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 }

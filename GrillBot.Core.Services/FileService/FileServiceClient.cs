@@ -14,7 +14,13 @@ public class FileServiceClient : RestServiceBase, IFileServiceClient
     }
 
     public async Task<DiagnosticInfo> GetDiagAsync()
-        => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync("api/diag", cancellationToken), ReadJsonAsync<DiagnosticInfo>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync("api/diag", cancellationToken),
+            ReadJsonAsync<DiagnosticInfo>,
+            timeout: TimeSpan.FromSeconds(60)
+        );
+    }
 
     public async Task UploadFileAsync(string filename, byte[] content, string contentType)
     {
@@ -40,7 +46,8 @@ public class FileServiceClient : RestServiceBase, IFileServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync($"api/data?filename={filename}", cancellationToken),
             async (response, cancellationToken) => response.StatusCode == HttpStatusCode.NotFound ? null : await response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken),
-            (response, cancellationToken) => response.StatusCode == HttpStatusCode.NotFound ? Task.CompletedTask : EnsureSuccessResponseAsync(response, cancellationToken)
+            (response, cancellationToken) => response.StatusCode == HttpStatusCode.NotFound ? Task.CompletedTask : EnsureSuccessResponseAsync(response, cancellationToken),
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
@@ -48,7 +55,8 @@ public class FileServiceClient : RestServiceBase, IFileServiceClient
     {
         await ProcessRequestAsync(
             cancellationToken => HttpClient.DeleteAsync($"api/data?filename={filename}", cancellationToken),
-            EmptyResponseAsync
+            EmptyResponseAsync,
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 
@@ -56,7 +64,8 @@ public class FileServiceClient : RestServiceBase, IFileServiceClient
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync($"api/data/link?filename={filename}", cancellationToken),
-            (response, cancellationToken) => response.Content.ReadAsStringAsync(cancellationToken: cancellationToken)!
+            (response, cancellationToken) => response.Content.ReadAsStringAsync(cancellationToken: cancellationToken)!,
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 }

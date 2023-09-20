@@ -16,25 +16,48 @@ public class RubbergodServiceClient : RestServiceBase, IRubbergodServiceClient
     }
 
     public async Task<DiagnosticInfo> GetDiagAsync()
-        => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync("api/diag", cancellationToken), ReadJsonAsync<DiagnosticInfo>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync("api/diag", cancellationToken),
+            ReadJsonAsync<DiagnosticInfo>,
+            timeout: TimeSpan.FromSeconds(60)
+        );
+    }
 
     public async Task<PaginatedResponse<UserKarma>> GetKarmaPageAsync(PaginatedParams parameters)
     {
         var query = $"Page={parameters.Page}&PageSize={parameters.PageSize}";
-        return await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync($"api/karma?{query}", cancellationToken), ReadJsonAsync<PaginatedResponse<UserKarma>>);
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync($"api/karma?{query}", cancellationToken),
+            ReadJsonAsync<PaginatedResponse<UserKarma>>,
+            timeout: TimeSpan.FromSeconds(10)
+        );
     }
 
     public async Task StoreKarmaAsync(List<KarmaItem> items)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.PostAsJsonAsync("api/karma", items, cancellationToken), EmptyResponseAsync);
+    {
+        await ProcessRequestAsync(
+            cancellationToken => HttpClient.PostAsJsonAsync("api/karma", items, cancellationToken),
+            EmptyResponseAsync,
+            timeout: TimeSpan.FromSeconds(30)
+        );
+    }
 
     public async Task InvalidatePinCacheAsync(ulong guildId, ulong channelId)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.DeleteAsync($"api/pins/{guildId}/{channelId}", cancellationToken), EmptyResponseAsync);
+    {
+        await ProcessRequestAsync(
+            cancellationToken => HttpClient.DeleteAsync($"api/pins/{guildId}/{channelId}", cancellationToken),
+            EmptyResponseAsync,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
 
     public async Task<byte[]> GetPinsAsync(ulong guildId, ulong channelId, bool markdown)
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync($"api/pins/{guildId}/{channelId}?markdown={markdown}", cancellationToken),
-            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!
+            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!,
+            timeout: TimeSpan.FromMinutes(5)
         );
     }
 
@@ -42,7 +65,8 @@ public class RubbergodServiceClient : RestServiceBase, IRubbergodServiceClient
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/help/slashcommands", cancellationToken),
-            ReadJsonAsync<Dictionary<string, Cog>>
+            ReadJsonAsync<Dictionary<string, Cog>>,
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 }

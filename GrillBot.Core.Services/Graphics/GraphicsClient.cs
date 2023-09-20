@@ -19,7 +19,8 @@ public class GraphicsClient : RestServiceBase, IGraphicsClient
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("chart", request, cancellationToken),
-            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!
+            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!,
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
@@ -35,7 +36,8 @@ public class GraphicsClient : RestServiceBase, IGraphicsClient
                     Uptime = (long)Math.Ceiling(json["uptime"]!.Value<double>() * 1000),
                     UsedMemory = json["mem"]!["rss"]!.Value<long>()
                 };
-            }
+            },
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 
@@ -43,18 +45,26 @@ public class GraphicsClient : RestServiceBase, IGraphicsClient
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("info", cancellationToken),
-            async (response, cancellationToken) => JObject.Parse(await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken))["build"]!["version"]!.Value<string>()!
+            async (response, cancellationToken) => JObject.Parse(await response.Content.ReadAsStringAsync(cancellationToken: cancellationToken))["build"]!["version"]!.Value<string>()!,
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 
     public async Task<Stats> GetStatisticsAsync()
-        => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync("stats", cancellationToken), ReadJsonAsync<Stats>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync("stats", cancellationToken),
+            ReadJsonAsync<Stats>,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
 
     public async Task<byte[]> CreateWithoutAccidentImage(WithoutAccidentRequestData request)
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("image/without-accident", request, cancellationToken),
-            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!
+            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!,
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
@@ -62,13 +72,26 @@ public class GraphicsClient : RestServiceBase, IGraphicsClient
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("image/points", imageRequest, cancellationToken),
-            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!
+            (response, cancellationToken) => response.Content.ReadAsByteArrayAsync(cancellationToken: cancellationToken)!,
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
     public async Task<List<byte[]>> CreatePeepoAngryAsync(List<byte[]> avatarFrames)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.PostAsJsonAsync("image/peepo/angry", avatarFrames, cancellationToken), ReadJsonAsync<List<byte[]>>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.PostAsJsonAsync("image/peepo/angry", avatarFrames, cancellationToken),
+            ReadJsonAsync<List<byte[]>>,
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
+        );
+    }
 
     public async Task<List<byte[]>> CreatePeepoLoveAsync(List<byte[]> avatarFrames)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.PostAsJsonAsync("image/peepo/love", avatarFrames, cancellationToken), ReadJsonAsync<List<byte[]>>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.PostAsJsonAsync("image/peepo/love", avatarFrames, cancellationToken),
+            ReadJsonAsync<List<byte[]>>,
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
+        );
+    }
 }

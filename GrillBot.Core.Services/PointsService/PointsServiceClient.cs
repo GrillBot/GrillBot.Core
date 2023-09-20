@@ -29,7 +29,8 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
             {
                 if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.BadRequest) return;
                 await EnsureSuccessResponseAsync(response, cancellationToken);
-            }
+            },
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 
@@ -42,12 +43,19 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
             {
                 if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.BadRequest) return;
                 await EnsureSuccessResponseAsync(response, cancellationToken);
-            }
+            },
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 
     public async Task<DiagnosticInfo> GetDiagAsync()
-        => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync("api/diag", cancellationToken), ReadJsonAsync<DiagnosticInfo>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync("api/diag", cancellationToken),
+            ReadJsonAsync<DiagnosticInfo>,
+            timeout: TimeSpan.FromSeconds(60)
+        );
+    }
 
     public async Task<RestResponse<List<BoardItem>>> GetLeaderboardAsync(string guildId, int skip, int count, LeaderboardColumnFlag columns, LeaderboardSortOptions sortOptions)
     {
@@ -68,12 +76,19 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
             {
                 if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.BadRequest) return;
                 await EnsureSuccessResponseAsync(response, cancellationToken);
-            }
+            },
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 
     public async Task<int> GetLeaderboardCountAsync(string guildId)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync($"api/leaderboard/{guildId}/count", cancellationToken), ReadJsonAsync<int>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync($"api/leaderboard/{guildId}/count", cancellationToken),
+            ReadJsonAsync<int>,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
 
     public async Task<MergeResult?> MergeTransctionsAsync()
     {
@@ -85,28 +100,59 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
     }
 
     public async Task<PointsStatus> GetStatusOfPointsAsync(string guildId, string userId)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync($"api/status/{guildId}/{userId}", cancellationToken), ReadJsonAsync<PointsStatus>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync($"api/status/{guildId}/{userId}", cancellationToken),
+            ReadJsonAsync<PointsStatus>,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
 
     public async Task<PointsStatus> GetStatusOfExpiredPointsAsync(string guildId, string userId)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync($"api/status/{guildId}/{userId}/expired", cancellationToken), ReadJsonAsync<PointsStatus>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync($"api/status/{guildId}/{userId}/expired", cancellationToken),
+            ReadJsonAsync<PointsStatus>,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
 
     public async Task<ImagePointsStatus?> GetImagePointsStatusAsync(string guildId, string userId)
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync($"api/status/{guildId}/{userId}/image", cancellationToken),
             async (response, cancellationToken) => response.StatusCode == HttpStatusCode.NotFound ? null : await ReadJsonAsync<ImagePointsStatus>(response, cancellationToken),
-            (response, cancellationToken) => response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.NotFound ? Task.CompletedTask : EnsureSuccessResponseAsync(response, cancellationToken)
+            (response, cancellationToken) => response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.NotFound ? Task.CompletedTask : EnsureSuccessResponseAsync(response, cancellationToken),
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 
     public async Task ProcessSynchronizationAsync(SynchronizationRequest request)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.PostAsJsonAsync("api/synchronization", request, cancellationToken), EmptyResponseAsync);
+    {
+        await ProcessRequestAsync(
+            cancellationToken => HttpClient.PostAsJsonAsync("api/synchronization", request, cancellationToken),
+            EmptyResponseAsync,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
 
     public async Task DeleteTransactionAsync(string guildId, string messageId)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.DeleteAsync($"api/transaction/{guildId}/{messageId}", cancellationToken), EmptyResponseAsync);
+    {
+        await ProcessRequestAsync(
+            cancellationToken => HttpClient.DeleteAsync($"api/transaction/{guildId}/{messageId}", cancellationToken),
+            EmptyResponseAsync,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
 
     public async Task DeleteTransactionAsync(string guildId, string messageId, string reactionId)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.DeleteAsync($"api/transaction/{guildId}/{messageId}/{reactionId}", cancellationToken), EmptyResponseAsync);
+    {
+        await ProcessRequestAsync(
+            cancellationToken => HttpClient.DeleteAsync($"api/transaction/{guildId}/{messageId}/{reactionId}", cancellationToken),
+            EmptyResponseAsync,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
 
     public async Task<ValidationProblemDetails?> TransferPointsAsync(TransferPointsRequest request)
     {
@@ -122,7 +168,8 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
                 if (response.StatusCode is HttpStatusCode.NotAcceptable or HttpStatusCode.BadRequest or HttpStatusCode.OK)
                     return;
                 await EnsureSuccessResponseAsync(response, cancellationToken);
-            }
+            },
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 
@@ -140,7 +187,8 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
                 if (response.StatusCode is HttpStatusCode.NotAcceptable or HttpStatusCode.BadRequest or HttpStatusCode.OK)
                     return;
                 await EnsureSuccessResponseAsync(response, cancellationToken);
-            }
+            },
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 
@@ -162,21 +210,35 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
                 if (response.StatusCode is HttpStatusCode.NotAcceptable or HttpStatusCode.BadRequest or HttpStatusCode.OK)
                     return;
                 await EnsureSuccessResponseAsync(response, cancellationToken);
-            }
+            },
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 
     public async Task<bool> ExistsAnyTransactionAsync(string guildId, string userId)
-        => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync($"api/transaction/{guildId}/{userId}", cancellationToken), ReadJsonAsync<bool>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync($"api/transaction/{guildId}/{userId}", cancellationToken),
+            ReadJsonAsync<bool>,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
 
     public async Task<StatusInfo> GetStatusInfoAsync()
-        => await ProcessRequestAsync(cancellationToken => HttpClient.GetAsync("api/diag/status", cancellationToken), ReadJsonAsync<StatusInfo>);
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync("api/diag/status", cancellationToken),
+            ReadJsonAsync<StatusInfo>,
+            timeout: TimeSpan.FromSeconds(60)
+        );
+    }
 
     public async Task<PaginatedResponse<UserListItem>> GetUserListAsync(UserListRequest request)
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("api/user/list", request, cancellationToken),
-            ReadJsonAsync<PaginatedResponse<UserListItem>>
+            ReadJsonAsync<PaginatedResponse<UserListItem>>,
+            timeout: TimeSpan.FromSeconds(30)
         );
     }
 }
