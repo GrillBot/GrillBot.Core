@@ -30,7 +30,7 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
                 if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.BadRequest) return;
                 await EnsureSuccessResponseAsync(response, cancellationToken);
             },
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(30)
         );
     }
 
