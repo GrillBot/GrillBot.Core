@@ -188,7 +188,7 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
                     return;
                 await EnsureSuccessResponseAsync(response, cancellationToken);
             },
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
@@ -211,7 +211,7 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
                     return;
                 await EnsureSuccessResponseAsync(response, cancellationToken);
             },
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
