@@ -11,6 +11,7 @@ public class ApiSearchRequest : IDictionaryObject
     public int? DurationTo { get; set; }
     public string? Method { get; set; }
     public string? ApiGroupName { get; set; }
+    public string? Identification { get; set; }
 
     public Dictionary<string, string?> ToDictionary()
     {
@@ -22,7 +23,8 @@ public class ApiSearchRequest : IDictionaryObject
             { nameof(DurationFrom), DurationFrom?.ToString() },
             { nameof(DurationTo), DurationTo?.ToString() },
             { nameof(Method), Method },
-            { nameof(ApiGroupName), ApiGroupName }
+            { nameof(ApiGroupName), ApiGroupName },
+            { nameof(Identification), Identification }
         };
     }
 }
