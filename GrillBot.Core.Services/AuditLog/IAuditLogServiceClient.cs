@@ -24,7 +24,7 @@ public interface IAuditLogServiceClient : IClient
     Task<ApiStatistics> GetApiStatisticsAsync();
     Task<AuditLogStatistics> GetAuditLogStatisticsAsync();
     Task<AvgExecutionTimes> GetAvgTimesAsync();
-    Task<List<StatisticItem>> GetInteractionStatisticsListAsync();
+    Task<InteractionStatistics> GetInteractionStatisticsAsync();
     Task<List<UserActionCountItem>> GetUserApiStatisticsAsync(string criteria);
     Task<List<UserActionCountItem>> GetUserCommandStatisticsAsync();
     Task<List<JobInfo>> GetJobsInfoAsync();

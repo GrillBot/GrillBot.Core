@@ -29,7 +29,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("api/logItem", requests, cancellationToken),
             EmptyResponseAsync,
-            timeout: TimeSpan.FromSeconds(30)
+            timeout: System.Threading.Timeout.InfiniteTimeSpan
         );
     }
 
@@ -58,7 +58,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
             cancellationToken => HttpClient.PostAsJsonAsync("api/logItem/search", request, cancellationToken),
             ReadRestResponseAsync<PaginatedResponse<LogListItem>>,
             (response, cancellationToken) => response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.BadRequest ? Task.CompletedTask : EnsureSuccessResponseAsync(response, cancellationToken),
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(30)
         );
     }
 
@@ -108,11 +108,11 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         );
     }
 
-    public async Task<List<StatisticItem>> GetInteractionStatisticsListAsync()
+    public async Task<InteractionStatistics> GetInteractionStatisticsAsync()
     {
         return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/statistics/interactions/list", cancellationToken),
-            ReadJsonAsync<List<StatisticItem>>,
+            cancellationToken => HttpClient.GetAsync("api/statistics/interactions/stats", cancellationToken),
+            ReadJsonAsync<InteractionStatistics>,
             timeout: TimeSpan.FromSeconds(10)
         );
     }
