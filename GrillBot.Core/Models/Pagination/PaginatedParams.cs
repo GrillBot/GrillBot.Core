@@ -21,7 +21,8 @@ public class PaginatedParams : IDictionaryObject
         return new Dictionary<string, string?>
         {
             { nameof(Page), Page.ToString() },
-            { nameof(PageSize), PageSize.ToString() }
+            { nameof(PageSize), PageSize.ToString() },
+            { nameof(OnlyCount), OnlyCount.ToString() }
         };
     }
 }
