@@ -189,6 +189,15 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         );
     }
 
+    public async Task<List<DashboardInfoRow>> GetMemberWarningDashboardAsync()
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync("api/dashboard/memberWarning", cancellationToken),
+            ReadJsonAsync<List<DashboardInfoRow>>,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
+
     public async Task<StatusInfo> GetStatusInfoAsync()
     {
         return await ProcessRequestAsync(
