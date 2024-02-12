@@ -3,6 +3,7 @@ using GrillBot.Core.Services.Graphics;
 using GrillBot.Core.Services.ImageProcessing;
 using GrillBot.Core.Services.PointsService;
 using GrillBot.Core.Services.RubbergodService;
+using GrillBot.Core.Services.UserMeasures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,5 +36,6 @@ public static class ServicesExtensions
         services.AddService<IPointsServiceClient, PointsServiceClient>(configuration, "PointsService");
         services.AddService<IImageProcessingClient, ImageProcessingClient>(configuration, "ImageProcessing");
         services.AddService<IAuditLogServiceClient, AuditLogServiceClient>(configuration, "AuditLog");
+        services.AddService<IUserMeasuresServiceClient, UserMeasuresServiceClient>(configuration, "UserMeasures");
     }
 }
