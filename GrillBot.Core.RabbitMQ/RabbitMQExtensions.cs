@@ -14,6 +14,10 @@ public static class RabbitMQExtensions
             .AddSingleton(provider => provider.GetRequiredService<RabbitMQConnectionFactory>().Create())
             .AddSingleton<IRabbitMQPublisher, RabbitMQPublisher>();
 
+        services
+            .AddHealthChecks()
+            .AddCheck<RabbitMQHealthCheck>("RabbitMQ");
+
         return services;
     }
 
