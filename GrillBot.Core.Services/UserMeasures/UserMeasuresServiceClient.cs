@@ -12,7 +12,7 @@ namespace GrillBot.Core.Services.UserMeasures;
 
 public class UserMeasuresServiceClient : RestServiceBase, IUserMeasuresServiceClient
 {
-    public override string ServiceName => "UserMeasuresService";
+    public override string ServiceName => "UserMeasures";
 
     public UserMeasuresServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory) : base(counterManager, httpClientFactory)
     {
