@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using GrillBot.Core.Managers.Performance;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
@@ -12,6 +13,7 @@ public class RabbitMQConsumerService : IHostedService
 {
     private IServiceProvider ServiceProvider { get; }
     private ILoggerFactory LoggerFactory { get; }
+    private ICounterManager CounterManager { get; }
 
     private readonly Dictionary<string, AsyncDefaultBasicConsumer> _consumers = new();
     public static readonly JsonSerializerOptions _serializerOptions = new()
@@ -24,6 +26,7 @@ public class RabbitMQConsumerService : IHostedService
     {
         ServiceProvider = serviceProvider;
         LoggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+        CounterManager = serviceProvider.GetRequiredService<ICounterManager>();
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -62,40 +65,43 @@ public class RabbitMQConsumerService : IHostedService
 
     private async Task OnQueueMessage(BasicDeliverEventArgs @event, string queueName, IModel queueModel)
     {
-        var logger = LoggerFactory.CreateLogger($"RabbitMQ/{queueName}");
-
-        using var scope = ServiceProvider.CreateScope();
-
-        var handler = scope.ServiceProvider
-            .GetServices<IRabbitMQHandler>()
-            .First(o => o.QueueName == queueName);
-
-        var body = @event.Body.ToArray();
-        var message = Encoding.UTF8.GetString(body);
-
-        logger.LogInformation("Received new message. Length: {Length}. Handler: {Name}", body.Length, handler.GetType().Name);
-
-        try
+        using (CounterManager.Create($"RabbitMQ.{queueName}.Consumer"))
         {
-            var payload = JsonSerializer.Deserialize(message, handler.PayloadType, _serializerOptions);
+            var logger = LoggerFactory.CreateLogger($"RabbitMQ/{queueName}");
 
-            await handler.HandleAsync(payload);
-            queueModel.BasicAck(@event.DeliveryTag, false);
-        }
-        catch (Exception ex)
-        {
-            if (ex is JsonException)
+            using var scope = ServiceProvider.CreateScope();
+
+            var handler = scope.ServiceProvider
+                .GetServices<IRabbitMQHandler>()
+                .First(o => o.QueueName == queueName);
+
+            var body = @event.Body.ToArray();
+            var message = Encoding.UTF8.GetString(body);
+
+            logger.LogInformation("Received new message. Length: {Length}. Handler: {Name}", body.Length, handler.GetType().Name);
+
+            try
             {
-                logger.LogWarning("Payload deserialization of type {Name} failed.", handler.PayloadType.Name);
+                var payload = JsonSerializer.Deserialize(message, handler.PayloadType, _serializerOptions);
 
-                await handler.HandleUnknownMessageAsync(message);
+                await handler.HandleAsync(payload);
                 queueModel.BasicAck(@event.DeliveryTag, false);
-
-                return;
             }
+            catch (Exception ex)
+            {
+                if (ex is JsonException)
+                {
+                    logger.LogWarning("Payload deserialization of type {Name} failed.", handler.PayloadType.Name);
 
-            logger.LogError(ex, "An error occured while processing message.");
-            queueModel.BasicNack(@event.DeliveryTag, false, true);
+                    await handler.HandleUnknownMessageAsync(message);
+                    queueModel.BasicAck(@event.DeliveryTag, false);
+
+                    return;
+                }
+
+                logger.LogError(ex, "An error occured while processing message.");
+                queueModel.BasicNack(@event.DeliveryTag, false, true);
+            }
         }
     }
 }
