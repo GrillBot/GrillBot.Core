@@ -15,15 +15,9 @@ public interface IPointsServiceClient : IClient
     Task<DiagnosticInfo> GetDiagAsync();
     Task<RestResponse<List<BoardItem>>> GetLeaderboardAsync(string guildId, int skip, int count, LeaderboardColumnFlag columns, LeaderboardSortOptions sortOptions);
     Task<int> GetLeaderboardCountAsync(string guildId);
-    Task<MergeResult?> MergeTransctionsAsync();
+    Task<MergeResult?> MergeValidTransctionsAsync();
     Task<PointsStatus> GetStatusOfPointsAsync(string guildId, string userId);
-    Task<PointsStatus> GetStatusOfExpiredPointsAsync(string guildId, string userId);
     Task<ImagePointsStatus?> GetImagePointsStatusAsync(string guildId, string userId);
-    Task ProcessSynchronizationAsync(SynchronizationRequest request);
-    Task<ValidationProblemDetails?> CreateTransactionAsync(TransactionRequest request);
-    Task<ValidationProblemDetails?> CreateTransactionAsync(AdminTransactionRequest request);
-    Task DeleteTransactionAsync(string guildId, string messageId);
-    Task DeleteTransactionAsync(string guildId, string messageId, string reactionId);
     Task<ValidationProblemDetails?> TransferPointsAsync(TransferPointsRequest request);
     Task<bool> ExistsAnyTransactionAsync(string guildId, string userId);
     Task<StatusInfo> GetStatusInfoAsync();

@@ -16,7 +16,7 @@ public class UserListRequest : IDictionaryObject
     {
         var result = new Dictionary<string, string?>
         {
-            {nameof(GuildId), GuildId }
+            { nameof(GuildId), GuildId }
         };
 
         result.MergeDictionaryObjects(Pagination, nameof(Pagination));

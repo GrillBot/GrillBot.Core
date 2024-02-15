@@ -1,9 +1,4 @@
 ﻿using GrillBot.Core.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GrillBot.Core.Tests.Extensions;
 
@@ -38,5 +33,27 @@ public class DateTimeExtensionsTests
         Assert.AreEqual(localTime.Minute, result.Minute);
         Assert.AreEqual(localTime.Second, result.Second);
         Assert.AreEqual(DateTimeKind.Local, result.Kind);
+    }
+
+    [TestMethod]
+    public void ToDateOnly_WithDateTime()
+    {
+        var dateTime = new DateTime(2023, 2, 15, 11, 0, 0, DateTimeKind.Local);
+        var date = dateTime.ToDateOnly();
+
+        Assert.AreEqual(dateTime.Year, date.Year);
+        Assert.AreEqual(dateTime.Month, date.Month);
+        Assert.AreEqual(dateTime.Day, date.Day);
+    }
+
+    [TestMethod]
+    public void ToDateOnly_WithDateTimeOffset()
+    {
+        var dateTime = new DateTimeOffset(2023, 2, 15, 11, 0, 0, TimeSpan.Zero);
+        var date = dateTime.ToDateOnly();
+
+        Assert.AreEqual(dateTime.Year, date.Year);
+        Assert.AreEqual(dateTime.Month, date.Month);
+        Assert.AreEqual(dateTime.Day, date.Day);
     }
 }
