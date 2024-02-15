@@ -21,7 +21,7 @@ public class RabbitMQPublisher : IRabbitMQPublisher
     {
         using (CounterManager.Create($"RabbitMQ.{queueName}.Producer"))
         {
-            var queue = CreateQueueModel(queueName);
+            using var queue = CreateQueueModel(queueName);
 
             var json = JsonSerializer.Serialize(model, RabbitMQConsumerService._serializerOptions);
             var message = Encoding.UTF8.GetBytes(json);
