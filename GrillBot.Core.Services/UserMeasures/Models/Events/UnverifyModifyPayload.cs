@@ -7,4 +7,14 @@ public class UnverifyModifyPayload
     public long LogSetId { get; set; }
 
     public DateTime? NewEnd { get; set; }
+
+    public UnverifyModifyPayload()
+    {
+    }
+
+    public UnverifyModifyPayload(long logSetId, DateTime? newEnd)
+    {
+        LogSetId = logSetId;
+        NewEnd = newEnd;
+    }
 }

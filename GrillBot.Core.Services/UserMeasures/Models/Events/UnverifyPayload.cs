@@ -1,6 +1,4 @@
-﻿using GrillBot.Core.Services.UserMeasures.Models.Events;
-
-namespace GrillBot.Core.Services.UserMeasures.Models.Events;
+﻿namespace GrillBot.Core.Services.UserMeasures.Models.Events;
 
 public class UnverifyPayload : BasePayload
 {
@@ -8,4 +6,15 @@ public class UnverifyPayload : BasePayload
 
     public DateTime EndAt { get; set; }
     public long LogSetId { get; set; }
+
+    public UnverifyPayload()
+    {
+    }
+
+    public UnverifyPayload(DateTime createdAt, string reason, string guildId, string moderatorId, string targetUserId, DateTime endAt, long logSetId)
+        : base(createdAt, reason, guildId, moderatorId, targetUserId)
+    {
+        EndAt = endAt;
+        LogSetId = logSetId;
+    }
 }
