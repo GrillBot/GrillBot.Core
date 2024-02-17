@@ -1,5 +1,4 @@
 ﻿using GrillBot.Core.Managers.Performance;
-using GrillBot.Core.RabbitMQ.Consumer;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
@@ -17,17 +16,37 @@ public class RabbitMQPublisher : IRabbitMQPublisher
         CounterManager = counterManager;
     }
 
-    public Task PublishAsync<TModel>(string queueName, TModel model)
+    public Task PublishAsync<TModel>(TModel model) where TModel : IPayload
+        => PublishAsync(model.QueueName, model);
+
+    public async Task PublishAsync<TModel>(string queueName, TModel model)
     {
         using (CounterManager.Create($"RabbitMQ.{queueName}.Producer"))
+            await SendWithRetryPolicyAsync(queueName, model, 5);
+    }
+
+    public async Task PublishBatchAsync<TModel>(IEnumerable<TModel> models) where TModel : IPayload
+    {
+        foreach (var group in models.GroupBy(o => o.QueueName))
+        {
+            foreach (var message in group)
+                await PublishAsync(message);
+        }
+    }
+
+    private async Task SendWithRetryPolicyAsync<TModel>(string queueName, TModel model, int maxRetry, int retryCount = 0)
+    {
+        try
         {
             using var queue = CreateQueueModel(queueName);
 
-            var json = JsonSerializer.Serialize(model, RabbitMQConsumerService._serializerOptions);
-            var message = Encoding.UTF8.GetBytes(json);
-
+            var message = SerializeModel(model);
             queue.BasicPublish("", queueName, true, null, message);
-            return Task.CompletedTask;
+        }
+        catch (global::RabbitMQ.Client.Exceptions.AlreadyClosedException) when (retryCount < maxRetry)
+        {
+            await Task.Delay(1000);
+            await SendWithRetryPolicyAsync(queueName, model, maxRetry, retryCount + 1);
         }
     }
 
@@ -38,4 +57,7 @@ public class RabbitMQPublisher : IRabbitMQPublisher
 
         return model;
     }
+
+    private static byte[] SerializeModel<TModel>(TModel model)
+        => Encoding.UTF8.GetBytes(JsonSerializer.Serialize(model, RabbitMQSettings._serializerOptions));
 }

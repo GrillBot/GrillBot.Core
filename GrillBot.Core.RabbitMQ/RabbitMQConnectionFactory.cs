@@ -20,7 +20,8 @@ public class RabbitMQConnectionFactory
             HostName = configuration["Hostname"],
             Password = configuration["Password"],
             UserName = configuration["Username"],
-            DispatchConsumersAsync = true
+            DispatchConsumersAsync = true,
+            RequestedHeartbeat = TimeSpan.FromSeconds(30)
         };
 
         return factory.CreateConnection();

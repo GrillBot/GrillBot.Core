@@ -16,11 +16,6 @@ public class RabbitMQConsumerService : IHostedService
     private ICounterManager CounterManager { get; }
 
     private readonly Dictionary<string, AsyncDefaultBasicConsumer> _consumers = new();
-    public static readonly JsonSerializerOptions _serializerOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-    };
 
     public RabbitMQConsumerService(IServiceProvider serviceProvider)
     {
@@ -82,7 +77,7 @@ public class RabbitMQConsumerService : IHostedService
 
             try
             {
-                var payload = JsonSerializer.Deserialize(message, handler.PayloadType, _serializerOptions);
+                var payload = JsonSerializer.Deserialize(message, handler.PayloadType, RabbitMQSettings._serializerOptions);
 
                 await handler.HandleAsync(payload);
                 queueModel.BasicAck(@event.DeliveryTag, false);
