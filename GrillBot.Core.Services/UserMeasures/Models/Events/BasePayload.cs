@@ -1,7 +1,11 @@
-﻿namespace GrillBot.Core.Services.UserMeasures.Models.Events;
+﻿using GrillBot.Core.RabbitMQ;
 
-public abstract class BasePayload
+namespace GrillBot.Core.Services.UserMeasures.Models.Events;
+
+public abstract class BasePayload : IPayload
 {
+    public abstract string QueueName { get; }
+
     public DateTime CreatedAt { get; set; }
     public string Reason { get; set; } = null!;
     public string GuildId { get; set; } = null!;

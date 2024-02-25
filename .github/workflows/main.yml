@@ -76,7 +76,7 @@ jobs:
         run: dotnet nuget push GrillBot.Core/bin/Release/*.nupkg --skip-duplicate
   BuildServicesPackage:
     runs-on: ubuntu-latest
-    needs: BuildCorePackage
+    needs: [BuildCorePackage, BuildRabbitMQPackage]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

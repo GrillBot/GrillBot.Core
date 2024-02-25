@@ -19,7 +19,7 @@ public class RabbitMQPublisher : IRabbitMQPublisher
     public Task PublishAsync<TModel>(TModel model) where TModel : IPayload
         => PublishAsync(model.QueueName, model);
 
-    public async Task PublishAsync<TModel>(string queueName, TModel model)
+    private async Task PublishAsync<TModel>(string queueName, TModel model)
     {
         using (CounterManager.Create($"RabbitMQ.{queueName}.Producer"))
             await SendWithRetryPolicyAsync(queueName, model, 5);

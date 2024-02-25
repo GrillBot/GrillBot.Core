@@ -1,10 +1,11 @@
-﻿using GrillBot.Core.Services.PointsService.Models.Users;
+﻿using GrillBot.Core.RabbitMQ;
+using GrillBot.Core.Services.PointsService.Models.Users;
 
 namespace GrillBot.Core.Services.PointsService.Models.Events;
 
-public class SynchronizationPayload
+public class SynchronizationPayload : IPayload
 {
-    public const string QueueName = "points:synchronization";
+    public string QueueName => "points:synchronization";
 
     public string GuildId { get; set; } = null!;
     public List<ChannelInfo> Channels { get; set; } = new();

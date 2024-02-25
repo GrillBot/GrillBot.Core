@@ -1,8 +1,10 @@
-﻿namespace GrillBot.Core.Services.PointsService.Models.Events;
+﻿using GrillBot.Core.RabbitMQ;
 
-public class UserRecalculationPayload
+namespace GrillBot.Core.Services.PointsService.Models.Events;
+
+public class UserRecalculationPayload : IPayload
 {
-    public const string QueueName = "points:user_recalculation";
+    public string QueueName => "points:user_recalculation";
 
     public string GuildId { get; set; } = null!;
     public string UserId { get; set; } = null!;
