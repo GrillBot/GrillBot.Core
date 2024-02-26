@@ -3,13 +3,22 @@ using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Models;
 using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.AuditLog.Enums;
+using GrillBot.Core.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace GrillBot.Core.Services.AuditLog.Models.Request.Search;
 
 public class SearchRequest : IDictionaryObject
 {
+    [DiscordId]
+    [StringLength(32)]
     public string? GuildId { get; set; }
+
+    [DiscordId]
     public List<string> UserIds { get; set; } = new();
+
+    [DiscordId]
+    [StringLength(32)]
     public string? ChannelId { get; set; }
     public List<LogType> ShowTypes { get; set; } = new();
     public List<LogType> IgnoreTypes { get; set; } = new();

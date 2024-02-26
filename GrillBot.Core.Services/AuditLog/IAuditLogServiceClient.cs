@@ -1,8 +1,6 @@
 ﻿using GrillBot.Core.Models.Pagination;
-using GrillBot.Core.Services.AuditLog.Models.Request.CreateItems;
 using GrillBot.Core.Services.AuditLog.Models.Request.Search;
 using GrillBot.Core.Services.AuditLog.Models.Response;
-using GrillBot.Core.Services.AuditLog.Models.Response.Delete;
 using GrillBot.Core.Services.AuditLog.Models.Response.Detail;
 using GrillBot.Core.Services.AuditLog.Models.Response.Info;
 using GrillBot.Core.Services.AuditLog.Models.Response.Info.Dashboard;
@@ -15,12 +13,10 @@ namespace GrillBot.Core.Services.AuditLog;
 
 public interface IAuditLogServiceClient : IClient
 {
-    Task CreateItemsAsync(List<LogRequest> requests);
     Task<DiagnosticInfo> GetDiagAsync();
-    Task<DeleteItemResponse> DeleteItemAsync(Guid id);
     Task<RestResponse<PaginatedResponse<LogListItem>>> SearchItemsAsync(SearchRequest request);
     Task<Detail?> DetailAsync(Guid id);
-    Task<ArchivationResult?> ProcessArchivationAsync();
+    Task<ArchivationResult?> CreateArchivationDataAsync();
     Task<ApiStatistics> GetApiStatisticsAsync();
     Task<AuditLogStatistics> GetAuditLogStatisticsAsync();
     Task<AvgExecutionTimes> GetAvgTimesAsync();
@@ -33,7 +29,5 @@ public interface IAuditLogServiceClient : IClient
     Task<List<DashboardInfoRow>> GetInteractionsDashboardAsync();
     Task<List<DashboardInfoRow>> GetJobsDashboardAsync();
     Task<TodayAvgTimes> GetTodayAvgTimes();
-    Task<List<DashboardInfoRow>> GetMemberWarningDashboardAsync();
     Task<StatusInfo> GetStatusInfoAsync();
-    Task<BulkDeleteResponse> BulkDeleteAsync(List<Guid> ids);
 }

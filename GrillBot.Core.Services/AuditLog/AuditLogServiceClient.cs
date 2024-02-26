@@ -2,10 +2,8 @@
 using System.Net.Http.Json;
 using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Models.Pagination;
-using GrillBot.Core.Services.AuditLog.Models.Request.CreateItems;
 using GrillBot.Core.Services.AuditLog.Models.Request.Search;
 using GrillBot.Core.Services.AuditLog.Models.Response;
-using GrillBot.Core.Services.AuditLog.Models.Response.Delete;
 using GrillBot.Core.Services.AuditLog.Models.Response.Detail;
 using GrillBot.Core.Services.AuditLog.Models.Response.Info;
 using GrillBot.Core.Services.AuditLog.Models.Response.Info.Dashboard;
@@ -24,15 +22,6 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
     {
     }
 
-    public async Task CreateItemsAsync(List<LogRequest> requests)
-    {
-        await ProcessRequestAsync(
-            cancellationToken => HttpClient.PostAsJsonAsync("api/logItem", requests, cancellationToken),
-            EmptyResponseAsync,
-            timeout: System.Threading.Timeout.InfiniteTimeSpan
-        );
-    }
-
     public async Task<DiagnosticInfo> GetDiagAsync()
     {
         return await ProcessRequestAsync(
@@ -42,23 +31,13 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         );
     }
 
-    public async Task<DeleteItemResponse> DeleteItemAsync(Guid id)
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.DeleteAsync($"api/logItem/{id}", cancellationToken),
-            async (response, cancellationToken) => response.StatusCode == HttpStatusCode.NotFound ? default : await ReadJsonAsync<DeleteItemResponse>(response, cancellationToken),
-            (response, cancellationToken) => response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.NotFound ? Task.CompletedTask : EnsureSuccessResponseAsync(response, cancellationToken),
-            timeout: TimeSpan.FromSeconds(10)
-        );
-    }
-
     public async Task<RestResponse<PaginatedResponse<LogListItem>>> SearchItemsAsync(SearchRequest request)
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsJsonAsync("api/logItem/search", request, cancellationToken),
             ReadRestResponseAsync<PaginatedResponse<LogListItem>>,
             (response, cancellationToken) => response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.BadRequest ? Task.CompletedTask : EnsureSuccessResponseAsync(response, cancellationToken),
-            timeout: TimeSpan.FromSeconds(30)
+            timeout: TimeSpan.FromSeconds(45)
         );
     }
 
@@ -72,7 +51,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         );
     }
 
-    public async Task<ArchivationResult?> ProcessArchivationAsync()
+    public async Task<ArchivationResult?> CreateArchivationDataAsync()
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.PostAsync("api/archivation", null, cancellationToken),
@@ -189,30 +168,12 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         );
     }
 
-    public async Task<List<DashboardInfoRow>> GetMemberWarningDashboardAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/dashboard/memberWarning", cancellationToken),
-            ReadJsonAsync<List<DashboardInfoRow>>,
-            timeout: TimeSpan.FromSeconds(10)
-        );
-    }
-
     public async Task<StatusInfo> GetStatusInfoAsync()
     {
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/diag/status", cancellationToken),
             ReadJsonAsync<StatusInfo>,
-            timeout: TimeSpan.FromSeconds(30)
-        );
-    }
-
-    public async Task<BulkDeleteResponse> BulkDeleteAsync(List<Guid> ids)
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.PutAsJsonAsync("api/logItem/bulkDelete", ids, cancellationToken),
-            ReadJsonAsync<BulkDeleteResponse>,
-            timeout: System.Threading.Timeout.InfiniteTimeSpan
+            timeout: TimeSpan.FromSeconds(10)
         );
     }
 }

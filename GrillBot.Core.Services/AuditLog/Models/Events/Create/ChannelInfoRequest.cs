@@ -1,8 +1,8 @@
-﻿namespace GrillBot.Core.Services.AuditLog.Models.Request.CreateItems;
+﻿namespace AuditLogService.Models.Events.Create;
 
 public class ChannelInfoRequest
 {
     public string? Topic { get; set; }
     public int Position { get; set; }
-    public long Flags { get; set; }
+    public int Flags { get; set; }
 }

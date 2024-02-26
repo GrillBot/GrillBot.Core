@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.AuditLog.Models.Request.CreateItems;
+﻿namespace AuditLogService.Models.Events.Create;
 
 public class MessageDeletedRequest
 {
