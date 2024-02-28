@@ -42,13 +42,15 @@ jobs:
         with:
           dotnet-version: 7.0.x
       - name: Build as Debug
-        run: dotnet build -c Debug --no-self-contained GrillBot.Core/;
+        run: |
+          dotnet build -c Debug --no-self-contained GrillBot.Core/
           dotnet build -c Debug --no-self-contained GrillBot.Core.Tests/
       - name: Build as Release
-        run: dotnet build -c Release --no-self-contained GrillBot.Core/;
+        run: |
+          dotnet build -c Release --no-self-contained GrillBot.Core/
           dotnet build -c Release --no-self-contained GrillBot.Core.Tests/
       - name: Run unit tests
-        run: dotnet test -c Debug GrillBot.Core.Services/
+        run: dotnet test -c Debug GrillBot.Core.Tests/
   PublishCorePackage:
     runs-on: ubuntu-latest
     needs: [BuildCorePackage, CheckNugetPublishPossibility]
