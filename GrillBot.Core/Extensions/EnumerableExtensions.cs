@@ -27,4 +27,10 @@ public static class EnumerableExtensions
                 yield return child;
         }
     }
+
+    public static bool IsSequenceEqual<T, TKey>(this IEnumerable<T> first, IEnumerable<T> second, Func<T, TKey> sorting)
+        => first.OrderBy(sorting).SequenceEqual(second.OrderBy(sorting));
+
+    public static bool IsSequenceEqual<T>(this IEnumerable<T> first, IEnumerable<T> second)
+        => IsSequenceEqual(first, second, o => o);
 }

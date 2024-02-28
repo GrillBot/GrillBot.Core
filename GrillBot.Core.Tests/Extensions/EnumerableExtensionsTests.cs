@@ -51,4 +51,15 @@ public class EnumerableExtensionsTests
         for (var i = 0; i < result.Count; i++)
             Assert.AreEqual(expected[i].X, result[i].X);
     }
+
+    [TestMethod]
+    public void IsSequenceEqual()
+    {
+        var first = new[] { 1, 3, 2, 8, 4 };
+        var second = new[] { 1, 2, 3, 4, 8 };
+
+        var result = first.IsSequenceEqual(second);
+
+        Assert.AreEqual(true, result);
+    }
 }
