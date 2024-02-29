@@ -65,7 +65,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/statistics/api/stats", cancellationToken),
             ReadJsonAsync<ApiStatistics>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 
@@ -74,7 +74,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/statistics/auditlog", cancellationToken),
             ReadJsonAsync<AuditLogStatistics>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 
@@ -83,7 +83,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/statistics/avgtimes", cancellationToken),
             ReadJsonAsync<AvgExecutionTimes>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 
@@ -92,7 +92,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/statistics/interactions/stats", cancellationToken),
             ReadJsonAsync<InteractionStatistics>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 
@@ -101,7 +101,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync($"api/statistics/api/userstats/{criteria}", cancellationToken),
             ReadJsonAsync<List<UserActionCountItem>>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 
@@ -110,7 +110,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/statistics/interactions/userstats", cancellationToken),
             ReadJsonAsync<List<UserActionCountItem>>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 
@@ -119,7 +119,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/info/jobs", cancellationToken),
             ReadJsonAsync<List<JobInfo>>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(30)
         );
     }
 
@@ -128,7 +128,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync($"api/info/guild/{guildId}/count", cancellationToken),
             ReadJsonAsync<int>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(30)
         );
     }
 
@@ -137,7 +137,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync($"api/dashboard/api/{apiGroup}", cancellationToken),
             ReadJsonAsync<List<DashboardInfoRow>>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 
@@ -146,7 +146,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/dashboard/interactions", cancellationToken),
             ReadJsonAsync<List<DashboardInfoRow>>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 
@@ -155,7 +155,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/dashboard/jobs", cancellationToken),
             ReadJsonAsync<List<DashboardInfoRow>>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 
@@ -164,7 +164,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/dashboard/todayavgtimes", cancellationToken),
             ReadJsonAsync<TodayAvgTimes>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 
@@ -173,7 +173,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/diag/status", cancellationToken),
             ReadJsonAsync<StatusInfo>,
-            timeout: TimeSpan.FromSeconds(10)
+            timeout: TimeSpan.FromSeconds(60)
         );
     }
 }
