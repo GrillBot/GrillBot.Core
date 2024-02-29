@@ -4,7 +4,6 @@ public interface IClient
 {
     string ServiceName { get; }
     string Url { get; }
-    int Timeout { get; }
 
     Task<bool> IsAvailableAsync();
 }
