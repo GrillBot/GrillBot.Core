@@ -41,7 +41,10 @@ public class RabbitMQPublisher : IRabbitMQPublisher
             using var queue = CreateQueueModel(queueName);
 
             var message = SerializeModel(model);
-            queue.BasicPublish("", queueName, true, null, message);
+            var props = queue.CreateBasicProperties();
+            props.Persistent = true;
+
+            queue.BasicPublish("", queueName, true, props, message);
         }
         catch (global::RabbitMQ.Client.Exceptions.AlreadyClosedException) when (retryCount < maxRetry)
         {
