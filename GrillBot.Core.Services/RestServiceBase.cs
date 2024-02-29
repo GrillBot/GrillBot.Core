@@ -14,7 +14,6 @@ public abstract class RestServiceBase
     public abstract string ServiceName { get; }
 
     public string Url => HttpClient.BaseAddress!.ToString();
-    public int Timeout => Convert.ToInt32(HttpClient.Timeout.TotalMilliseconds);
 
     protected RestServiceBase(ICounterManager counterManager, IHttpClientFactory httpClientFactory)
     {
