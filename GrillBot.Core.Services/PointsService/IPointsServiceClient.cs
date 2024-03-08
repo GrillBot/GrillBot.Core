@@ -22,4 +22,5 @@ public interface IPointsServiceClient : IClient
     Task<bool> ExistsAnyTransactionAsync(string guildId, string userId);
     Task<StatusInfo> GetStatusInfoAsync();
     Task<PaginatedResponse<UserListItem>> GetUserListAsync(UserListRequest request);
+    Task<int> GetTransactionsCountForGuildActionAsync(string guildId);
 }

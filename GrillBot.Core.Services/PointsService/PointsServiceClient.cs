@@ -162,4 +162,13 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
             timeout: TimeSpan.FromSeconds(30)
         );
     }
+
+    public async Task<int> GetTransactionsCountForGuildActionAsync(string guildId)
+    {
+        return await ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync($"api/transaction/{guildId}/count", cancellationToken),
+            ReadJsonAsync<int>,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
 }
