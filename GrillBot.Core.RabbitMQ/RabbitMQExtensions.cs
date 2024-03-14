@@ -6,6 +6,8 @@ namespace GrillBot.Core.RabbitMQ;
 
 public static class RabbitMQExtensions
 {
+    private static readonly Type _handlerInterfaceType = typeof(IRabbitMQHandler);
+
     public static IServiceCollection AddRabbitMQ(this IServiceCollection services)
     {
         services
@@ -21,6 +23,15 @@ public static class RabbitMQExtensions
         return services;
     }
 
+    public static IServiceCollection AddRabbitConsumerHandler(this IServiceCollection services, Type handlerType)
+    {
+        if (handlerType.GetInterface(_handlerInterfaceType.Name) is null)
+            throw new InvalidOperationException($"Handler {handlerType.Name} does not impelement {_handlerInterfaceType.Name} interface");
+
+        services.AddScoped(typeof(IRabbitMQHandler), handlerType);
+        return services;
+    }
+
     public static IServiceCollection AddRabbitConsumerHandler<THandler>(this IServiceCollection services) where THandler : class, IRabbitMQHandler
-        => services.AddScoped<IRabbitMQHandler, THandler>();
+        => AddRabbitConsumerHandler(services, typeof(THandler));
 }
