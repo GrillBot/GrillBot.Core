@@ -1,4 +1,4 @@
-﻿namespace AuditLogService.Models.Events.Recalculation;
+﻿namespace GrillBot.Core.Services.AuditLog.Models.Events.Recalculation;
 
 public class ApiRecalculationData
 {

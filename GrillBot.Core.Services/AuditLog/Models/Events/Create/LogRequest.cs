@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.Services.AuditLog.Enums;
 
-namespace AuditLogService.Models.Events.Create;
+namespace GrillBot.Core.Services.AuditLog.Models.Events.Create;
 
 public class LogRequest
 {

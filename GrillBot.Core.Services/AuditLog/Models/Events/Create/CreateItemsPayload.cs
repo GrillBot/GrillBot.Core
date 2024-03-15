@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ;
 
-namespace AuditLogService.Models.Events.Create;
+namespace GrillBot.Core.Services.AuditLog.Models.Events.Create;
 
 public class CreateItemsPayload : IPayload
 {

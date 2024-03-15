@@ -1,4 +1,4 @@
-﻿namespace AuditLogService.Models.Events.Create;
+﻿namespace GrillBot.Core.Services.AuditLog.Models.Events.Create;
 
 public class UnbanRequest
 {
