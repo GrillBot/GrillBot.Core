@@ -1,4 +1,5 @@
 ﻿using GrillBot.Core.Services.AuditLog;
+using GrillBot.Core.Services.Emote;
 using GrillBot.Core.Services.Graphics;
 using GrillBot.Core.Services.ImageProcessing;
 using GrillBot.Core.Services.PointsService;
@@ -37,5 +38,6 @@ public static class ServicesExtensions
         services.AddService<IImageProcessingClient, ImageProcessingClient>(configuration, "ImageProcessing");
         services.AddService<IAuditLogServiceClient, AuditLogServiceClient>(configuration, "AuditLog");
         services.AddService<IUserMeasuresServiceClient, UserMeasuresServiceClient>(configuration, "UserMeasures");
+        services.AddService<IEmoteServiceClient, EmoteServiceClient>(configuration, "Emote");
     }
 }
