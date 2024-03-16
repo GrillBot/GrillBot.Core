@@ -15,6 +15,10 @@ public class EmoteStatisticsListRequest : IDictionaryObject
     [StringLength(32)]
     public string? GuildId { get; set; }
 
+    [DiscordId]
+    [StringLength(32)]
+    public string? UserId { get; set; }
+
     public int? UseCountFrom { get; set; }
     public int? UseCountTo { get; set; }
     public DateTime? FirstOccurenceFrom { get; set; }
@@ -39,6 +43,7 @@ public class EmoteStatisticsListRequest : IDictionaryObject
         {
             { nameof(Unsupported), Unsupported.ToString() },
             { nameof(GuildId), GuildId },
+            { nameof(UserId), UserId },
             { nameof(UseCountFrom), UseCountFrom?.ToString() },
             { nameof(UseCountTo), UseCountTo?.ToString() },
             { nameof(FirstOccurenceFrom), FirstOccurenceFrom?.ToString("o") },
