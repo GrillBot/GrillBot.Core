@@ -65,11 +65,11 @@ public class EmoteServiceClient : RestServiceBase, IEmoteServiceClient
         );
     }
 
-    public Task<List<string>> GetSupportedEmotesListAsync()
+    public Task<List<EmoteDefinition>> GetSupportedEmotesListAsync()
     {
         return ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync("api/emote/supported", cancellationToken),
-            ReadJsonAsync<List<string>>,
+            ReadJsonAsync<List<EmoteDefinition>>,
             timeout: TimeSpan.FromSeconds(10)
         );
     }

@@ -16,6 +16,6 @@ public interface IEmoteServiceClient : IClient
     Task<RestResponse<PaginatedResponse<EmoteStatisticsItem>>> GetEmoteStatisticsListAsync(EmoteStatisticsListRequest request);
 
     Task<bool> GetIsEmoteSupportedAsync(string guildId, string emoteId);
-    Task<List<string>> GetSupportedEmotesListAsync();
+    Task<List<EmoteDefinition>> GetSupportedEmotesListAsync();
     Task<EmoteInfo> GetEmoteInfoAsync(string guildId, string emoteId);
 }
