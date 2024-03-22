@@ -6,6 +6,7 @@ using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Diagnostics.Models;
 using GrillBot.Core.Services.PointsService.Enums;
 using GrillBot.Core.Services.PointsService.Models;
+using GrillBot.Core.Services.PointsService.Models.Channels;
 using GrillBot.Core.Services.PointsService.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 
@@ -168,6 +169,24 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
         return await ProcessRequestAsync(
             cancellationToken => HttpClient.GetAsync($"api/transaction/{guildId}/count", cancellationToken),
             ReadJsonAsync<int>,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
+
+    public Task<UserInfo> GetUserInfoAsync(string guildId, string userId)
+    {
+        return ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync($"api/user/{guildId}/{userId}/info", cancellationToken),
+            ReadJsonAsync<UserInfo>,
+            timeout: TimeSpan.FromSeconds(10)
+        );
+    }
+
+    public Task<ChannelInfo> GetChannelInfoAsync(string guildId, string channelId)
+    {
+        return ProcessRequestAsync(
+            cancellationToken => HttpClient.GetAsync($"api/channel/{guildId}/{channelId}/info", cancellationToken),
+            ReadJsonAsync<ChannelInfo>,
             timeout: TimeSpan.FromSeconds(10)
         );
     }
