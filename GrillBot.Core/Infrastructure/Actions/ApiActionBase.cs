@@ -14,4 +14,13 @@ public abstract class ApiActionBase
     }
 
     public abstract Task<ApiResult> ProcessAsync();
+
+    protected T GetParameter<T>(int index)
+        => (T)Parameters[index]!;
+
+    protected T? GetOptionalParameter<T>(int index)
+    {
+        var item = Parameters.ElementAtOrDefault(index);
+        return item is null ? default : (T)item;
+    }
 }
