@@ -2,6 +2,7 @@
 
 namespace GrillBot.Core.RabbitMQ.Consumer;
 
+[Obsolete("Use RabbitHandlerBase<TPayload>")]
 public abstract class BaseRabbitMQHandler<TPayload> : IRabbitMQHandler
 {
     public abstract string QueueName { get; }

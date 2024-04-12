@@ -1,5 +1,6 @@
 ﻿namespace GrillBot.Core.RabbitMQ.Publisher;
 
+[Obsolete("Use IRabbitPublisher")]
 public interface IRabbitMQPublisher
 {
     Task PublishAsync<TModel>(string queueName, TModel model);
