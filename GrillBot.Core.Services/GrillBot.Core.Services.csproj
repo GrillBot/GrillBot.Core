@@ -10,7 +10,7 @@
 		<PackageProjectUrl>https://grillbot.eu/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/GrillBot/GrillBot.Core.Services</RepositoryUrl>
 		<RepositoryType>GitHub</RepositoryType>
-		<Version>1.11.0</Version>
+		<Version>1.12.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

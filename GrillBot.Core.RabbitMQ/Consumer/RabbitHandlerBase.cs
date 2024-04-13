@@ -10,7 +10,7 @@ public abstract class RabbitHandlerBase<TPayload> : IRabbitHandler
     public Type PayloadType => typeof(TPayload);
 
     public string QueueName =>
-        PayloadType.GetCustomAttribute<RabbitQueueAttribute>()?.QueueName ??
+        PayloadType.GetCustomAttribute<RabbitQueueMessageAttribute>()?.QueueName ??
         throw new KeyNotFoundException("Unable to find queue name from payload.");
 
     protected ILogger Logger { get; }
