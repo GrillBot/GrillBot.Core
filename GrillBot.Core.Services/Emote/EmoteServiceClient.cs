@@ -46,4 +46,7 @@ public class EmoteServiceClient : RestServiceBase, IEmoteServiceClient
 
     public async Task<MergeStatisticsResult> MergeStatisticsAsync(string guildId, string sourceEmoteId, string destinationEmoteId)
         => (await ProcessRequestAsync<MergeStatisticsResult>(() => HttpMethod.Put.ToRequest($"api/statistics/{guildId}/{sourceEmoteId}/{destinationEmoteId}/merge"), _defaultTimeout))!;
+
+    public async Task<long> GetStatisticsCountInGuildAsync(string guildId)
+        => await ProcessRequestAsync<long>(() => HttpMethod.Get.ToRequest($"api/statistics/count/{guildId}"), _defaultTimeout);
 }
