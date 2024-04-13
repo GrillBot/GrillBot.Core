@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Net.Http.Json;
-using GrillBot.Core.Managers.Performance;
+﻿using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.AuditLog.Models.Request.Search;
 using GrillBot.Core.Services.AuditLog.Models.Response;
@@ -10,170 +8,66 @@ using GrillBot.Core.Services.AuditLog.Models.Response.Info.Dashboard;
 using GrillBot.Core.Services.AuditLog.Models.Response.Search;
 using GrillBot.Core.Services.AuditLog.Models.Response.Statistics;
 using GrillBot.Core.Services.Common;
-using GrillBot.Core.Services.Diagnostics.Models;
+using GrillBot.Core.Services.Common.Extensions;
 
 namespace GrillBot.Core.Services.AuditLog;
 
 public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
 {
+    private static readonly TimeSpan _defaultTimeout = TimeSpan.FromMinutes(1);
+    private static readonly TimeSpan _infiniteTimeout = Timeout.InfiniteTimeSpan;
+
     public override string ServiceName => "AuditLog";
 
     public AuditLogServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory) : base(counterManager, httpClientFactory)
     {
     }
 
-    public async Task<DiagnosticInfo> GetDiagAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/diag", cancellationToken),
-            ReadJsonAsync<DiagnosticInfo>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+    public async Task<PaginatedResponse<LogListItem>> SearchItemsAsync(SearchRequest request)
+        => (await ProcessRequestAsync<PaginatedResponse<LogListItem>>(() => HttpMethod.Post.ToRequest("api/logItem/search", request), _defaultTimeout))!;
 
-    public async Task<RestResponse<PaginatedResponse<LogListItem>>> SearchItemsAsync(SearchRequest request)
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.PostAsJsonAsync("api/logItem/search", request, cancellationToken),
-            ReadRestResponseAsync<PaginatedResponse<LogListItem>>,
-            (response, cancellationToken) => response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.BadRequest ? Task.CompletedTask : EnsureSuccessResponseAsync(response, cancellationToken),
-            timeout: TimeSpan.FromSeconds(45)
-        );
-    }
-
-    public async Task<Detail?> DetailAsync(Guid id)
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync($"api/logItem/{id}", cancellationToken),
-            async (response, cancellationToken) => response.StatusCode == HttpStatusCode.NotFound ? null : await ReadJsonAsync<Detail>(response, cancellationToken),
-            (response, cancellationToken) => response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.NotFound ? Task.CompletedTask : EnsureSuccessResponseAsync(response, cancellationToken),
-            timeout: TimeSpan.FromSeconds(10)
-        );
-    }
+    public async Task<Detail?> GetDetailAsync(Guid id)
+        => await ProcessRequestAsync<Detail>(() => HttpMethod.Get.ToRequest($"api/logItem/{id}"), _defaultTimeout);
 
     public async Task<ArchivationResult?> CreateArchivationDataAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.PostAsync("api/archivation", null, cancellationToken),
-            ReadJsonAsync<ArchivationResult>,
-            timeout: System.Threading.Timeout.InfiniteTimeSpan
-        );
-    }
+        => await ProcessRequestAsync<ArchivationResult>(() => HttpMethod.Post.ToRequest("api/archivation"), _infiniteTimeout);
 
     public async Task<ApiStatistics> GetApiStatisticsAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/statistics/api/stats", cancellationToken),
-            ReadJsonAsync<ApiStatistics>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<ApiStatistics>(() => HttpMethod.Get.ToRequest("api/statistics/api/stats"), _defaultTimeout))!;
 
     public async Task<AuditLogStatistics> GetAuditLogStatisticsAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/statistics/auditlog", cancellationToken),
-            ReadJsonAsync<AuditLogStatistics>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<AuditLogStatistics>(() => HttpMethod.Get.ToRequest("api/statistics/auditlog"), _defaultTimeout))!;
 
     public async Task<AvgExecutionTimes> GetAvgTimesAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/statistics/avgtimes", cancellationToken),
-            ReadJsonAsync<AvgExecutionTimes>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<AvgExecutionTimes>(() => HttpMethod.Get.ToRequest("api/statistics/avgtimes"), _defaultTimeout))!;
 
     public async Task<InteractionStatistics> GetInteractionStatisticsAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/statistics/interactions/stats", cancellationToken),
-            ReadJsonAsync<InteractionStatistics>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<InteractionStatistics>(() => HttpMethod.Get.ToRequest("api/statistics/interactions/stats"), _defaultTimeout))!;
 
     public async Task<List<UserActionCountItem>> GetUserApiStatisticsAsync(string criteria)
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync($"api/statistics/api/userstats/{criteria}", cancellationToken),
-            ReadJsonAsync<List<UserActionCountItem>>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<List<UserActionCountItem>>(() => HttpMethod.Get.ToRequest($"api/statistics/api/userstats/{criteria}"), _defaultTimeout))!;
 
     public async Task<List<UserActionCountItem>> GetUserCommandStatisticsAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/statistics/interactions/userstats", cancellationToken),
-            ReadJsonAsync<List<UserActionCountItem>>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<List<UserActionCountItem>>(() => HttpMethod.Get.ToRequest("api/statistics/interactions/userstats"), _defaultTimeout))!;
 
     public async Task<List<JobInfo>> GetJobsInfoAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/info/jobs", cancellationToken),
-            ReadJsonAsync<List<JobInfo>>,
-            timeout: TimeSpan.FromSeconds(30)
-        );
-    }
+        => (await ProcessRequestAsync<List<JobInfo>>(() => HttpMethod.Get.ToRequest("api/info/jobs"), _defaultTimeout))!;
 
     public async Task<int> GetItemsCountOfGuildAsync(ulong guildId)
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync($"api/info/guild/{guildId}/count", cancellationToken),
-            ReadJsonAsync<int>,
-            timeout: TimeSpan.FromSeconds(30)
-        );
-    }
+        => (await ProcessRequestAsync<int>(() => HttpMethod.Get.ToRequest($"api/info/guild/{guildId}/count"), _defaultTimeout))!;
 
     public async Task<List<DashboardInfoRow>> GetApiDashboardAsync(string apiGroup)
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync($"api/dashboard/api/{apiGroup}", cancellationToken),
-            ReadJsonAsync<List<DashboardInfoRow>>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<List<DashboardInfoRow>>(() => HttpMethod.Get.ToRequest($"api/dashboard/api/{apiGroup}"), _defaultTimeout))!;
 
     public async Task<List<DashboardInfoRow>> GetInteractionsDashboardAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/dashboard/interactions", cancellationToken),
-            ReadJsonAsync<List<DashboardInfoRow>>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<List<DashboardInfoRow>>(() => HttpMethod.Get.ToRequest("api/dashboard/interactions"), _defaultTimeout))!;
 
     public async Task<List<DashboardInfoRow>> GetJobsDashboardAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/dashboard/jobs", cancellationToken),
-            ReadJsonAsync<List<DashboardInfoRow>>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<List<DashboardInfoRow>>(() => HttpMethod.Get.ToRequest("api/dashboard/jobs"), _defaultTimeout))!;
 
     public async Task<TodayAvgTimes> GetTodayAvgTimes()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/dashboard/todayavgtimes", cancellationToken),
-            ReadJsonAsync<TodayAvgTimes>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<TodayAvgTimes>(() => HttpMethod.Get.ToRequest("api/dashboard/todayavgtimes"), _defaultTimeout))!;
 
     public async Task<StatusInfo> GetStatusInfoAsync()
-    {
-        return await ProcessRequestAsync(
-            cancellationToken => HttpClient.GetAsync("api/diag/status", cancellationToken),
-            ReadJsonAsync<StatusInfo>,
-            timeout: TimeSpan.FromSeconds(60)
-        );
-    }
+        => (await ProcessRequestAsync<StatusInfo>(() => HttpMethod.Get.ToRequest("api/diag/status"), _defaultTimeout))!;
 }

@@ -2,6 +2,6 @@
 
 public class Metrics
 {
-    public long UsedMemory { get; set; }
-    public long Uptime { get; set; }
+    public MemoryInfo Mem { get; set; } = null!;
+    public double Uptime { get; set; }
 }

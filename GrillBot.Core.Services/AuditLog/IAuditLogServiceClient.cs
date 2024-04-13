@@ -7,15 +7,13 @@ using GrillBot.Core.Services.AuditLog.Models.Response.Info.Dashboard;
 using GrillBot.Core.Services.AuditLog.Models.Response.Search;
 using GrillBot.Core.Services.AuditLog.Models.Response.Statistics;
 using GrillBot.Core.Services.Common;
-using GrillBot.Core.Services.Diagnostics.Models;
 
 namespace GrillBot.Core.Services.AuditLog;
 
 public interface IAuditLogServiceClient : IClient
 {
-    Task<DiagnosticInfo> GetDiagAsync();
-    Task<RestResponse<PaginatedResponse<LogListItem>>> SearchItemsAsync(SearchRequest request);
-    Task<Detail?> DetailAsync(Guid id);
+    Task<PaginatedResponse<LogListItem>> SearchItemsAsync(SearchRequest request);
+    Task<Detail?> GetDetailAsync(Guid id);
     Task<ArchivationResult?> CreateArchivationDataAsync();
     Task<ApiStatistics> GetApiStatisticsAsync();
     Task<AuditLogStatistics> GetAuditLogStatisticsAsync();
