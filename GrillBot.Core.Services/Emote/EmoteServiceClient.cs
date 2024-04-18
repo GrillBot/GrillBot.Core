@@ -4,6 +4,7 @@ using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.Emote.Models.Request;
 using GrillBot.Core.Services.Emote.Models.Response;
+using RabbitMQ.Client;
 
 namespace GrillBot.Core.Services.Emote;
 
@@ -40,6 +41,9 @@ public class EmoteServiceClient : RestServiceBase, IEmoteServiceClient
 
         return (await ProcessRequestAsync<List<EmoteDefinition>>(() => HttpMethod.Get.ToRequest(uri), _defaultTimeout))!;
     }
+
+    public async Task DeleteSupportedEmoteAsync(string guildId, string emoteId)
+        => await ProcessRequestAsync(() => HttpMethod.Delete.ToRequest($"api/emote/supported/{guildId}/{emoteId}"), _defaultTimeout);
 
     public async Task<PaginatedResponse<EmoteUserUsageItem>> GetUserEmoteUsageListAsync(EmoteUserUsageListRequest request)
         => (await ProcessRequestAsync<PaginatedResponse<EmoteUserUsageItem>>(() => HttpMethod.Post.ToRequest("api/statistics/emoteUsersUsage", request), _defaultTimeout))!;
