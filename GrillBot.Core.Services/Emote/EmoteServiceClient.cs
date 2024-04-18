@@ -4,7 +4,6 @@ using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.Emote.Models.Request;
 using GrillBot.Core.Services.Emote.Models.Response;
-using RabbitMQ.Client;
 
 namespace GrillBot.Core.Services.Emote;
 
