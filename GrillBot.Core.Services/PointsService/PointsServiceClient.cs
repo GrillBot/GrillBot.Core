@@ -58,7 +58,7 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
         => ProcessRequestAsync(() => HttpMethod.Post.ToRequest("api/transaction/transfer", request), _defaultTimeout);
 
     public async Task<bool> ExistsAnyTransactionAsync(string guildId, string userId)
-        => await ProcessRequestAsync<bool>(() => HttpMethod.Post.ToRequest($"api/transaction/{guildId}/{userId}"), _defaultTimeout);
+        => await ProcessRequestAsync<bool>(() => HttpMethod.Get.ToRequest($"api/transaction/{guildId}/{userId}"), _defaultTimeout);
 
     public async Task<StatusInfo> GetStatusInfoAsync()
         => (await ProcessRequestAsync<StatusInfo>(() => HttpMethod.Get.ToRequest("api/diag/status"), _defaultTimeout))!;
