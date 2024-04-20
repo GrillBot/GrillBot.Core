@@ -16,25 +16,25 @@ public class RabbitMQPublisher : IRabbitMQPublisher
         CounterManager = counterManager;
     }
 
-    public Task PublishAsync<TModel>(TModel model) where TModel : IPayload
-        => PublishAsync(model.QueueName, model);
+    public Task PublishAsync<TModel>(TModel model, Dictionary<string, string> headers) where TModel : IPayload
+        => PublishAsync(model.QueueName, model, headers);
 
-    public async Task PublishAsync<TModel>(string queueName, TModel model)
+    public async Task PublishAsync<TModel>(string queueName, TModel model, Dictionary<string, string> headers)
     {
         using (CounterManager.Create($"RabbitMQ.{queueName}.Producer"))
-            await SendWithRetryPolicyAsync(queueName, model, 5);
+            await SendWithRetryPolicyAsync(queueName, model, headers, 5);
     }
 
-    public async Task PublishBatchAsync<TModel>(IEnumerable<TModel> models) where TModel : IPayload
+    public async Task PublishBatchAsync<TModel>(IEnumerable<TModel> models, Dictionary<string, string> headers) where TModel : IPayload
     {
         foreach (var group in models.GroupBy(o => o.QueueName))
         {
             foreach (var message in group)
-                await PublishAsync(message);
+                await PublishAsync(message, headers);
         }
     }
 
-    private async Task SendWithRetryPolicyAsync<TModel>(string queueName, TModel model, int maxRetry, int retryCount = 0)
+    private async Task SendWithRetryPolicyAsync<TModel>(string queueName, TModel model, Dictionary<string, string> headers, int maxRetry, int retryCount = 0)
     {
         try
         {
@@ -43,13 +43,14 @@ public class RabbitMQPublisher : IRabbitMQPublisher
             var message = SerializeModel(model);
             var props = queue.CreateBasicProperties();
             props.Persistent = true;
+            props.Headers = headers.ToDictionary(o => o.Key, o => (object)o.Value);
 
             queue.BasicPublish("", queueName, true, props, message);
         }
         catch (global::RabbitMQ.Client.Exceptions.AlreadyClosedException) when (retryCount < maxRetry)
         {
             await Task.Delay(1000);
-            await SendWithRetryPolicyAsync(queueName, model, maxRetry, retryCount + 1);
+            await SendWithRetryPolicyAsync(queueName, model, headers, maxRetry, retryCount + 1);
         }
     }
 

@@ -72,6 +72,8 @@ public class RabbitMQConsumerService : IHostedService
 
             var body = @event.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
+            var headers = @event.BasicProperties?.Headers?.ToDictionary(o => o.Key, o => o.Value.ToString() ?? "")
+                ?? new Dictionary<string, string>();
 
             logger.LogInformation("Received new message. Length: {Length}. Handler: {Name}", body.Length, handler.GetType().Name);
 
@@ -79,7 +81,7 @@ public class RabbitMQConsumerService : IHostedService
             {
                 var payload = JsonSerializer.Deserialize(message, handler.PayloadType, RabbitMQSettings._serializerOptions);
 
-                await handler.HandleAsync(payload);
+                await handler.HandleAsync(payload, headers);
                 queueModel.BasicAck(@event.DeliveryTag, false);
             }
             catch (Exception ex)
@@ -88,7 +90,7 @@ public class RabbitMQConsumerService : IHostedService
                 {
                     logger.LogWarning("Payload deserialization of type {Name} failed.", handler.PayloadType.Name);
 
-                    await handler.HandleUnknownMessageAsync(message);
+                    await handler.HandleUnknownMessageAsync(message, headers);
                     queueModel.BasicAck(@event.DeliveryTag, false);
 
                     return;

@@ -1,11 +1,12 @@
 ﻿using Discord;
-using GrillBot.Core.RabbitMQ.Attributes;
+using GrillBot.Core.RabbitMQ;
 
 namespace GrillBot.Core.Services.GrillBot.Models.Events;
 
-[RabbitQueueMessage("discord:send_message")]
-public class DiscordMessagePayload
+public class DiscordMessagePayload : IPayload
 {
+    public string QueueName => "discord:send_message";
+
     public string? GuildId { get; set; }
     public string ChannelId { get; set; } = null!;
     public string? Content { get; set; }
