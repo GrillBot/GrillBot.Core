@@ -112,7 +112,7 @@ jobs:
       - name: Build
         run: dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.Services/
       - name: Create the package
-        run: dotnet pack -c Release --nologo --includes-symbols GrillBot.Core.Services/
+        run: dotnet pack -c Release --nologo --include-symbols GrillBot.Core.Services/
       - name: Publish the package to GPR
         run: dotnet nuget push GrillBot.Core.Services/bin/Release/*.nupkg --skip-duplicate
   BuildRabbitMQPackage:
