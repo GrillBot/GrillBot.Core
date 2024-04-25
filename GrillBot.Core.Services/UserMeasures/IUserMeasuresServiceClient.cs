@@ -1,6 +1,7 @@
 ﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.UserMeasures.Models.Dashboard;
+using GrillBot.Core.Services.UserMeasures.Models.Measures;
 using GrillBot.Core.Services.UserMeasures.Models.MeasuresList;
 using GrillBot.Core.Services.UserMeasures.Models.User;
 
@@ -12,4 +13,5 @@ public interface IUserMeasuresServiceClient : IClient
     Task<int> GetItemsCountOfGuildAsync(string guildId);
     Task<PaginatedResponse<MeasuresItem>> GetMeasuresListAsync(MeasuresListParams parameters);
     Task<UserInfo> GetUserInfoAsync(string guildId, string userId);
+    Task DeleteMeasureAsync(DeleteMeasuresRequest request);
 }

@@ -1,8 +1,10 @@
-﻿using GrillBot.Core.Managers.Performance;
+﻿using Cysharp.Web;
+using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.UserMeasures.Models.Dashboard;
+using GrillBot.Core.Services.UserMeasures.Models.Measures;
 using GrillBot.Core.Services.UserMeasures.Models.MeasuresList;
 using GrillBot.Core.Services.UserMeasures.Models.User;
 
@@ -29,4 +31,10 @@ public class UserMeasuresServiceClient : RestServiceBase, IUserMeasuresServiceCl
 
     public async Task<UserInfo> GetUserInfoAsync(string guildId, string userId)
         => (await ProcessRequestAsync<UserInfo>(() => HttpMethod.Get.ToRequest($"api/user/{guildId}/{userId}"), _defaultTimeout))!;
+
+    public async Task DeleteMeasureAsync(DeleteMeasuresRequest request)
+    {
+        var queryParams = WebSerializer.ToQueryString(request);
+        await ProcessRequestAsync(() => HttpMethod.Delete.ToRequest($"api/measure?{queryParams}"), _defaultTimeout);
+    }
 }

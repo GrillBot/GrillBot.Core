@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.UserMeasures.Models.MeasuresList;
+﻿namespace GrillBot.Core.Services.UserMeasures.Models.Measures;
 
 public class MeasuresItem
 {
