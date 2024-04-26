@@ -32,7 +32,7 @@ jobs:
               - 'GrillBot.Core.Services/GrillBot.Core.Services.csproj'
             RabbitMQPackage:
               - 'GrillBot.Core.RabbitMQ/GrillBot.Core.RabbitMQ.csproj'
-  BuildCorePackage:
+  BuildPackages:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -41,20 +41,36 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 7.0.x
-      - name: Build (DEBUG)
+      - name: GrillBot.Core
         run: |
-          dotnet build -c Debug --no-self-contained GrillBot.Core/
-          dotnet build -c Debug --no-self-contained GrillBot.Core.Tests/
-      - name: Build (RELEASE)
-        run: |
+          dotnet restore -r linux-x64 GrillBot.Core/
+          dotnet restore -r linux-x64 GrillBot.Core.Tests/
           dotnet build -c Release --no-self-contained GrillBot.Core/
           dotnet build -c Release --no-self-contained GrillBot.Core.Tests/
-      - name: Unit tests
+      - name: GrillBot.Core.RabbitMQ
+        run: |
+          dotnet restore -r linux-x64 GrillBot.Core.RabbitMQ/
+          dotnet build -c Release --no-self-contained GrillBot.Core.RabbitMQ/
+      - name: GrillBot.Core.Services
+        run: |
+          dotnet restore -r linux-x64 GrillBot.Core.Services/
+          dotnet build -c Release --no-self-contained GrillBot.Core.Services/
+  TestPackages:
+    runs-on: ubuntu-latest
+    needs: [BuildPackages]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 7.0.x
+      - name: GrillBot.Core
         run: dotnet test -c Debug GrillBot.Core.Tests/
-  PublishCorePackage:
+  PublishPackages:
     runs-on: ubuntu-latest
-    needs: [BuildCorePackage, CheckNugetPublishPossibility]
-    if: github.ref == 'refs/heads/master' && needs.CheckNugetPublishPossibility.outputs.CorePackage == 'true'
+    needs: [CheckNugetPublishPossibility, BuildPackages, TestPackages]
+    if: github.ref == 'refs/heads/master'
     permissions:
       packages: write
       contents: read
@@ -68,92 +84,24 @@ jobs:
           source-url: https://nuget.pkg.github.com/GrillBot/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: Install dependencies
-        run: dotnet restore -r linux-x64 GrillBot.Core/
-      - name: Build
-        run: dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core/
-      - name: Create the package
-        run: dotnet pack -c Release --nologo --include-symbols GrillBot.Core/
-      - name: Publish the package to GPR
-        run: dotnet nuget push GrillBot.Core/bin/Release/*.nupkg --skip-duplicate
-  BuildServicesPackage:
-    runs-on: ubuntu-latest
-    needs: [BuildCorePackage, BuildRabbitMQPackage]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 7.0.x
-      - name: Build (DEBUG)
-        run: dotnet build -c Debug --no-self-contained GrillBot.Core.Services/
-      - name: Build (RELEASE)
-        run: dotnet build -c Release --no-self-contained GrillBot.Core.Services/
-  PublishServicesPackage:
-    runs-on: ubuntu-latest
-    needs: [BuildServicesPackage, CheckNugetPublishPossibility]
-    if: github.ref == 'refs/heads/master' && needs.CheckNugetPublishPossibility.outputs.ServicesPackage == 'true'
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 7.0.x
-          source-url: https://nuget.pkg.github.com/GrillBot/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: Install dependencies
-        run: dotnet restore -r linux-x64 GrillBot.Core.Services/
-      - name: Build
-        run: dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.Services/
-      - name: Create the package
-        run: dotnet pack -c Release --nologo --include-symbols GrillBot.Core.Services/
-      - name: Publish the package to GPR
-        run: dotnet nuget push GrillBot.Core.Services/bin/Release/*.nupkg --skip-duplicate
-  BuildRabbitMQPackage:
-    runs-on: ubuntu-latest
-    needs: BuildCorePackage
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 7.0.x
-      - name: Build (DEBUG)
-        run: dotnet build -c Debug --no-self-contained GrillBot.Core.RabbitMQ/
-      - name: Build (RELEASE)
-        run: dotnet build -c Release --no-self-contained GrillBot.Core.RabbitMQ/
-  PublishRabbitMQPackage:
-    runs-on: ubuntu-latest
-    needs: [BuildRabbitMQPackage, CheckNugetPublishPossibility]
-    if: github.ref == 'refs/heads/master' && needs.CheckNugetPublishPossibility.outputs.RabbitMQPackage == 'true'
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 7.0.x
-          source-url: https://nuget.pkg.github.com/GrillBot/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: Install dependencies
-        run: dotnet restore -r linux-x64 GrillBot.Core.RabbitMQ/
-      - name: Build
-        run: dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.RabbitMQ/
-      - name: Create the package
-        run: dotnet pack -c Release --nologo --include-symbols GrillBot.Core.RabbitMQ/
-      - name: Publish the package to GPR
-        run: dotnet nuget push GrillBot.Core.RabbitMQ/bin/Release/*.nupkg --skip-duplicate
+      - name: GrillBot.Core
+        if: needs.CheckNugetPublishPossibility.outputs.CorePackage == 'true'
+        run: |
+          dotnet restore -r linux-x64 GrillBot.Core/
+          dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core/
+          dotnet pack -c Release --nologo --include-symbols GrillBot.Core/
+          dotnet nuget push GrillBot.Core/bin/Release/*.nupkg --skip-duplicate
+      - name: GrillBot.Core.RabbitMQ
+        if: needs.CheckNugetPublishPossibility.outputs.RabbitMQPackage == 'true'
+        run: |
+          dotnet restore -r linux-x64 GrillBot.Core.RabbitMQ/
+          dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.RabbitMQ/
+          dotnet pack -c Release --nologo --include-symbols GrillBot.Core.RabbitMQ/
+          dotnet nuget push GrillBot.Core.RabbitMQ/bin/Release/*.nupkg --skip-duplicate
+      - name: GrillBot.Core.Services
+        if: needs.CheckNugetPublishPossibility.outputs.ServicesPackage == 'true'
+        run: |
+          dotnet restore -r linux-x64 GrillBot.Core.Services/
+          dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.Services/
+          dotnet pack -c Release --nologo --include-symbols GrillBot.Core.Services/
+          dotnet nuget push GrillBot.Core.Services/bin/Release/*.nupkg --skip-duplicate
