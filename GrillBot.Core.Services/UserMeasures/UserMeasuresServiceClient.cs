@@ -27,7 +27,7 @@ public class UserMeasuresServiceClient : RestServiceBase, IUserMeasuresServiceCl
         => await ProcessRequestAsync<int>(() => HttpMethod.Get.ToRequest($"api/info/count/{guildId}"), _defaultTimeout);
 
     public async Task<PaginatedResponse<MeasuresItem>> GetMeasuresListAsync(MeasuresListParams parameters)
-        => (await ProcessRequestAsync<PaginatedResponse<MeasuresItem>>(() => HttpMethod.Post.ToRequest("api/list", parameters), _defaultTimeout))!;
+        => (await ProcessRequestAsync<PaginatedResponse<MeasuresItem>>(() => HttpMethod.Post.ToRequest("api/measures/list", parameters), _defaultTimeout))!;
 
     public async Task<UserInfo> GetUserInfoAsync(string guildId, string userId)
         => (await ProcessRequestAsync<UserInfo>(() => HttpMethod.Get.ToRequest($"api/user/{guildId}/{userId}"), _defaultTimeout))!;
@@ -35,6 +35,6 @@ public class UserMeasuresServiceClient : RestServiceBase, IUserMeasuresServiceCl
     public async Task DeleteMeasureAsync(DeleteMeasuresRequest request)
     {
         var queryParams = WebSerializer.ToQueryString(request);
-        await ProcessRequestAsync(() => HttpMethod.Delete.ToRequest($"api/measure?{queryParams}"), _defaultTimeout);
+        await ProcessRequestAsync(() => HttpMethod.Delete.ToRequest($"api/measures?{queryParams}"), _defaultTimeout);
     }
 }
