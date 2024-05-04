@@ -8,8 +8,6 @@ namespace GrillBot.Core.Services.RubbergodService;
 public interface IRubbergodServiceClient : IClient
 {
     Task<PaginatedResponse<UserKarma>> GetKarmaPageAsync(PaginatedParams parameters);
-    Task StoreKarmaAsync(List<KarmaItem> items);
-    Task InvalidatePinCacheAsync(ulong guildId, ulong channelId);
     Task<byte[]> GetPinsAsync(ulong guildId, ulong channelId, bool markdown);
     Task<Dictionary<string, Cog>> GetSlashCommandsAsync();
 }

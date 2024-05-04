@@ -23,12 +23,6 @@ public class RubbergodServiceClient : RestServiceBase, IRubbergodServiceClient
         return (await ProcessRequestAsync<PaginatedResponse<UserKarma>>(() => HttpMethod.Get.ToRequest(uri), _defaultTimeout))!;
     }
 
-    public Task StoreKarmaAsync(List<KarmaItem> items)
-        => ProcessRequestAsync(() => HttpMethod.Post.ToRequest("api/karma", items), _defaultTimeout);
-
-    public Task InvalidatePinCacheAsync(ulong guildId, ulong channelId)
-        => ProcessRequestAsync(() => HttpMethod.Delete.ToRequest($"api/pins/{guildId}/{channelId}"), _defaultTimeout);
-
     public async Task<byte[]> GetPinsAsync(ulong guildId, ulong channelId, bool markdown)
         => await ProcessRequestWithFileAsync(() => HttpMethod.Get.ToRequest($"api/pins/{guildId}/{channelId}?markdown={markdown}"), TimeSpan.FromMinutes(5));
 
