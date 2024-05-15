@@ -1,4 +1,6 @@
 ﻿using GrillBot.Core.Managers.Performance;
+using GrillBot.Core.RabbitMQ.Payloads.ErrorHandling;
+using GrillBot.Core.RabbitMQ.Publisher;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -70,12 +72,13 @@ public class RabbitMQConsumerService : IHostedService
                 .GetServices<IRabbitMQHandler>()
                 .First(o => o.QueueName == queueName);
 
+            var handlerType = handler.GetType();
             var body = @event.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
             var headers = @event.BasicProperties?.Headers?.ToDictionary(o => o.Key, o => o.Value.ToString() ?? "")
                 ?? new Dictionary<string, string>();
 
-            logger.LogInformation("Received new message. Length: {Length}. Handler: {Name}", body.Length, handler.GetType().Name);
+            logger.LogInformation("Received new message. Length: {Length}. Handler: {Name}", body.Length, handlerType.Name);
 
             try
             {
@@ -97,7 +100,11 @@ public class RabbitMQConsumerService : IHostedService
                 }
 
                 logger.LogError(ex, "An error occured while processing message.");
-                queueModel.BasicNack(@event.DeliveryTag, false, true);
+
+                var errorModel = new RabbitHandlerErrorPayload(ex, queueName, message, headers, handler.PayloadType.Name, handlerType.Name);
+                await scope.ServiceProvider.GetRequiredService<IRabbitMQPublisher>().PublishAsync(errorModel);
+
+                queueModel.BasicAck(@event.DeliveryTag, false);
             }
         }
     }

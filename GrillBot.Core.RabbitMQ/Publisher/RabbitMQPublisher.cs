@@ -1,4 +1,5 @@
 ﻿using GrillBot.Core.Managers.Performance;
+using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
@@ -10,20 +11,29 @@ public class RabbitMQPublisher : IRabbitMQPublisher
     private IConnection Connection { get; }
     private ICounterManager CounterManager { get; }
 
-    public RabbitMQPublisher(IConnection connection, ICounterManager counterManager)
+    public RabbitMQPublisher(IConnection connection, ICounterManager counterManager, IConfiguration configuration)
     {
         Connection = connection;
         CounterManager = counterManager;
     }
 
-    public Task PublishAsync<TModel>(TModel model, Dictionary<string, string> headers) where TModel : IPayload
-        => PublishAsync(model.QueueName, model, headers);
+    public Task PublishAsync<TModel>(string queueName, TModel model) where TModel : IPayload
+        => PublishAsync(queueName, model, new Dictionary<string, string>());
 
     public async Task PublishAsync<TModel>(string queueName, TModel model, Dictionary<string, string> headers)
     {
         using (CounterManager.Create($"RabbitMQ.{queueName}.Producer"))
             await SendWithRetryPolicyAsync(queueName, model, headers, 5);
     }
+
+    public Task PublishAsync<TModel>(TModel model) where TModel : IPayload
+        => PublishAsync(model.QueueName, model, new Dictionary<string, string>());
+
+    public Task PublishAsync<TModel>(TModel model, Dictionary<string, string> headers) where TModel : IPayload
+        => PublishAsync(model.QueueName, model, headers);
+
+    public Task PublishBatchAsync<TModel>(IEnumerable<TModel> models) where TModel : IPayload
+        => PublishBatchAsync(models, new Dictionary<string, string>());
 
     public async Task PublishBatchAsync<TModel>(IEnumerable<TModel> models, Dictionary<string, string> headers) where TModel : IPayload
     {
