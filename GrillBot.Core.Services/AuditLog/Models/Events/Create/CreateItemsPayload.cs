@@ -16,4 +16,8 @@ public class CreateItemsPayload : IPayload
     {
         Items = items;
     }
+
+    public CreateItemsPayload(LogRequest item) : this(new List<LogRequest> { item })
+    {
+    }
 }

@@ -25,4 +25,55 @@ public class GuildInfoRequest
     public PremiumTier PremiumTier { get; set; }
     public SystemChannelMessageDeny SystemChannelFlags { get; set; }
     public NsfwLevel NsfwLevel { get; set; }
+
+    public GuildInfoRequest()
+    {
+    }
+
+    public GuildInfoRequest(
+        DefaultMessageNotifications defaultMessageNotifications,
+        string? description,
+        string? vanityUrl,
+        string? bannerId,
+        string? discoverySplashId,
+        string? splashId,
+        string? iconId,
+        byte[]? iconData,
+        string? publicUpdatesChannelId,
+        string? rulesChannelId,
+        string? systemChannelId,
+        string? afkChannelId,
+        int afkTimeout,
+        string name,
+        MfaLevel mfaLevel,
+        VerificationLevel verificationLevel,
+        ExplicitContentFilterLevel explicitContentFilter,
+        GuildFeature features,
+        PremiumTier premiumTier,
+        SystemChannelMessageDeny systemChannelFlags,
+        NsfwLevel nsfwLevel
+    )
+    {
+        DefaultMessageNotifications = defaultMessageNotifications;
+        Description = description;
+        VanityUrl = vanityUrl;
+        BannerId = bannerId;
+        DiscoverySplashId = discoverySplashId;
+        SplashId = splashId;
+        IconId = iconId;
+        IconData = iconData;
+        PublicUpdatesChannelId = publicUpdatesChannelId;
+        RulesChannelId = rulesChannelId;
+        SystemChannelId = systemChannelId;
+        AfkChannelId = afkChannelId;
+        AfkTimeout = afkTimeout;
+        Name = name;
+        MfaLevel = mfaLevel;
+        VerificationLevel = verificationLevel;
+        ExplicitContentFilter = explicitContentFilter;
+        Features = features;
+        PremiumTier = premiumTier;
+        SystemChannelFlags = systemChannelFlags;
+        NsfwLevel = nsfwLevel;
+    }
 }

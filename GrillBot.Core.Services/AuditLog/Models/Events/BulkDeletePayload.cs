@@ -16,4 +16,8 @@ public class BulkDeletePayload : IPayload
     {
         Ids = ids;
     }
+
+    public BulkDeletePayload(Guid id) : this(new List<Guid> { id })
+    {
+    }
 }

@@ -14,4 +14,37 @@ public class InteractionCommandRequest
     public int Duration { get; set; }
     public string? Exception { get; set; }
     public string Locale { get; set; } = "cs";
+
+    public InteractionCommandRequest()
+    {
+    }
+
+    public InteractionCommandRequest(
+        string name,
+        string moduleName,
+        string methodName,
+        List<InteractionCommandParameterRequest> parameters,
+        bool hasResponded,
+        bool isValidToken,
+        bool isSuccess,
+        int? commandError,
+        string? errorReason,
+        int duration,
+        string? exception,
+        string locale
+    )
+    {
+        Name = name;
+        ModuleName = moduleName;
+        MethodName = methodName;
+        Parameters = parameters;
+        HasResponded = hasResponded;
+        IsValidToken = isValidToken;
+        IsSuccess = isSuccess;
+        CommandError = commandError;
+        ErrorReason = errorReason;
+        Duration = duration;
+        Exception = exception;
+        Locale = locale;
+    }
 }

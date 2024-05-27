@@ -17,4 +17,43 @@ public class ApiRequestRequest
     public string Ip { get; set; } = null!;
     public string Result { get; set; } = null!;
     public string? Role { get; set; }
+
+    public ApiRequestRequest()
+    {
+    }
+
+    public ApiRequestRequest(
+        string controllerName,
+        string actionName,
+        DateTime startAt,
+        DateTime endAt,
+        string method,
+        string templatePath,
+        string path,
+        Dictionary<string, string> parameters,
+        string language,
+        string apiGroupName,
+        Dictionary<string, string> headers,
+        string identification,
+        string ip,
+        string result,
+        string? role
+    )
+    {
+        ControllerName = controllerName;
+        ActionName = actionName;
+        StartAt = startAt;
+        EndAt = endAt;
+        Method = method;
+        TemplatePath = templatePath;
+        Path = path;
+        Parameters = parameters;
+        Language = language;
+        ApiGroupName = apiGroupName;
+        Headers = headers;
+        Identification = identification;
+        Ip = ip;
+        Result = result;
+        Role = role;
+    }
 }

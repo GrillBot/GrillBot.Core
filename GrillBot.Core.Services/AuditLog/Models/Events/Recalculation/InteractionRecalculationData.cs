@@ -9,6 +9,20 @@ public class InteractionRecalculationData
     public DateOnly EndDate { get; set; }
     public string UserId { get; set; } = null!;
 
+    public InteractionRecalculationData()
+    {
+    }
+
+    public InteractionRecalculationData(string name, string moduleName, string methodName, bool isSuccess, DateOnly endDate, string userId)
+    {
+        Name = name;
+        ModuleName = moduleName;
+        MethodName = methodName;
+        IsSuccess = isSuccess;
+        EndDate = endDate;
+        UserId = userId;
+    }
+
     public override string ToString()
         => $"{Name} ({ModuleName} / {MethodName}) {IsSuccess} {EndDate:yyyyMMdd} {UserId}";
 }

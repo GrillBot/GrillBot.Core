@@ -11,4 +11,19 @@ public class ThreadInfoRequest
     public int ArchiveDuration { get; set; }
     public bool IsLocked { get; set; }
     public List<string> Tags { get; set; } = new();
+
+    public ThreadInfoRequest()
+    {
+    }
+
+    public ThreadInfoRequest(string? threadName, int? slowMode, ThreadType type, bool isArchived, int archiveDuration, bool isLocked, List<string> tags)
+    {
+        ThreadName = threadName;
+        SlowMode = slowMode;
+        Type = type;
+        IsArchived = isArchived;
+        ArchiveDuration = archiveDuration;
+        IsLocked = isLocked;
+        Tags = tags;
+    }
 }

@@ -8,6 +8,19 @@ public class ApiRecalculationData
     public string ApiGroupName { get; set; } = null!;
     public string Identification { get; set; } = null!;
 
+    public ApiRecalculationData()
+    {
+    }
+
+    public ApiRecalculationData(DateOnly requestDate, string method, string templatePath, string apiGroupName, string identification)
+    {
+        RequestDate = requestDate;
+        Method = method;
+        TemplatePath = templatePath;
+        ApiGroupName = apiGroupName;
+        Identification = identification;
+    }
+
     public override string ToString()
         => $"{RequestDate:yyyyMMdd} {Method} {TemplatePath} {ApiGroupName} {Identification}";
 }

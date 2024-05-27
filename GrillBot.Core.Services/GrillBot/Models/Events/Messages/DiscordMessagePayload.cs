@@ -14,6 +14,8 @@ public class DiscordMessagePayload : IPayload
     public DiscordMessageEmbed? Embed { get; set; }
     public MessageFlags? Flags { get; set; }
     public DiscordMessageAllowedMentions? AllowedMentions { get; set; }
+    public string ServiceId { get; set; } = null!;
+    public Dictionary<string, string> ServiceData { get; set; } = new();
 
     public DiscordMessagePayload()
     {
@@ -24,9 +26,11 @@ public class DiscordMessagePayload : IPayload
         string channelId,
         string? content,
         IEnumerable<DiscordMessageFile> attachments,
+        string serviceId,
         DiscordMessageAllowedMentions? allowedMentions = null,
         MessageFlags? flags = null,
-        DiscordMessageEmbed? embed = null
+        DiscordMessageEmbed? embed = null,
+        Dictionary<string, string>? serviceData = null
     )
     {
         GuildId = guildId;
@@ -36,5 +40,7 @@ public class DiscordMessagePayload : IPayload
         Embed = embed;
         Flags = flags;
         AllowedMentions = allowedMentions;
+        ServiceId = serviceId;
+        ServiceData = serviceData ?? new();
     }
 }

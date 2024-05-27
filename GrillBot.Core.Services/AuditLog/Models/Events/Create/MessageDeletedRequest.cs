@@ -6,4 +6,16 @@ public class MessageDeletedRequest
     public DateTime MessageCreatedAt { get; set; }
     public string? Content { get; set; }
     public List<EmbedRequest> Embeds { get; set; } = new();
+
+    public MessageDeletedRequest()
+    {
+    }
+
+    public MessageDeletedRequest(string authorId, DateTime messageCreatedAt, string? content, List<EmbedRequest> embeds)
+    {
+        AuthorId = authorId;
+        MessageCreatedAt = messageCreatedAt;
+        Content = content;
+        Embeds = embeds;
+    }
 }

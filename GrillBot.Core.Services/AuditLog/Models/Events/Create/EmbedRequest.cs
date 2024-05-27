@@ -13,4 +13,31 @@ public class EmbedRequest
     public string? ProviderName { get; set; }
     public string? ThumbnailInfo { get; set; }
     public List<EmbedFieldBuilder> Fields { get; set; } = new();
+
+    public EmbedRequest()
+    {
+    }
+
+    public EmbedRequest(
+        string? title,
+        string type,
+        string? imageInfo,
+        string? videoInfo,
+        string? authorName,
+        bool containsFooter,
+        string? providerName,
+        string? thumbnailInfo,
+        List<EmbedFieldBuilder> fields
+    )
+    {
+        Title = title;
+        Type = type;
+        ImageInfo = imageInfo;
+        VideoInfo = videoInfo;
+        AuthorName = authorName;
+        ContainsFooter = containsFooter;
+        ProviderName = providerName;
+        ThumbnailInfo = thumbnailInfo;
+        Fields = fields;
+    }
 }
