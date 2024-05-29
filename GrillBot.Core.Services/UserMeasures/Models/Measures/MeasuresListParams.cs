@@ -4,7 +4,7 @@ using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace GrillBot.Core.Services.UserMeasures.Models.MeasuresList;
+namespace GrillBot.Core.Services.UserMeasures.Models.Measures;
 
 public class MeasuresListParams : IDictionaryObject, IValidatableObject
 {

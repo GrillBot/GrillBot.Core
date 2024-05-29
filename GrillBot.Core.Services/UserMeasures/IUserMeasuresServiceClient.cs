@@ -2,7 +2,6 @@
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.UserMeasures.Models.Dashboard;
 using GrillBot.Core.Services.UserMeasures.Models.Measures;
-using GrillBot.Core.Services.UserMeasures.Models.MeasuresList;
 using GrillBot.Core.Services.UserMeasures.Models.User;
 
 namespace GrillBot.Core.Services.UserMeasures;

@@ -1,7 +1,7 @@
 ﻿using Discord;
 using GrillBot.Core.RabbitMQ;
 
-namespace GrillBot.Core.Services.GrillBot.Models.Events;
+namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
 
 public class DiscordMessagePayload : IPayload
 {
@@ -16,6 +16,7 @@ public class DiscordMessagePayload : IPayload
     public DiscordMessageAllowedMentions? AllowedMentions { get; set; }
     public string ServiceId { get; set; } = null!;
     public Dictionary<string, string> ServiceData { get; set; } = new();
+    public DiscordMessageComponent? Components { get; set; }
 
     public DiscordMessagePayload()
     {
@@ -30,7 +31,8 @@ public class DiscordMessagePayload : IPayload
         DiscordMessageAllowedMentions? allowedMentions = null,
         MessageFlags? flags = null,
         DiscordMessageEmbed? embed = null,
-        Dictionary<string, string>? serviceData = null
+        Dictionary<string, string>? serviceData = null,
+        DiscordMessageComponent? components = null
     )
     {
         GuildId = guildId;
@@ -42,5 +44,6 @@ public class DiscordMessagePayload : IPayload
         AllowedMentions = allowedMentions;
         ServiceId = serviceId;
         ServiceData = serviceData ?? new();
+        Components = components;
     }
 }
