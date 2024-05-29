@@ -2,6 +2,7 @@
 using GrillBot.Core.Database;
 using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Managers.Discord;
+using GrillBot.Core.Managers.Localization;
 using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Managers.Random;
 using GrillBot.Core.Services.Diagnostics;
@@ -81,5 +82,11 @@ public static class CoreExtensions
 
         services.AddSingleton<IDiscordClient>(_ => null!);
         return services;
+    }
+
+    public static IServiceCollection AddLocalization(this IServiceCollection services, string basePath, string fileMask)
+    {
+        var manager = new TextsManager(basePath, fileMask);
+        return services.AddSingleton<ITextsManager>(manager);
     }
 }
