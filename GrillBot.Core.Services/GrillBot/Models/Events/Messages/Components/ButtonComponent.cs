@@ -27,8 +27,21 @@ public class ButtonComponent
 
     public ButtonBuilder ToBuilder()
     {
-        var emote = string.IsNullOrEmpty(EmoteId) ? null : Discord.Emote.Parse(EmoteId);
+        var emote = CreateEmote();
         return new ButtonBuilder(Label, CustomId, Style, Url, emote, IsDisabled);
+    }
+
+    private IEmote? CreateEmote()
+    {
+        if (string.IsNullOrEmpty(EmoteId))
+            return null;
+
+        if (Discord.Emote.TryParse(EmoteId, out var emote))
+            return emote;
+        if (Emoji.TryParse(EmoteId, out var emoji))
+            return emoji;
+
+        return null;
     }
 
     public Discord.ButtonComponent ToDiscordComponent()
