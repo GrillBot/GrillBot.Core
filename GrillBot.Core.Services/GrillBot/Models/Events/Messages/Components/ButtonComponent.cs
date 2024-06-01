@@ -4,7 +4,7 @@ namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages.Components;
 
 public class ButtonComponent
 {
-    public string Label { get; set; } = null!;
+    public string? Label { get; set; }
     public string CustomId { get; set; } = null!;
     public ButtonStyle Style { get; set; }
     public string? EmoteId { get; set; }
@@ -15,7 +15,7 @@ public class ButtonComponent
     {
     }
 
-    public ButtonComponent(string label, string customId, ButtonStyle style, string? emoteId = null, string? url = null, bool isDisabled = false)
+    public ButtonComponent(string? label, string customId, ButtonStyle style, string? emoteId = null, string? url = null, bool isDisabled = false)
     {
         Label = label;
         CustomId = customId;
