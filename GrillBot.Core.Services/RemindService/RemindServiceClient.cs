@@ -12,7 +12,7 @@ public class RemindServiceClient : RestServiceBase, IRemindServiceClient
     private static readonly TimeSpan _infiniteTimeout = Timeout.InfiniteTimeSpan;
     private static readonly TimeSpan _defaultTimeout = TimeSpan.FromMinutes(1);
 
-    public override string ServiceName => "RemindService";
+    public override string ServiceName => "Remind";
 
     public RemindServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory) : base(counterManager, httpClientFactory)
     {
