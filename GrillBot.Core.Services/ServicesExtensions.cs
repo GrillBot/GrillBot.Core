@@ -3,6 +3,7 @@ using GrillBot.Core.Services.Emote;
 using GrillBot.Core.Services.Graphics;
 using GrillBot.Core.Services.ImageProcessing;
 using GrillBot.Core.Services.PointsService;
+using GrillBot.Core.Services.RemindService;
 using GrillBot.Core.Services.RubbergodService;
 using GrillBot.Core.Services.UserMeasures;
 using Microsoft.Extensions.Configuration;
@@ -39,5 +40,6 @@ public static class ServicesExtensions
         services.AddService<IAuditLogServiceClient, AuditLogServiceClient>(configuration, "AuditLog");
         services.AddService<IUserMeasuresServiceClient, UserMeasuresServiceClient>(configuration, "UserMeasures");
         services.AddService<IEmoteServiceClient, EmoteServiceClient>(configuration, "Emote");
+        services.AddService<IRemindServiceClient, RemindServiceClient>(configuration, "Remind");
     }
 }
