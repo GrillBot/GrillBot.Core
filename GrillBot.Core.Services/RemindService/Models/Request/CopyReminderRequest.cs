@@ -1,9 +1,10 @@
-﻿using GrillBot.Core.Validation;
+﻿using GrillBot.Core.Infrastructure;
+using GrillBot.Core.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace GrillBot.Core.Services.RemindService.Models.Request;
 
-public class CopyReminderRequest
+public class CopyReminderRequest : IDictionaryObject
 {
     public long RemindId { get; set; }
 
@@ -13,4 +14,14 @@ public class CopyReminderRequest
 
     [StringLength(32)]
     public string Language { get; set; } = null!;
+
+    public Dictionary<string, string?> ToDictionary()
+    {
+        return new Dictionary<string, string?>
+        {
+            { nameof(RemindId), RemindId.ToString() },
+            { nameof(ToUserId), ToUserId },
+            { nameof(Language), Language }
+        };
+    }
 }

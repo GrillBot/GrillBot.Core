@@ -1,11 +1,11 @@
 ﻿using Discord;
+using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Validation;
-using RemindService.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace GrillBot.Core.Services.RemindService.Models.Request;
 
-public class CreateReminderRequest : IValidatableObject
+public class CreateReminderRequest : IDictionaryObject
 {
     [DiscordId]
     [StringLength(32)]
@@ -28,6 +28,16 @@ public class CreateReminderRequest : IValidatableObject
     [StringLength(32)]
     public string Language { get; set; } = null!;
 
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        => new CreateReminderRequestValidator().Validate(this, validationContext);
+    public Dictionary<string, string?> ToDictionary()
+    {
+        return new Dictionary<string, string?>
+        {
+            { nameof(FromUserId), FromUserId },
+            { nameof(ToUserId), ToUserId },
+            { nameof(NotifyAtUtc), NotifyAtUtc.ToString("o") },
+            { nameof(Message), Message },
+            { nameof(CommandMessageId), CommandMessageId },
+            { nameof(Language), Language }
+        };
+    }
 }

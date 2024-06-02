@@ -1,12 +1,13 @@
-﻿using GrillBot.Core.Models;
+﻿using GrillBot.Core.Extensions;
+using GrillBot.Core.Infrastructure;
+using GrillBot.Core.Models;
 using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Validation;
-using RemindService.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace GrillBot.Core.Services.RemindService.Models.Request;
 
-public class ReminderListRequest : IValidatableObject
+public class ReminderListRequest : IDictionaryObject
 {
     [DiscordId]
     [StringLength(32)]
@@ -31,6 +32,22 @@ public class ReminderListRequest : IValidatableObject
     public SortParameters Sort { get; set; } = new() { OrderBy = "Id" };
     public PaginatedParams Pagination { get; set; } = new();
 
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        => new ReminderListRequestValidator().Validate(this, validationContext);
+    public Dictionary<string, string?> ToDictionary()
+    {
+        var result = new Dictionary<string, string?>
+        {
+            { nameof(FromUserId), FromUserId },
+            { nameof(ToUserId), ToUserId },
+            { nameof(CommandMessageId), CommandMessageId },
+            { nameof(MessageContains), MessageContains },
+            { nameof(NotifyAtFromUtc), NotifyAtFromUtc?.ToString("o") },
+            { nameof(NotifyAtToUtc), NotifyAtToUtc?.ToString("o") },
+            { nameof(OnlyPending), OnlyPending?.ToString() },
+            { nameof(OnlyInProcess), OnlyInProcess?.ToString() }
+        };
+
+        result.MergeDictionaryObjects(Sort, nameof(Sort));
+        result.MergeDictionaryObjects(Pagination, nameof(Pagination));
+        return result;
+    }
 }

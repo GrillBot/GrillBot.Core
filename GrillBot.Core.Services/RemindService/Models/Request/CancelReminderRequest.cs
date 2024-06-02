@@ -1,9 +1,10 @@
-﻿using GrillBot.Core.Validation;
+﻿using GrillBot.Core.Infrastructure;
+using GrillBot.Core.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace GrillBot.Core.Services.RemindService.Models.Request;
 
-public class CancelReminderRequest
+public class CancelReminderRequest : IDictionaryObject
 {
     public long RemindId { get; set; }
 
@@ -17,4 +18,15 @@ public class CancelReminderRequest
     public bool IsAdminExecution { get; set; }
 
     public bool NotifyUser { get; set; }
+
+    public Dictionary<string, string?> ToDictionary()
+    {
+        return new Dictionary<string, string?>
+        {
+            { nameof(RemindId), RemindId.ToString() },
+            { nameof(ExecutingUserId), ExecutingUserId },
+            { nameof(IsAdminExecution), IsAdminExecution.ToString() },
+            { nameof(NotifyUser), NotifyUser.ToString() }
+        };
+    }
 }
