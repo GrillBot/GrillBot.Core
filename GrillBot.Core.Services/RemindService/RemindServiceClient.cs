@@ -35,4 +35,7 @@ public class RemindServiceClient : RestServiceBase, IRemindServiceClient
 
     public async Task<List<ReminderSuggestionItem>> GetSuggestionsAsync(string userId)
         => (await ProcessRequestAsync<List<ReminderSuggestionItem>>(() => HttpMethod.Get.ToRequest($"api/remind/suggestions/{userId}"), _defaultTimeout))!;
+
+    public Task PostponeRemindAsync(string notificationMessageId, int hours)
+        => ProcessRequestAsync(() => HttpMethod.Put.ToRequest($"api/remind/postpone/{notificationMessageId}/{hours}"), _defaultTimeout);
 }

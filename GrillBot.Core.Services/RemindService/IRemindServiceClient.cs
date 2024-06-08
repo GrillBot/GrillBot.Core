@@ -13,4 +13,5 @@ public interface IRemindServiceClient : IClient
     Task<CreateReminderResult> CreateReminderAsync(CreateReminderRequest request);
     Task<CreateReminderResult> CopyReminderAsync(CopyReminderRequest request);
     Task<List<ReminderSuggestionItem>> GetSuggestionsAsync(string userId);
+    Task PostponeRemindAsync(string notificationMessageId, int hours);
 }
