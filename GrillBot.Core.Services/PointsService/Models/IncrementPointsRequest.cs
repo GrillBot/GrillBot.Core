@@ -1,9 +1,10 @@
-﻿using GrillBot.Core.Validation;
+﻿using GrillBot.Core.Infrastructure;
+using GrillBot.Core.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace GrillBot.Core.Services.PointsService.Models;
 
-public class IncrementPointsRequest
+public class IncrementPointsRequest : IDictionaryObject
 {
     [StringLength(30)]
     [DiscordId]
@@ -14,4 +15,14 @@ public class IncrementPointsRequest
     public string UserId { get; set; } = null!;
 
     public int Amount { get; set; }
+
+    public Dictionary<string, string?> ToDictionary()
+    {
+        return new Dictionary<string, string?>
+        {
+            { nameof(GuildId), GuildId },
+            { nameof(UserId), UserId },
+            { nameof(Amount), Amount.ToString() }
+        };
+    }
 }
