@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GrillBot.Core.Services.Common;
 
-public abstract class RestServiceBase
+public abstract class RestServiceBase : IClient
 {
     private readonly HttpClient _client;
     private readonly ICounterManager _counterManager;
@@ -118,4 +118,7 @@ public abstract class RestServiceBase
 
     public virtual async Task<DiagnosticInfo> GetDiagnosticAsync()
         => (await ProcessRequestAsync<DiagnosticInfo>(() => HttpMethod.Get.ToRequest("api/diag"), TimeSpan.FromMinutes(1)))!;
+
+    public virtual async Task<long> GetUptimeAsync()
+        => await ProcessRequestAsync<long>(() => HttpMethod.Get.ToRequest("api/diag/uptime"), TimeSpan.FromMinutes(1));
 }

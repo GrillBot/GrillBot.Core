@@ -9,4 +9,5 @@ public interface IClient
 
     Task<bool> IsHealthyAsync();
     Task<DiagnosticInfo> GetDiagnosticAsync();
+    Task<long> GetUptimeAsync();
 }
