@@ -17,6 +17,7 @@ public interface IPointsServiceClient : IClient
     Task<PointsStatus> GetStatusOfPointsAsync(string guildId, string userId);
     Task<ImagePointsStatus?> GetImagePointsStatusAsync(string guildId, string userId);
     Task TransferPointsAsync(TransferPointsRequest request);
+    Task IncrementPointsAsync(IncrementPointsRequest request);
     Task<bool> ExistsAnyTransactionAsync(string guildId, string userId);
     Task<StatusInfo> GetStatusInfoAsync();
     Task<PaginatedResponse<UserListItem>> GetUserListAsync(UserListRequest request);
