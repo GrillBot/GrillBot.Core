@@ -1,4 +1,5 @@
-﻿using GrillBot.Core.Managers.Performance;
+﻿using GrillBot.Core.Infrastructure.Auth;
+using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Extensions;
@@ -16,9 +17,8 @@ public class PointsServiceClient : RestServiceBase, IPointsServiceClient
 
     public override string ServiceName => "PointsService";
 
-    public PointsServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory) : base(counterManager, httpClientFactory)
-    {
-    }
+    public PointsServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser)
+        : base(counterManager, httpClientFactory, currentUser) { }
 
     public async Task<PaginatedResponse<TransactionItem>> GetTransactionListAsync(AdminListRequest request)
         => (await ProcessRequestAsync<PaginatedResponse<TransactionItem>>(() => HttpMethod.Post.ToRequest("api/admin/list", request), _defaultTimeout))!;

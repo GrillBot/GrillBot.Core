@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using GrillBot.Core.Infrastructure.Auth;
+using Microsoft.Extensions.Logging;
 
 namespace GrillBot.Core.RabbitMQ.Consumer;
 
@@ -8,6 +9,8 @@ public abstract class BaseRabbitMQHandler<TPayload> : IRabbitMQHandler
     public Type PayloadType => typeof(TPayload);
 
     private ILogger Logger { get; }
+
+    protected ICurrentUserProvider CurrentUser { get; private set; } = null!;
 
     protected BaseRabbitMQHandler(ILoggerFactory loggerFactory)
     {
@@ -19,6 +22,7 @@ public abstract class BaseRabbitMQHandler<TPayload> : IRabbitMQHandler
         if (payload is not TPayload payloadData)
             return;
 
+        CurrentUser = new CurrentUserProvider(headers);
         await HandleInternalAsync(payloadData, headers);
     }
 

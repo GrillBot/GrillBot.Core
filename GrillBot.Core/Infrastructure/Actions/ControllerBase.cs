@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GrillBot.Core.Infrastructure.Auth;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GrillBot.Core.Infrastructure.Actions;
@@ -17,7 +18,9 @@ public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
     protected async Task<IActionResult> ProcessAsync<TAction>(params object?[] parameters) where TAction : ApiActionBase
     {
         var action = ServiceProvider.GetRequiredService<TAction>();
-        action.Init(HttpContext, parameters);
+        var currentUser = ServiceProvider.GetRequiredService<ICurrentUserProvider>();
+
+        action.Init(HttpContext, parameters, currentUser);
         var result = await action.ProcessAsync();
 
         return result.ToApiResult();

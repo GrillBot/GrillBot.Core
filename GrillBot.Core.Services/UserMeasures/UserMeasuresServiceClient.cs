@@ -1,4 +1,5 @@
 ﻿using Cysharp.Web;
+using GrillBot.Core.Infrastructure.Auth;
 using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
@@ -15,9 +16,8 @@ public class UserMeasuresServiceClient : RestServiceBase, IUserMeasuresServiceCl
 
     public override string ServiceName => "UserMeasures";
 
-    public UserMeasuresServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory) : base(counterManager, httpClientFactory)
-    {
-    }
+    public UserMeasuresServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser)
+        : base(counterManager, httpClientFactory, currentUser) { }
 
     public async Task<List<DashboardRow>> GetDashboardDataAsync()
         => (await ProcessRequestAsync<List<DashboardRow>>(() => HttpMethod.Get.ToRequest("api/dashboard"), _defaultTimeout))!;

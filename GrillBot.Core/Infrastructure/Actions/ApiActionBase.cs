@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GrillBot.Core.Infrastructure.Auth;
+using Microsoft.AspNetCore.Http;
 
 namespace GrillBot.Core.Infrastructure.Actions;
 
@@ -6,11 +7,13 @@ public abstract class ApiActionBase
 {
     protected HttpContext HttpContext { get; private set; } = null!;
     protected object?[] Parameters { get; set; } = null!;
+    protected ICurrentUserProvider CurrentUser { get; private set; } = null!;
 
-    public void Init(HttpContext httpContext, object?[] parameters)
+    public void Init(HttpContext httpContext, object?[] parameters, ICurrentUserProvider currentUser)
     {
         Parameters = parameters;
         HttpContext = httpContext;
+        CurrentUser = currentUser;
     }
 
     public abstract Task<ApiResult> ProcessAsync();

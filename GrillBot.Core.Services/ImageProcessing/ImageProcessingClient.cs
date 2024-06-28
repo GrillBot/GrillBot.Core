@@ -1,4 +1,5 @@
-﻿using GrillBot.Core.Managers.Performance;
+﻿using GrillBot.Core.Infrastructure.Auth;
+using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.ImageProcessing.Models;
@@ -11,9 +12,8 @@ public class ImageProcessingClient : RestServiceBase, IImageProcessingClient
 
     public override string ServiceName => "ImageProcessing";
 
-    public ImageProcessingClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory) : base(counterManager, httpClientFactory)
-    {
-    }
+    public ImageProcessingClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser)
+        : base(counterManager, httpClientFactory, currentUser) { }
 
     public async Task<byte[]> CreatePeepoloveImageAsync(PeepoRequest request)
         => await ProcessRequestWithFileAsync(() => HttpMethod.Post.ToRequest("api/image/peepoLove", request), _defaultTimeout);

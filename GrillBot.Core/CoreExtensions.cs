@@ -1,6 +1,7 @@
 ﻿using Discord;
 using GrillBot.Core.Database;
 using GrillBot.Core.Infrastructure;
+using GrillBot.Core.Infrastructure.Auth;
 using GrillBot.Core.Managers.Discord;
 using GrillBot.Core.Managers.Localization;
 using GrillBot.Core.Managers.Performance;
@@ -43,6 +44,7 @@ public static class CoreExtensions
         services.TryAddSingleton<ICounterManager, CounterManager>();
         services.AddScoped<IEmoteManager, EmoteManager>();
         services.AddSingleton<IRandomManager, RandomManager>();
+        services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
 
         if (services.All(o => o.ServiceType != typeof(IDiscordClient)))
             services.AddFakeDiscordClient();

@@ -1,4 +1,5 @@
-﻿using GrillBot.Core.Managers.Performance;
+﻿using GrillBot.Core.Infrastructure.Auth;
+using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.Diagnostics.Models;
@@ -14,9 +15,8 @@ public class GraphicsClient : RestServiceBase, IGraphicsClient
 
     public override string ServiceName => "Graphics";
 
-    public GraphicsClient(IHttpClientFactory httpClientFactory, ICounterManager counterManager) : base(counterManager, httpClientFactory)
-    {
-    }
+    public GraphicsClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser)
+        : base(counterManager, httpClientFactory, currentUser) { }
 
     public async Task<byte[]> CreateChartAsync(ChartRequestData request)
         => await ProcessRequestWithFileAsync(() => HttpMethod.Post.ToRequest("chart", request), _defaultTimeout);

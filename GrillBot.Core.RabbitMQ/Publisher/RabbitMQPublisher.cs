@@ -8,13 +8,13 @@ namespace GrillBot.Core.RabbitMQ.Publisher;
 
 public class RabbitMQPublisher : IRabbitMQPublisher
 {
-    private IConnection Connection { get; }
-    private ICounterManager CounterManager { get; }
+    private readonly IConnection _connection;
+    private readonly ICounterManager _counterManager;
 
-    public RabbitMQPublisher(IConnection connection, ICounterManager counterManager, IConfiguration configuration)
+    public RabbitMQPublisher(IConnection connection, ICounterManager counterManager)
     {
-        Connection = connection;
-        CounterManager = counterManager;
+        _connection = connection;
+        _counterManager = counterManager;
     }
 
     public Task PublishAsync<TModel>(string queueName, TModel model) where TModel : IPayload
@@ -22,7 +22,7 @@ public class RabbitMQPublisher : IRabbitMQPublisher
 
     public async Task PublishAsync<TModel>(string queueName, TModel model, Dictionary<string, string> headers)
     {
-        using (CounterManager.Create($"RabbitMQ.{queueName}.Producer"))
+        using (_counterManager.Create($"RabbitMQ.{queueName}.Producer"))
             await SendWithRetryPolicyAsync(queueName, model, headers, 5);
     }
 
@@ -66,7 +66,7 @@ public class RabbitMQPublisher : IRabbitMQPublisher
 
     private IModel CreateQueueModel(string queueName)
     {
-        var model = Connection.CreateModel();
+        var model = _connection.CreateModel();
         model.QueueDeclare(queueName, true, false, false);
 
         return model;

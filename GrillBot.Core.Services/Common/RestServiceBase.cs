@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using System.Net.Sockets;
+using GrillBot.Core.Infrastructure.Auth;
 using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.Diagnostics.Models;
@@ -12,14 +13,16 @@ public abstract class RestServiceBase : IClient
 {
     private readonly HttpClient _client;
     private readonly ICounterManager _counterManager;
+    private readonly ICurrentUserProvider _currentUser;
     public abstract string ServiceName { get; }
 
     public string Url => _client.BaseAddress!.ToString();
 
-    protected RestServiceBase(ICounterManager counterManager, IHttpClientFactory httpClientFactory)
+    protected RestServiceBase(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser)
     {
         _counterManager = counterManager;
         _client = httpClientFactory.CreateClient(ServiceName);
+        _currentUser = currentUser;
     }
 
     protected async Task<TResult?> ProcessRequestAsync<TResult>(Func<HttpRequestMessage> createRequest, TimeSpan timeout)
@@ -27,7 +30,7 @@ public abstract class RestServiceBase : IClient
         using (_counterManager.Create($"Service.{ServiceName}"))
         {
             using var cancellationTokenSource = new CancellationTokenSource(timeout);
-            using var request = createRequest();
+            using var request = CreateRequestMessage(createRequest);
             using var response = await ExecuteRequestAsync(request, cancellationTokenSource.Token);
 
             await CheckResponseAsync(response, cancellationTokenSource.Token);
@@ -40,7 +43,7 @@ public abstract class RestServiceBase : IClient
         using (_counterManager.Create($"Service.{ServiceName}"))
         {
             using var cancellationTokenSource = new CancellationTokenSource(timeout);
-            using var request = createRequest();
+            using var request = CreateRequestMessage(createRequest);
             using var response = await ExecuteRequestAsync(request, cancellationTokenSource.Token);
 
             await CheckResponseAsync(response, cancellationTokenSource.Token);
@@ -52,7 +55,7 @@ public abstract class RestServiceBase : IClient
         using (_counterManager.Create($"Service.{ServiceName}"))
         {
             using var cancellationTokenSource = new CancellationTokenSource(timeout);
-            using var request = createRequest();
+            using var request = CreateRequestMessage(createRequest);
             using var response = await ExecuteRequestAsync(request, cancellationTokenSource.Token);
 
             await CheckResponseAsync(response, cancellationTokenSource.Token);
@@ -101,6 +104,16 @@ public abstract class RestServiceBase : IClient
             return default;
 
         return await response.Content.ReadFromJsonAsync<TResult>(cancellationToken: cancellationToken);
+    }
+
+    private HttpRequestMessage CreateRequestMessage(Func<HttpRequestMessage> messageFactory)
+    {
+        var message = messageFactory();
+
+        if (_currentUser.IsLogged)
+            message.Headers.Add("Authorization", _currentUser.EncodedJwtToken);
+
+        return message;
     }
 
     public async Task<bool> IsHealthyAsync()

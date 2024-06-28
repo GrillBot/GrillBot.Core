@@ -1,4 +1,5 @@
-﻿using GrillBot.Core.Managers.Performance;
+﻿using GrillBot.Core.Infrastructure.Auth;
+using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.AuditLog.Models.Request.Search;
 using GrillBot.Core.Services.AuditLog.Models.Response;
@@ -19,9 +20,8 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
 
     public override string ServiceName => "AuditLog";
 
-    public AuditLogServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory) : base(counterManager, httpClientFactory)
-    {
-    }
+    public AuditLogServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser)
+        : base(counterManager, httpClientFactory, currentUser) { }
 
     public async Task<PaginatedResponse<LogListItem>> SearchItemsAsync(SearchRequest request)
         => (await ProcessRequestAsync<PaginatedResponse<LogListItem>>(() => HttpMethod.Post.ToRequest("api/logItem/search", request), _defaultTimeout))!;
