@@ -8,6 +8,7 @@ using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Managers.Random;
 using GrillBot.Core.Services.Diagnostics;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,7 +45,12 @@ public static class CoreExtensions
         services.TryAddSingleton<ICounterManager, CounterManager>();
         services.AddScoped<IEmoteManager, EmoteManager>();
         services.AddSingleton<IRandomManager, RandomManager>();
-        services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
+
+        services.AddScoped<ICurrentUserProvider, CurrentUserProvider>(provider =>
+        {
+            var contextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
+            return new CurrentUserProvider(contextAccessor);
+        });
 
         if (services.All(o => o.ServiceType != typeof(IDiscordClient)))
             services.AddFakeDiscordClient();
