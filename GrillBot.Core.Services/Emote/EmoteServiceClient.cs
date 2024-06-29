@@ -1,6 +1,4 @@
-﻿using GrillBot.Core.Infrastructure.Auth;
-using GrillBot.Core.Managers.Performance;
-using GrillBot.Core.Models.Pagination;
+﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.Emote.Models.Request;
@@ -14,8 +12,7 @@ public class EmoteServiceClient : RestServiceBase, IEmoteServiceClient
 
     public override string ServiceName => "Emote";
 
-    public EmoteServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser)
-        : base(counterManager, httpClientFactory, currentUser) { }
+    public EmoteServiceClient(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
     public async Task<int> DeleteStatisticsAsync(string guildId, string emoteId, string? userId = null)
     {

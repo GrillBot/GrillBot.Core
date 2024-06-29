@@ -1,6 +1,4 @@
-﻿using GrillBot.Core.Infrastructure.Auth;
-using GrillBot.Core.Managers.Performance;
-using GrillBot.Core.Models.Pagination;
+﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.RubbergodService.Models.Help;
@@ -14,8 +12,7 @@ public class RubbergodServiceClient : RestServiceBase, IRubbergodServiceClient
 
     public override string ServiceName => "RubbergodService";
 
-    public RubbergodServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser)
-        : base(counterManager, httpClientFactory, currentUser) { }
+    public RubbergodServiceClient(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
     public async Task<PaginatedResponse<UserKarma>> GetKarmaPageAsync(PaginatedParams parameters)
     {

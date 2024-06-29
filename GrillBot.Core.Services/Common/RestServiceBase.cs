@@ -7,6 +7,7 @@ using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.Diagnostics.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GrillBot.Core.Services.Common;
 
@@ -23,13 +24,12 @@ public abstract class RestServiceBase : IClient
 
     private bool IsThirdParty => _configuration.GetValue<bool>($"Services:{ServiceName}:IsThirdParty");
 
-    protected RestServiceBase(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser,
-        IConfiguration configuration)
+    protected RestServiceBase(IServiceProvider serviceProvider)
     {
-        _counterManager = counterManager;
-        _client = httpClientFactory.CreateClient(ServiceName);
-        _currentUser = currentUser;
-        _configuration = configuration;
+        _counterManager = serviceProvider.GetRequiredService<ICounterManager>();
+        _client = serviceProvider.GetRequiredService<IHttpClientFactory>().CreateClient(ServiceName);
+        _currentUser = serviceProvider.GetRequiredService<ICurrentUserProvider>();
+        _configuration = serviceProvider.GetRequiredService<IConfiguration>();
     }
 
     protected async Task<TResult?> ProcessRequestAsync<TResult>(Func<HttpRequestMessage> createRequest, TimeSpan timeout)

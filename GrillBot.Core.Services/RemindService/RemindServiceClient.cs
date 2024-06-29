@@ -1,6 +1,4 @@
-﻿using GrillBot.Core.Infrastructure.Auth;
-using GrillBot.Core.Managers.Performance;
-using GrillBot.Core.Models.Pagination;
+﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.RemindService.Models.Request;
@@ -15,8 +13,7 @@ public class RemindServiceClient : RestServiceBase, IRemindServiceClient
 
     public override string ServiceName => "Remind";
 
-    public RemindServiceClient(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser)
-        : base(counterManager, httpClientFactory, currentUser) { }
+    public RemindServiceClient(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
     public async Task<ProcessPendingRemindersResult> ProcessPendingRemindersAsync()
         => (await ProcessRequestAsync<ProcessPendingRemindersResult>(() => HttpMethod.Post.ToRequest("api/remind/process-pending"), _infiniteTimeout))!;
