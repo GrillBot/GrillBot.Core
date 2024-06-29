@@ -7,7 +7,7 @@ namespace GrillBot.Core.Infrastructure.Auth;
 
 public class CurrentUserProvider : ICurrentUserProvider
 {
-    private const string AUTH_HEADER_NAME = "Authorization;";
+    private const string AUTH_HEADER_NAME = "Authorization";
 
     private readonly Dictionary<string, string> _headers;
     private JwtSecurityToken? _jwtToken;
@@ -40,12 +40,12 @@ public class CurrentUserProvider : ICurrentUserProvider
 
     private JwtSecurityToken? ReadJwtToken()
     {
-        var token = EncodedJwtToken;
+        var token = EncodedJwtToken?.Replace("Bearer", "")?.Trim();
         if (string.IsNullOrEmpty(token))
             return null;
 
         var handler = new JwtSecurityTokenHandler();
-        return handler.ReadJwtToken(EncodedJwtToken);
+        return handler.ReadJwtToken(token);
     }
 
     private string? ReadClaim(string claimType)
@@ -56,7 +56,7 @@ public class CurrentUserProvider : ICurrentUserProvider
         if (_headers.ContainsKey(AUTH_HEADER_NAME))
             throw new InvalidOperationException("Unable assign JWT token if was provided from request.");
 
-        _headers.Add(AUTH_HEADER_NAME, jwtToken);
+        _headers.Add(AUTH_HEADER_NAME, $"Bearer {jwtToken}");
         _jwtToken = ReadJwtToken();
     }
 }

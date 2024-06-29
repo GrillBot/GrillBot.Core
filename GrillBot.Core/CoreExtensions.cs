@@ -46,6 +46,7 @@ public static class CoreExtensions
         services.AddScoped<IEmoteManager, EmoteManager>();
         services.AddSingleton<IRandomManager, RandomManager>();
 
+        services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserProvider, CurrentUserProvider>(provider =>
         {
             var contextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
