@@ -6,6 +6,7 @@ using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.Diagnostics.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace GrillBot.Core.Services.Common;
 
@@ -14,15 +15,21 @@ public abstract class RestServiceBase : IClient
     private readonly HttpClient _client;
     private readonly ICounterManager _counterManager;
     private readonly ICurrentUserProvider _currentUser;
+    private readonly IConfiguration _configuration;
+
     public abstract string ServiceName { get; }
 
     public string Url => _client.BaseAddress!.ToString();
 
-    protected RestServiceBase(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser)
+    private bool IsThirdParty => _configuration.GetValue<bool>($"Services:{ServiceName}:IsThirdParty");
+
+    protected RestServiceBase(ICounterManager counterManager, IHttpClientFactory httpClientFactory, ICurrentUserProvider currentUser,
+        IConfiguration configuration)
     {
         _counterManager = counterManager;
         _client = httpClientFactory.CreateClient(ServiceName);
         _currentUser = currentUser;
+        _configuration = configuration;
     }
 
     protected async Task<TResult?> ProcessRequestAsync<TResult>(Func<HttpRequestMessage> createRequest, TimeSpan timeout)
@@ -110,7 +117,7 @@ public abstract class RestServiceBase : IClient
     {
         var message = messageFactory();
 
-        if (_currentUser.IsLogged)
+        if (_currentUser.IsLogged && !IsThirdParty)
             message.Headers.Add("Authorization", _currentUser.EncodedJwtToken);
 
         return message;
