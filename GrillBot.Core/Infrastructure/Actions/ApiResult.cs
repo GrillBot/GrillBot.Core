@@ -29,9 +29,12 @@ public class ApiResult
     public static ApiResult NotFound(object? data = null)
         => new(StatusCodes.Status404NotFound, data);
 
-    public static ApiResult BadRequest(ModelStateDictionary? modelState = null)
+    public static ApiResult BadRequest()
+        => new(StatusCodes.Status400BadRequest);
+
+    public static ApiResult BadRequest(ModelStateDictionary? modelState)
         => BadRequest(modelState is null ? null : new ValidationProblemDetails(modelState));
 
-    public static ApiResult BadRequest(ValidationProblemDetails? validationErrors = null)
+    public static ApiResult BadRequest(ValidationProblemDetails? validationErrors)
         => new(StatusCodes.Status400BadRequest, validationErrors);
 }
