@@ -1,6 +1,7 @@
 ﻿using GrillBot.Core.Infrastructure.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace GrillBot.Core.Tests.Infrastructure.Actions;
 
@@ -63,7 +64,17 @@ public class ApiResultTests
     [TestMethod]
     public void BadRequest()
     {
-        var result = ApiResult.BadRequest();
+        var result = ApiResult.BadRequest((ValidationProblemDetails?)null);
+
+        Assert.IsNotNull(result);
+        Assert.IsNull(result.Data);
+        Assert.AreEqual(StatusCodes.Status400BadRequest, result.StatusCode);
+    }
+
+    [TestMethod]
+    public void BadRequest_ModelState()
+    {
+        var result = ApiResult.BadRequest((ModelStateDictionary?)null);
 
         Assert.IsNotNull(result);
         Assert.IsNull(result.Data);

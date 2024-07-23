@@ -5,6 +5,7 @@ using GrillBot.Core.Services.ImageProcessing;
 using GrillBot.Core.Services.PointsService;
 using GrillBot.Core.Services.RemindService;
 using GrillBot.Core.Services.RubbergodService;
+using GrillBot.Core.Services.SearchingService;
 using GrillBot.Core.Services.UserMeasures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,5 +42,6 @@ public static class ServicesExtensions
         services.AddService<IUserMeasuresServiceClient, UserMeasuresServiceClient>(configuration, "UserMeasures");
         services.AddService<IEmoteServiceClient, EmoteServiceClient>(configuration, "Emote");
         services.AddService<IRemindServiceClient, RemindServiceClient>(configuration, "Remind");
+        services.AddService<ISearchingServiceClient, SearchingServiceClient>(configuration, "Searching");
     }
 }

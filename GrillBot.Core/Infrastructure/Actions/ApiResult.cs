@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace GrillBot.Core.Infrastructure.Actions;
 
@@ -27,6 +28,9 @@ public class ApiResult
 
     public static ApiResult NotFound(object? data = null)
         => new(StatusCodes.Status404NotFound, data);
+
+    public static ApiResult BadRequest(ModelStateDictionary? modelState = null)
+        => BadRequest(modelState is null ? null : new ValidationProblemDetails(modelState));
 
     public static ApiResult BadRequest(ValidationProblemDetails? validationErrors = null)
         => new(StatusCodes.Status400BadRequest, validationErrors);
