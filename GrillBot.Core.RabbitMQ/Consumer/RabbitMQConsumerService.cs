@@ -75,7 +75,7 @@ public class RabbitMQConsumerService : IHostedService
             var handlerType = handler.GetType();
             var body = @event.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
-            var headers = @event.BasicProperties?.Headers?.ToDictionary(o => o.Key, o => o.Value.ToString() ?? "")
+            var headers = @event.BasicProperties?.Headers?.ToDictionary(o => o.Key, o => HeaderToString(o.Value))
                 ?? new Dictionary<string, string>();
 
             logger.LogInformation("Received new message. Length: {Length}. Handler: {Name}", body.Length, handlerType.Name);
@@ -107,5 +107,12 @@ public class RabbitMQConsumerService : IHostedService
                 queueModel.BasicAck(@event.DeliveryTag, false);
             }
         }
+    }
+
+    private static string HeaderToString(object value)
+    {
+        if (value is byte[] bytes)
+            return Encoding.UTF8.GetString(bytes);
+        return value.ToString() ?? "";
     }
 }
