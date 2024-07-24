@@ -1,4 +1,5 @@
-﻿using GrillBot.Core.RabbitMQ;
+﻿using Discord;
+using GrillBot.Core.RabbitMQ;
 
 namespace GrillBot.Core.Services.SearchingService.Models.Events;
 
@@ -23,5 +24,10 @@ public class SearchItemPayload : IPayload
         ChannelId = channelId;
         Content = content;
         ValidToUtc = validToUtc;
+    }
+
+    public SearchItemPayload(IUser user, IGuild guild, IChannel channel, string content, DateTime? validToUtc)
+        : this(user.Id.ToString(), guild.Id.ToString(), channel.Id.ToString(), content, validToUtc)
+    {
     }
 }
