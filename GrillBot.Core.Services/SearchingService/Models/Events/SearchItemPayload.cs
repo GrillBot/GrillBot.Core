@@ -11,4 +11,17 @@ public class SearchItemPayload : IPayload
     public string ChannelId { get; set; } = null!;
     public string Content { get; set; } = null!;
     public DateTime? ValidToUtc { get; set; }
+
+    public SearchItemPayload()
+    {
+    }
+
+    public SearchItemPayload(string userId, string guildId, string channelId, string content, DateTime? validToUtc)
+    {
+        UserId = userId;
+        GuildId = guildId;
+        ChannelId = channelId;
+        Content = content;
+        ValidToUtc = validToUtc;
+    }
 }
