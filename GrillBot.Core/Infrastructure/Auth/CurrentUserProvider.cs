@@ -59,7 +59,7 @@ public class CurrentUserProvider : ICurrentUserProvider
         if (!string.IsNullOrEmpty(EncodedJwtToken))
             throw new InvalidOperationException("Unable assign JWT token if was provided from request.");
 
-        _headers.Add(AUTH_HEADER_NAME, $"Bearer {jwtToken}");
+        _headers[AUTH_HEADER_NAME] = $"Bearer {jwtToken}";
         _jwtToken = ReadJwtToken();
     }
 }
