@@ -15,7 +15,7 @@ public class CurrentUserProvider : ICurrentUserProvider
     private readonly Dictionary<string, string> _headers;
     private JwtSecurityToken? _jwtToken;
 
-    public string? EncodedJwtToken => _headers.TryGetValue(AUTH_HEADER_NAME, out var auth) ? auth : null;
+    public string? EncodedJwtToken => _headers.TryGetValue(AUTH_HEADER_NAME, out var auth) && auth.StartsWith("Bearer") ? auth : null;
     public bool IsLogged => _jwtToken is not null;
     public bool IsThirdParty => !string.IsNullOrEmpty(ThirdPartyKey);
 
@@ -43,10 +43,7 @@ public class CurrentUserProvider : ICurrentUserProvider
 
     private JwtSecurityToken? ReadJwtToken()
     {
-        if (string.IsNullOrEmpty(EncodedJwtToken) || !EncodedJwtToken.StartsWith("Bearer"))
-            return null;
-
-        var token = EncodedJwtToken.Replace("Bearer", "").Trim();
+        var token = EncodedJwtToken?.Replace("Bearer", "")?.Trim();
         if (string.IsNullOrEmpty(token))
             return null;
 
@@ -59,7 +56,7 @@ public class CurrentUserProvider : ICurrentUserProvider
 
     public void SetCustomToken(string jwtToken)
     {
-        if (_headers.ContainsKey(AUTH_HEADER_NAME))
+        if (!string.IsNullOrEmpty(EncodedJwtToken))
             throw new InvalidOperationException("Unable assign JWT token if was provided from request.");
 
         _headers.Add(AUTH_HEADER_NAME, $"Bearer {jwtToken}");
