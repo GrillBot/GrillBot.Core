@@ -9,6 +9,9 @@ public class CurrentUserProvider : ICurrentUserProvider
 {
     private const string AUTH_HEADER_NAME = "Authorization";
 
+    public const string GRILLBOT_PERMISSIONS_KEY = "GrillBot:Permissions";
+    public const string GRILLBOT_THIRD_PARTY_KEY = "GrillBot:ThirdPartyKey";
+
     private readonly Dictionary<string, string> _headers;
     private JwtSecurityToken? _jwtToken;
 
@@ -19,8 +22,8 @@ public class CurrentUserProvider : ICurrentUserProvider
     public string? Name => ReadClaim(ClaimTypes.Name) ?? ReadClaim("unique_name");
     public string? Id => ReadClaim(ClaimTypes.NameIdentifier) ?? ReadClaim("nameid");
     public string? Role => ReadClaim(ClaimTypes.Role) ?? ReadClaim("role");
-    public string[] Permissions => ReadClaim("GrillBot:Permissions")?.Split(',') ?? Array.Empty<string>();
-    public string? ThirdPartyKey => ReadClaim("GrillBot:ThirdPartyKey");
+    public string[] Permissions => ReadClaim(GRILLBOT_PERMISSIONS_KEY)?.Split(',') ?? Array.Empty<string>();
+    public string? ThirdPartyKey => ReadClaim(GRILLBOT_THIRD_PARTY_KEY);
 
     [ExcludeFromCodeCoverage]
     public CurrentUserProvider(IHttpContextAccessor httpContextAccessor)
@@ -40,7 +43,10 @@ public class CurrentUserProvider : ICurrentUserProvider
 
     private JwtSecurityToken? ReadJwtToken()
     {
-        var token = EncodedJwtToken?.Replace("Bearer", "")?.Trim();
+        if (string.IsNullOrEmpty(EncodedJwtToken) || !EncodedJwtToken.StartsWith("Bearer"))
+            return null;
+
+        var token = EncodedJwtToken.Replace("Bearer", "").Trim();
         if (string.IsNullOrEmpty(token))
             return null;
 

@@ -34,4 +34,20 @@ public class CurrentUserProviderTests
         Assert.IsNotNull(provider.Role);
         Assert.IsNull(provider.ThirdPartyKey);
     }
+
+    [TestMethod]
+    public void WithToken_InvalidToken()
+    {
+        var headers = new Dictionary<string, string>
+        {
+            { "Authorization", $"ApiKey {Guid.NewGuid()}" }
+        };
+
+        var provider = new CurrentUserProvider(headers);
+
+        Assert.IsNotNull(provider.EncodedJwtToken);
+        Assert.IsFalse(provider.IsLogged);
+        Assert.IsFalse(provider.IsThirdParty);
+        Assert.IsNull(provider.Name);
+    }
 }
