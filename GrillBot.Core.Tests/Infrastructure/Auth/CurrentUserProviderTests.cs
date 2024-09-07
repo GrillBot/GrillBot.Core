@@ -45,7 +45,7 @@ public class CurrentUserProviderTests
 
         var provider = new CurrentUserProvider(headers);
 
-        Assert.IsNotNull(provider.EncodedJwtToken);
+        Assert.IsNull(provider.EncodedJwtToken);
         Assert.IsFalse(provider.IsLogged);
         Assert.IsFalse(provider.IsThirdParty);
         Assert.IsNull(provider.Name);
