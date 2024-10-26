@@ -28,7 +28,14 @@ public class ButtonComponent
     public ButtonBuilder ToBuilder()
     {
         var emote = CreateEmote();
-        return new ButtonBuilder(Label, CustomId, Style, Url, emote, IsDisabled);
+
+        return new ButtonBuilder()
+            .WithLabel(Label)
+            .WithCustomId(CustomId)
+            .WithStyle(Style)
+            .WithUrl(Url)
+            .WithEmote(emote)
+            .WithDisabled(IsDisabled);
     }
 
     private IEmote? CreateEmote()
