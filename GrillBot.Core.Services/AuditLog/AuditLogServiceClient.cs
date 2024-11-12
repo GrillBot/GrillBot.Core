@@ -67,4 +67,7 @@ public class AuditLogServiceClient : RestServiceBase, IAuditLogServiceClient
 
     public async Task<StatusInfo> GetStatusInfoAsync()
         => (await ProcessRequestAsync<StatusInfo>(() => HttpMethod.Get.ToRequest("api/diag/status"), _defaultTimeout))!;
+
+    public Task DeleteItemAsync(Guid id)
+        => ProcessRequestAsync(() => HttpMethod.Delete.ToRequest($"api/logItem/{id}"), _defaultTimeout);
 }

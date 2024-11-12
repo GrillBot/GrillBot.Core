@@ -28,4 +28,5 @@ public interface IAuditLogServiceClient : IClient
     Task<List<DashboardInfoRow>> GetJobsDashboardAsync();
     Task<TodayAvgTimes> GetTodayAvgTimes();
     Task<StatusInfo> GetStatusInfoAsync();
+    Task DeleteItemAsync(Guid id);
 }
