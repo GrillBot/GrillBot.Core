@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -97,5 +98,23 @@ public static class CoreExtensions
     {
         var manager = new TextsManager(basePath, fileMask);
         return services.AddSingleton<ITextsManager>(manager);
+    }
+
+    public static IServiceCollection AddRedisCaching(this IServiceCollection services, IConfiguration configuration)
+    {
+        var redisConfig = configuration.GetSection("Redis");
+        if (!redisConfig.Exists())
+            return services;
+
+        return services.AddStackExchangeRedisCache(opt =>
+        {
+            opt.Configuration = redisConfig["Endpoint"]!;
+            opt.ConfigurationOptions = new()
+            {
+                AbortOnConnectFail = true,
+                EndPoints = { redisConfig["Endpoint"]! },
+                Password = redisConfig["Password"]!
+            };
+        });
     }
 }
