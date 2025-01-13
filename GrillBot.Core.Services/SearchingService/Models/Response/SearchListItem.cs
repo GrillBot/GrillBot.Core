@@ -8,5 +8,6 @@ public record SearchListItem(
     string Content,
     DateTime CreatedAtUtc,
     DateTime ValidToUtc,
-    bool IsInvalid
+    bool IsInvalid,
+    bool IsDeleted
 );
