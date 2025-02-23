@@ -20,11 +20,7 @@ public static class DistributedCacheExtensions
         var cacheOptions = new DistributedCacheEntryOptions();
 
         if (expiration is not null)
-        {
-            cacheOptions
-                .SetAbsoluteExpiration(expiration.Value)
-                .SetSlidingExpiration(new TimeSpan(expiration.Value.Ticks / 2));
-        }
+            cacheOptions.SetAbsoluteExpiration(expiration.Value);
 
         var json = JsonSerializer.Serialize(value, _jsonOptions);
         var bytes = Encoding.UTF8.GetBytes(json);
