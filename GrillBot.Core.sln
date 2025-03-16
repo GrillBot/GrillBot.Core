@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrillBot.Core.Redis.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrillBot.Core.Tests.Shared", "GrillBot.Core.Tests.Shared\GrillBot.Core.Tests.Shared.csproj", "{9862281D-0E24-4DE9-8A86-CF80C0D663EA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E93C1443-C17D-46F9-9A63-4B08EB381E46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{84ADA844-3A9D-4635-B006-7148B3D7A05B} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
+		{9C898C46-CD6D-463E-A837-1C4A314FE15A} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
+		{9862281D-0E24-4DE9-8A86-CF80C0D663EA} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2126920-802D-4561-B18D-BB1C35AE37C1}
