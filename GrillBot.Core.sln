@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrillBot.Core.Tests.Shared"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E93C1443-C17D-46F9-9A63-4B08EB381E46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrillBot.Core.Metrics", "GrillBot.Core.Metrics\GrillBot.Core.Metrics.csproj", "{0D699C02-2597-4016-99BB-28B74688979A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{9862281D-0E24-4DE9-8A86-CF80C0D663EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9862281D-0E24-4DE9-8A86-CF80C0D663EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9862281D-0E24-4DE9-8A86-CF80C0D663EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D699C02-2597-4016-99BB-28B74688979A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D699C02-2597-4016-99BB-28B74688979A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D699C02-2597-4016-99BB-28B74688979A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D699C02-2597-4016-99BB-28B74688979A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

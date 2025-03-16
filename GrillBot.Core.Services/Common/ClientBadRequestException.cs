@@ -5,7 +5,7 @@ namespace GrillBot.Core.Services.Common;
 
 public class ClientBadRequestException : ClientException
 {
-    public Dictionary<string, string[]> ValidationErrors { get; } = new();
+    public Dictionary<string, string[]> ValidationErrors { get; } = [];
 
     public ClientBadRequestException()
     {
