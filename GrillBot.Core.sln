@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrillBot.Core.Tests", "Gril
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrillBot.Core.Services", "GrillBot.Core.Services\GrillBot.Core.Services.csproj", "{FF70567E-0805-4712-9137-3FA8B5A0480F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrillBot.Core.RabbitMQ", "GrillBot.Core.RabbitMQ\GrillBot.Core.RabbitMQ.csproj", "{8B2DBDCE-DA23-42C4-8BEA-90A3909FFA56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrillBot.Core.RabbitMQ", "GrillBot.Core.RabbitMQ\GrillBot.Core.RabbitMQ.csproj", "{8B2DBDCE-DA23-42C4-8BEA-90A3909FFA56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrillBot.Core.Redis", "GrillBot.Core.Redis\GrillBot.Core.Redis.csproj", "{CA03F25C-9811-4436-9518-C634C27476D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{8B2DBDCE-DA23-42C4-8BEA-90A3909FFA56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B2DBDCE-DA23-42C4-8BEA-90A3909FFA56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B2DBDCE-DA23-42C4-8BEA-90A3909FFA56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA03F25C-9811-4436-9518-C634C27476D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA03F25C-9811-4436-9518-C634C27476D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA03F25C-9811-4436-9518-C634C27476D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA03F25C-9811-4436-9518-C634C27476D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

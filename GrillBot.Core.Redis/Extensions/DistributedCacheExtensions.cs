@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace GrillBot.Core.Caching;
+namespace GrillBot.Core.Redis.Extensions;
 
 public static class DistributedCacheExtensions
 {

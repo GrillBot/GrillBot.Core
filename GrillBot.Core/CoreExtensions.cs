@@ -2,8 +2,6 @@
 using GrillBot.Core.Database;
 using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Infrastructure.Auth;
-using GrillBot.Core.Managers.Discord;
-using GrillBot.Core.Managers.Localization;
 using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Managers.Random;
 using GrillBot.Core.Services.Diagnostics;
@@ -11,7 +9,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -91,23 +88,5 @@ public static class CoreExtensions
 
         services.AddSingleton<IDiscordClient>(_ => null!);
         return services;
-    }
-
-    public static IServiceCollection AddRedisCaching(this IServiceCollection services, IConfiguration configuration)
-    {
-        var redisConfig = configuration.GetSection("Redis");
-        if (!redisConfig.Exists())
-            return services;
-
-        return services.AddStackExchangeRedisCache(opt =>
-        {
-            opt.Configuration = redisConfig["Endpoint"]!;
-            opt.ConfigurationOptions = new()
-            {
-                AbortOnConnectFail = true,
-                EndPoints = { redisConfig["Endpoint"]! },
-                Password = redisConfig["Password"]!
-            };
-        });
     }
 }
