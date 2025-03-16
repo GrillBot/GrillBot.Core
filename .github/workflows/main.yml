@@ -19,6 +19,7 @@ jobs:
       ServicesPackage: ${{ steps.filter.outputs.ServicesPackage }}
       RabbitMQPackage: ${{ steps.filter.outputs.RabbitMQpackage }}
       RedisPackage: ${{ steps.filter.outputs.RedisPackage }}
+      MetricsPackage: ${{ steps.filter.outputs.MetricsPackage }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -35,6 +36,8 @@ jobs:
               - 'GrillBot.Core.RabbitMQ/GrillBot.Core.RabbitMQ.csproj'
             RedisPackage:
               - 'GrillBot.Core.Redis/GrillBot.Core.Redis.csproj'
+            MetricsPackage:
+              - 'GrillBot.Core.Metrics/GrillBot.Core.Metrics.csproj'
   BuildPackages:
     runs-on: ubuntu-latest
     steps:
@@ -61,7 +64,9 @@ jobs:
       - name: GrillBot.Core.Redis
         run: |
           dotnet restore -r linux-x64 GrillBot.Core.Redis/
+          dotnet restore -r linux-x64 GrillBot.Core.Redis.Tests/
           dotnet build -c Release --no-self-contained GrillBot.Core.Redis/
+          dotnet build -c Release --no-self-contained GrillBot.Core.Redis.Tests/
   TestPackages:
     runs-on: ubuntu-latest
     needs: [BuildPackages]
@@ -121,3 +126,10 @@ jobs:
           dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.Redis/
           dotnet pack -c Release --nologo --include-symbols GrillBot.Core.Redis/
           dotnet nuget push GrillBot.Core.Redis/bin/Release/*.nupkg --skip-duplicate
+      - name: GrillBot.Core.Metrics
+        if: needs.CheckNugetPublishPossibility.outputs.MetricsPackage == 'true'
+        run: |
+          dotnet restore -r linux-x64 GrillBot.Core.Metrics/
+          dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.Metrics/
+          dotnet pack -c Release --nologo --include-symbols GrillBot.Core.Metrics/
+          dotnet nuget push GrillBot.Core.Metrics/bin/Release/*.nupkg --skip-duplicate

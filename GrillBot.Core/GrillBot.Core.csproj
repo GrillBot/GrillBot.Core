@@ -21,8 +21,4 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.14" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Caching\" />
-	</ItemGroup>
-
 </Project>
