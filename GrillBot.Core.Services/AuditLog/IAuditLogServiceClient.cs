@@ -7,10 +7,12 @@ using GrillBot.Core.Services.AuditLog.Models.Response.Info.Dashboard;
 using GrillBot.Core.Services.AuditLog.Models.Response.Search;
 using GrillBot.Core.Services.AuditLog.Models.Response.Statistics;
 using GrillBot.Core.Services.Common;
+using GrillBot.Core.Services.Common.Attributes;
 using Refit;
 
 namespace GrillBot.Core.Services.AuditLog;
 
+[Service("AuditLog")]
 public interface IAuditLogServiceClient : IServiceClient
 {
     [Post("api/logItem/search")]

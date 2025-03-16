@@ -1,11 +1,13 @@
 ﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
+using GrillBot.Core.Services.Common.Attributes;
 using GrillBot.Core.Services.Emote.Models.Request;
 using GrillBot.Core.Services.Emote.Models.Response;
 using Refit;
 
 namespace GrillBot.Core.Services.Emote;
 
+[Service("Emote")]
 public interface IEmoteServiceClient : IServiceClient
 {
     [Delete("api/statistics/{guildId}/{emoteId}")]
