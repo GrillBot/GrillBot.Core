@@ -9,7 +9,7 @@ public class DiagnosticInfo
     public long RequestsCount { get; set; }
     public long CpuTime { get; set; }
     public DateTime MeasuredFrom { get; set; }
-    public List<RequestStatistics> Endpoints { get; set; } = new();
+    public List<RequestStatistics> Endpoints { get; set; } = [];
     public Dictionary<string, long>? DatabaseStatistics { get; set; }
-    public List<OperationStatItem> Operations { get; set; } = new();
+    public List<OperationStatItem> Operations { get; set; } = [];
 }

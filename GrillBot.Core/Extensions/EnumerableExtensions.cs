@@ -8,7 +8,8 @@ public static class EnumerableExtensions
 
         foreach (var item in collection)
         {
-            if (await func(item)) result.Add(item);
+            if (await func(item))
+                result.Add(item);
         }
 
         return result;
@@ -21,7 +22,8 @@ public static class EnumerableExtensions
             yield return item;
 
             var childrenData = getChildren(item);
-            if (childrenData == null) yield break;
+            if (childrenData == null)
+                yield break;
 
             foreach (var child in childrenData.Flatten(getChildren))
                 yield return child;

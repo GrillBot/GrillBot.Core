@@ -16,7 +16,7 @@ public class RequireSomeItemInCollectionAttribute : ValidationAttribute
 
         var enumerator = enumerable.GetEnumerator();
         if (!enumerator.MoveNext())
-            return new ValidationResult(ErrorMessage, new[] { validationContext.MemberName! });
+            return new ValidationResult(ErrorMessage, [validationContext.MemberName!]);
         return ValidationResult.Success;
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+#pragma warning disable RCS1158 // Static member in generic type should use a type parameter
 namespace GrillBot.Core.Models.Pagination;
 
 public class PaginatedResponse<TModel>
 {
-    public List<TModel> Data { get; set; } = new();
+    public List<TModel> Data { get; set; } = [];
     public int Page { get; set; }
     public long TotalItemsCount { get; set; }
 

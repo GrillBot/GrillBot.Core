@@ -2,8 +2,8 @@
 
 public class CounterManager : ICounterManager
 {
-    private List<CounterItem> ActiveCounters { get; } = new();
-    private Dictionary<string, CounterStats> Stats { get; } = new();
+    private List<CounterItem> ActiveCounters { get; } = [];
+    private Dictionary<string, CounterStats> Stats { get; } = [];
     private readonly object _lock = new();
 
     public CounterItem Create(string section)
@@ -25,7 +25,9 @@ public class CounterManager : ICounterManager
 
             if (!Stats.ContainsKey(item.Section))
                 Stats.Add(item.Section, new CounterStats { Section = item.Section });
-            Stats[item.Section].Increment((DateTime.Now - item.StartAt).TotalMilliseconds);
+
+            var now = DateTime.Now;
+            Stats[item.Section].Increment((now - item.StartAt).TotalMilliseconds);
         }
     }
 

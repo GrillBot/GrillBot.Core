@@ -1,4 +1,5 @@
-﻿namespace GrillBot.Core.IO;
+﻿#pragma warning disable IDE0290 // Use primary constructor
+namespace GrillBot.Core.IO;
 
 public sealed class TemporaryFile : IDisposable
 {

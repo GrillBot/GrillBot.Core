@@ -44,7 +44,6 @@ public static class CoreExtensions
     public static IServiceCollection AddCoreManagers(this IServiceCollection services)
     {
         services.TryAddSingleton<ICounterManager, CounterManager>();
-        services.AddScoped<IEmoteManager, EmoteManager>();
         services.AddSingleton<IRandomManager, RandomManager>();
 
         services.AddHttpContextAccessor();
@@ -92,12 +91,6 @@ public static class CoreExtensions
 
         services.AddSingleton<IDiscordClient>(_ => null!);
         return services;
-    }
-
-    public static IServiceCollection AddLocalization(this IServiceCollection services, string basePath, string fileMask)
-    {
-        var manager = new TextsManager(basePath, fileMask);
-        return services.AddSingleton<ITextsManager>(manager);
     }
 
     public static IServiceCollection AddRedisCaching(this IServiceCollection services, IConfiguration configuration)

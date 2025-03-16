@@ -13,10 +13,10 @@ public class DiscordIdAttribute : ValidationAttribute
         {
             null => ValidationResult.Success,
             ulong discordId => Check(discordId, memberName),
-            string stringValue => CheckCollection(new[] { stringValue }, validationContext),
+            string stringValue => CheckCollection([stringValue], validationContext),
             List<string> stringValues => CheckCollection(stringValues, validationContext),
             List<ulong> ids => CheckCollection(ids.Select(o => o.ToString()), validationContext),
-            _ => new ValidationResult("Unsupported type of Discord identifier", new[] { memberName })
+            _ => new ValidationResult("Unsupported type of Discord identifier", [memberName])
         };
     }
 
@@ -27,7 +27,7 @@ public class DiscordIdAttribute : ValidationAttribute
         {
             var memberName = $"{context.MemberName}.stringValues[{i}]";
             if (!ulong.TryParse(value, out var discordId))
-                return new ValidationResult("Provided value is not discord ID.", new[] { memberName });
+                return new ValidationResult("Provided value is not discord ID.", [memberName]);
 
             var checkResult = Check(discordId, memberName);
             if (checkResult != ValidationResult.Success)
@@ -42,7 +42,7 @@ public class DiscordIdAttribute : ValidationAttribute
     private static ValidationResult? Check(ulong id, string memberName)
     {
         if (id == 0 || (id >> 22) == 0)
-            return new ValidationResult("Invalid format of discord ID.", new[] { memberName });
+            return new ValidationResult("Invalid format of discord ID.", [memberName]);
 
         return ValidationResult.Success;
     }

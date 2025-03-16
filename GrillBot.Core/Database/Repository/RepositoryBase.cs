@@ -3,42 +3,35 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GrillBot.Core.Database.Repository;
 
-public abstract class RepositoryBase<TContext> where TContext : DbContext
+public abstract class RepositoryBase<TContext>(TContext _context, ICounterManager _counterManager) where TContext : DbContext
 {
-    protected TContext Context { get; }
-    protected ICounterManager CounterManager { get; }
-
-    protected RepositoryBase(TContext context, ICounterManager counterManager)
-    {
-        Context = context;
-        CounterManager = counterManager;
-    }
-
     public Task AddAsync<TEntity>(TEntity entity) where TEntity : class
-        => Context.Set<TEntity>().AddAsync(entity).AsTask();
+        => _context.Set<TEntity>().AddAsync(entity).AsTask();
 
     public Task AddCollectionAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
-        => Context.Set<TEntity>().AddRangeAsync(entities);
+        => _context.Set<TEntity>().AddRangeAsync(entities);
 
     public void Remove<TEntity>(TEntity entity) where TEntity : class
-        => Context.Set<TEntity>().Remove(entity);
+        => _context.Set<TEntity>().Remove(entity);
 
     public void RemoveCollection<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
-        => Context.Set<TEntity>().RemoveRange(entities);
+        => _context.Set<TEntity>().RemoveRange(entities);
 
     public async Task<int> CommitAsync()
     {
-        using (CounterManager.Create("Repository.Commit"))
-        {
-            return await Context.SaveChangesAsync();
-        }
+        using (_counterManager.Create("Repository.Commit"))
+            return await _context.SaveChangesAsync();
+    }
+
+    public bool IsPendingMigrations()
+    {
+        using (_counterManager.Create("Repository.Migrations"))
+            return _context.Database.GetPendingMigrations().Any();
     }
 
     public async Task<bool> IsPendingMigrationsAsync()
     {
-        using (CounterManager.Create("Repository.Migrations"))
-        {
-            return (await Context.Database.GetPendingMigrationsAsync()).Any();
-        }
+        using (_counterManager.Create("Repository.Migrations"))
+            return (await _context.Database.GetPendingMigrationsAsync()).Any();
     }
 }

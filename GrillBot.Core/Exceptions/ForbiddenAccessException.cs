@@ -1,8 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿namespace GrillBot.Core.Exceptions;
 
-namespace GrillBot.Core.Exceptions;
-
-[Serializable]
 public class ForbiddenAccessException : Exception
 {
     public ForbiddenAccessException()
@@ -14,10 +11,6 @@ public class ForbiddenAccessException : Exception
     }
 
     public ForbiddenAccessException(string message, Exception innerException) : base(message, innerException)
-    {
-    }
-
-    protected ForbiddenAccessException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
 }

@@ -3,21 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GrillBot.Core.Database.Repository;
 
-public abstract class SubRepositoryBase<TContext> where TContext : DbContext
+public abstract class SubRepositoryBase<TContext>(TContext _context, ICounterManager _counterManager) where TContext : DbContext
 {
-    protected TContext Context { get; }
-    private ICounterManager CounterManager { get; }
-
-    protected SubRepositoryBase(TContext context, ICounterManager counterManager)
-    {
-        Context = context;
-        CounterManager = counterManager;
-    }
-
     protected IQueryable<TEntity> CreateQuery<TEntity>(IQueryableModel<TEntity> parameters, bool disableTracking = false,
         bool splitQuery = false) where TEntity : class
     {
-        var query = Context.Set<TEntity>().AsQueryable();
+        var query = _context.Set<TEntity>().AsQueryable();
 
         query = parameters.SetIncludes(query);
         query = parameters.SetQuery(query);
@@ -32,5 +23,5 @@ public abstract class SubRepositoryBase<TContext> where TContext : DbContext
     }
 
     protected CounterItem CreateCounter()
-        => CounterManager.Create($"Repository.{GetType().Name.Replace("Repository", "")}");
+        => _counterManager.Create($"Repository.{GetType().Name.Replace("Repository", "")}");
 }

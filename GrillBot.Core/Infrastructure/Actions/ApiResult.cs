@@ -4,23 +4,19 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace GrillBot.Core.Infrastructure.Actions;
 
-public class ApiResult
+public class ApiResult(int statusCode, object? data = null)
 {
-    public int StatusCode { get; }
-    public object? Data { get; }
-
-    public ApiResult(int statusCode, object? data = null)
-    {
-        Data = data;
-        StatusCode = statusCode;
-    }
+    public int StatusCode => statusCode;
+    public object? Data => data;
 
     public IActionResult ToApiResult()
     {
         if (Data is IActionResult actionResult)
             return actionResult;
 
-        return Data == null ? new StatusCodeResult(StatusCode) : new ObjectResult(Data) { StatusCode = StatusCode };
+        return Data == null ?
+            new StatusCodeResult(StatusCode) :
+            new ObjectResult(Data) { StatusCode = StatusCode };
     }
 
     public static ApiResult Ok(object? data = null)

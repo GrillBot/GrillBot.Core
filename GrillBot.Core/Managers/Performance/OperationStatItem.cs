@@ -8,5 +8,5 @@ public class OperationStatItem
 
     public long AverageTime => Count == 0 ? 0 : TotalTime / Count;
 
-    public List<OperationStatItem> ChildItems { get; set; } = new();
+    public List<OperationStatItem> ChildItems { get; set; } = [];
 }

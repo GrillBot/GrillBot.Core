@@ -5,36 +5,29 @@ using GrillBot.Core.Services.Diagnostics.Models;
 
 namespace GrillBot.Core.Services.Diagnostics;
 
-public class DiagnosticsProvider : IDiagnosticsProvider
+public class DiagnosticsProvider(DiagnosticsManager _manager, ICounterManager _counterManager) : IDiagnosticsProvider
 {
-    private DiagnosticsManager Manager { get; }
-    private IStatisticsProvider? StatisticsProvider { get; }
-    private ICounterManager CounterManager { get; }
-
-    public DiagnosticsProvider(DiagnosticsManager manager, ICounterManager counterManager)
-    {
-        Manager = manager;
-        CounterManager = counterManager;
-    }
+    private readonly IStatisticsProvider? _statisticsProvider;
 
     public DiagnosticsProvider(DiagnosticsManager manager, IStatisticsProvider statisticsProvider, ICounterManager counterManager) : this(manager, counterManager)
     {
-        StatisticsProvider = statisticsProvider;
+        _statisticsProvider = statisticsProvider;
     }
 
     public async Task<DiagnosticInfo> GetInfoAsync()
     {
         var process = Process.GetCurrentProcess();
-        var databaseStatistics = StatisticsProvider == null ? null : await StatisticsProvider.GetTableStatisticsAsync();
-        var operationStats = CounterManager.GetStatistics();
+        var databaseStatistics = _statisticsProvider is null ? null : await _statisticsProvider.GetTableStatisticsAsync();
+        var operationStats = _counterManager.GetStatistics();
+        var now = DateTime.Now;
 
         return new DiagnosticInfo
         {
-            Endpoints = Manager.Statistics,
-            Uptime = Convert.ToInt64((DateTime.Now - process.StartTime).TotalMilliseconds),
+            Endpoints = _manager.Statistics,
+            Uptime = Convert.ToInt64((now - process.StartTime).TotalMilliseconds),
             CpuTime = Convert.ToInt64(process.TotalProcessorTime.TotalMilliseconds),
             MeasuredFrom = process.StartTime,
-            RequestsCount = Manager.Statistics.Sum(o => o.Count),
+            RequestsCount = _manager.Statistics.Sum(o => o.Count),
             UsedMemory = process.WorkingSet64,
             DatabaseStatistics = databaseStatistics,
             Operations = OperationCounterConverter.ComputeTree(operationStats)

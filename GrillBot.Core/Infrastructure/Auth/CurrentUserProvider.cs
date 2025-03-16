@@ -22,7 +22,7 @@ public class CurrentUserProvider : ICurrentUserProvider
     public string? Name => ReadClaim(ClaimTypes.Name) ?? ReadClaim("unique_name");
     public string? Id => ReadClaim(ClaimTypes.NameIdentifier) ?? ReadClaim("nameid");
     public string? Role => ReadClaim(ClaimTypes.Role) ?? ReadClaim("role");
-    public string[] Permissions => ReadClaim(GRILLBOT_PERMISSIONS_KEY)?.Split(',') ?? Array.Empty<string>();
+    public string[] Permissions => ReadClaim(GRILLBOT_PERMISSIONS_KEY)?.Split(',') ?? [];
     public string? ThirdPartyKey => ReadClaim(GRILLBOT_THIRD_PARTY_KEY);
 
     [ExcludeFromCodeCoverage]

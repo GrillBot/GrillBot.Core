@@ -1,8 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿namespace GrillBot.Core.Exceptions;
 
-namespace GrillBot.Core.Exceptions;
-
-[Serializable]
 public class GrillBotException : Exception
 {
     public GrillBotException()
@@ -14,10 +11,6 @@ public class GrillBotException : Exception
     }
 
     public GrillBotException(string message, Exception innerException) : base(message, innerException)
-    {
-    }
-
-    protected GrillBotException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
 }

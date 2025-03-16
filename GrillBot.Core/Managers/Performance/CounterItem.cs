@@ -1,4 +1,5 @@
-﻿namespace GrillBot.Core.Managers.Performance;
+﻿#pragma warning disable IDE0290 // Use primary constructor
+namespace GrillBot.Core.Managers.Performance;
 
 public sealed class CounterItem : IDisposable
 {

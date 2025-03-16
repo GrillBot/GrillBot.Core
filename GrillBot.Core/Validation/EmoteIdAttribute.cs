@@ -16,6 +16,6 @@ public class EmoteIdAttribute : ValidationAttribute
         if (value is not string val)
             return ValidationResult.Success;
 
-        return !Emote.TryParse(val, out _) ? new ValidationResult(ErrorMessage, new[] { validationContext.MemberName! }) : ValidationResult.Success;
+        return !Emote.TryParse(val, out _) ? new ValidationResult(ErrorMessage, [validationContext.MemberName!]) : ValidationResult.Success;
     }
 }

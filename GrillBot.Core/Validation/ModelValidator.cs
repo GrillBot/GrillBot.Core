@@ -12,7 +12,7 @@ public abstract class ModelValidator<TModel> where TModel : class
     protected static ValidationResult? CheckUtcDateTime(DateTime? dateTime, string propertyName)
     {
         if (dateTime.HasValue && dateTime.Value.Kind != DateTimeKind.Utc)
-            return new ValidationResult("Only UTC value is allowed.", new[] { propertyName });
+            return new ValidationResult("Only UTC value is allowed.", [propertyName]);
         return null;
     }
 
@@ -21,7 +21,7 @@ public abstract class ModelValidator<TModel> where TModel : class
         if (from is null || to is null)
             return null;
 
-        return from > to ? new ValidationResult("Unallowed interval of duration range.", new[] { fromPropertyName, toPropertyName }) : null;
+        return from > to ? new ValidationResult("Unallowed interval of duration range.", [fromPropertyName, toPropertyName]) : null;
     }
 
     protected static ValidationResult? CheckDateTimeRange(DateTime? from, DateTime? to, string fromPropertyName, string toPropertyName)
@@ -29,6 +29,6 @@ public abstract class ModelValidator<TModel> where TModel : class
         if (from is null || to is null)
             return null;
 
-        return from > to ? new ValidationResult("Unallowed interval of datetime duration range.", new[] { fromPropertyName, toPropertyName }) : null;
+        return from > to ? new ValidationResult("Unallowed interval of datetime duration range.", [fromPropertyName, toPropertyName]) : null;
     }
 }

@@ -3,7 +3,7 @@
 public class RandomManager : IRandomManager
 {
     private readonly object _locker = new();
-    private Dictionary<string, System.Random> Generators { get; } = new();
+    private Dictionary<string, System.Random> Generators { get; } = [];
 
     private System.Random GetOrCreate(string key)
     {

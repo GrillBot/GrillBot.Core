@@ -18,11 +18,11 @@ public class RequireTimezoneAttribute : ValidationAttribute
         if (value is DateTime dateTime)
         {
             if (dateTime.Kind == DateTimeKind.Unspecified)
-                return new ValidationResult(ErrorMessage, new[] { validationContext.MemberName! });
+                return new ValidationResult(ErrorMessage, [validationContext.MemberName!]);
 
             return ValidationResult.Success;
         }
 
-        return new ValidationResult("Object is not DateTime object.", new[] { validationContext.MemberName! });
+        return new ValidationResult("Object is not DateTime object.", [validationContext.MemberName!]);
     }
 }

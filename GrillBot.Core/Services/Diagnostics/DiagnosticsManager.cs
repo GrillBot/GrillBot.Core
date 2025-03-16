@@ -7,22 +7,18 @@ namespace GrillBot.Core.Services.Diagnostics;
 
 public class DiagnosticsManager
 {
-    public List<RequestStatistics> Statistics { get; }
-    private SemaphoreSlim Semaphore { get; }
+    public List<RequestStatistics> Statistics { get; } = [];
 
-    public DiagnosticsManager()
-    {
-        Semaphore = new SemaphoreSlim(1);
-        Statistics = new List<RequestStatistics>();
-    }
+    private readonly SemaphoreSlim _semaphore = new(1);
 
     public async Task OnRequestEndAsync(ActionExecutingContext context, ActionExecutedContext result, DateTime startAt)
     {
-        var endpoint = $"{context.HttpContext.Request.Method} {((ControllerActionDescriptor)context.ActionDescriptor).AttributeRouteInfo!.Template}";
-        var duration = Convert.ToInt32((DateTime.Now - startAt).TotalMilliseconds);
+        var now = DateTime.Now;
+        var endpoint = $"{context.HttpContext.Request.Method} {context.ActionDescriptor.AttributeRouteInfo!.Template}";
+        var duration = Convert.ToInt32((now - startAt).TotalMilliseconds);
         var success = result.Exception is null && result.Result is IStatusCodeActionResult { StatusCode: >= 200 };
 
-        await Semaphore.WaitAsync();
+        await _semaphore.WaitAsync();
         try
         {
             var statistics = Statistics.Find(o => o.Endpoint == endpoint);
@@ -43,7 +39,7 @@ public class DiagnosticsManager
         }
         finally
         {
-            Semaphore.Release();
+            _semaphore.Release();
         }
     }
 }

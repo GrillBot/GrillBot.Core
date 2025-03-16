@@ -13,7 +13,7 @@ public static class JsonHelper
 
     public static async Task<string> SerializeJsonDocumentAsync(JsonDocument document)
     {
-        using var stream = new MemoryStream();
+        await using var stream = new MemoryStream();
         var writer = new Utf8JsonWriter(stream);
 
         document.WriteTo(writer);
