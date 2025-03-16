@@ -1,5 +1,6 @@
 ﻿using GrillBot.Core.Services.AuditLog;
-using GrillBot.Core.Services.Common;
+using GrillBot.Core.Services.Common.Exceptions;
+using GrillBot.Core.Services.Common.Handlers;
 using GrillBot.Core.Services.Emote;
 using GrillBot.Core.Services.Graphics;
 using GrillBot.Core.Services.ImageProcessing;
@@ -40,6 +41,11 @@ public static class ServicesExtensions
     public static void RegisterService<TInterface>(this IServiceCollection services, IConfiguration configuration, string serviceName)
         where TInterface : class
     {
+        var isThirdParty = configuration.GetValue<bool>($"Services:{serviceName}:IsThirdParty");
+        var uri = new Uri(configuration[$"Services:{serviceName}:Api"]!);
+
+        services.AddScoped<AuthHeaderHandler>();
+
         services
             .AddRefitClient<TInterface>(new RefitSettings
             {
@@ -62,25 +68,30 @@ public static class ServicesExtensions
 
                     var content = await response.Content.ReadAsStringAsync();
                     return new ClientException(response.StatusCode, content);
+                },
+                HttpRequestMessageOptions = new Dictionary<string, object>
+                {
+                    { "IsThirdParty", isThirdParty }
                 }
             })
             .ConfigureHttpClient(client =>
             {
-                client.BaseAddress = new Uri(configuration[$"Services:{serviceName}:Api"]!);
+                client.BaseAddress = uri;
                 client.Timeout = Timeout.InfiniteTimeSpan;
-            });
+            })
+            .AddHttpMessageHandler<AuthHeaderHandler>();
     }
 
     public static void AddExternalServices(this IServiceCollection services, IConfiguration configuration)
     {
-        RegisterService<IAuditLogServiceClient>(services, configuration, "AuditLog");
+        services.RegisterService<IAuditLogServiceClient>(configuration, "AuditLog");
+        services.RegisterService<IEmoteServiceClient>(configuration, "Emote");
 
         services.AddService<IGraphicsClient, GraphicsClient>(configuration, "Graphics");
         services.AddService<IRubbergodServiceClient, RubbergodServiceClient>(configuration, "RubbergodService");
         services.AddService<IPointsServiceClient, PointsServiceClient>(configuration, "PointsService");
         services.AddService<IImageProcessingClient, ImageProcessingClient>(configuration, "ImageProcessing");
         services.AddService<IUserMeasuresServiceClient, UserMeasuresServiceClient>(configuration, "UserMeasures");
-        services.AddService<IEmoteServiceClient, EmoteServiceClient>(configuration, "Emote");
         services.AddService<IRemindServiceClient, RemindServiceClient>(configuration, "Remind");
         services.AddService<ISearchingServiceClient, SearchingServiceClient>(configuration, "Searching");
     }

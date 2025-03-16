@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace GrillBot.Core.Services.Common;
+namespace GrillBot.Core.Services.Common.Exceptions;
 
 public class ClientBadRequestException : ClientException
 {

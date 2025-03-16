@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Net.Sockets;
 using GrillBot.Core.Infrastructure.Auth;
 using GrillBot.Core.Managers.Performance;
+using GrillBot.Core.Services.Common.Exceptions;
 using GrillBot.Core.Services.Common.Extensions;
 using GrillBot.Core.Services.Diagnostics.Models;
 using Microsoft.AspNetCore.Mvc;
