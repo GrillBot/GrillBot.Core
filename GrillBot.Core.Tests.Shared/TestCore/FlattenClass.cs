@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Tests.TestCore;
+﻿namespace GrillBot.Core.Tests.Shared.TestCore;
 
 public class FlattenClass
 {

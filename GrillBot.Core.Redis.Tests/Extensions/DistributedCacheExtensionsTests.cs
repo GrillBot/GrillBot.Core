@@ -1,11 +1,10 @@
-﻿using GrillBot.Core.Caching;
-using GrillBot.Core.Tests.TestCore;
+﻿using GrillBot.Core.Redis.Extensions;
+using GrillBot.Core.Tests.Shared.TestCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using System.Diagnostics.CodeAnalysis;
 
-namespace GrillBot.Core.Tests.Caching;
+namespace GrillBot.Core.Redis.Tests.Extensions;
 
 [TestClass]
 public class DistributedCacheExtensionsTests

@@ -1,5 +1,4 @@
 ﻿using Discord;
-using GrillBot.Core.Managers.Discord;
 using GrillBot.Core.Managers.Performance;
 using GrillBot.Core.Managers.Random;
 using GrillBot.Core.Services.Diagnostics;
@@ -31,7 +30,6 @@ public class CoreExtensionsTests
             .BuildServiceProvider();
 
         Assert.IsNotNull(services.GetService<ICounterManager>());
-        Assert.IsNotNull(services.GetService<IEmoteManager>());
         Assert.IsNotNull(services.GetService<IRandomManager>());
     }
 

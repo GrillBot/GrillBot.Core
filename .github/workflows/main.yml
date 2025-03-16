@@ -74,6 +74,8 @@ jobs:
           dotnet-version: 8.0.x
       - name: GrillBot.Core
         run: dotnet test -c Debug GrillBot.Core.Tests/
+      - name: GrillBot.Core.Redis
+        run: dotnet test -c Debug GrillBot.Core.Redis.Tests/
   PublishPackages:
     runs-on: ubuntu-latest
     needs: [CheckNugetPublishPossibility, BuildPackages, TestPackages]

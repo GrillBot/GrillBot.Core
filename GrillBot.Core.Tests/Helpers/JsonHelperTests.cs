@@ -1,5 +1,5 @@
 ﻿using GrillBot.Core.Helpers;
-using GrillBot.Core.Tests.TestCore;
+using GrillBot.Core.Tests.Shared.TestCore;
 
 namespace GrillBot.Core.Tests.Helpers;
 
