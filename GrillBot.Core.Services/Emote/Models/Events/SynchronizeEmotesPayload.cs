@@ -1,14 +1,11 @@
 ﻿using Discord;
-using GrillBot.Core.RabbitMQ;
 
 namespace GrillBot.Core.Services.Emote.Models.Events;
 
-public class SynchronizeEmotesPayload : IPayload
+public class SynchronizeEmotesPayload
 {
-    public string QueueName => "emote:synchronize";
-
     public string GuildId { get; set; } = null!;
-    public List<string> Emotes { get; set; } = new();
+    public List<string> Emotes { get; set; } = [];
 
     public SynchronizeEmotesPayload()
     {

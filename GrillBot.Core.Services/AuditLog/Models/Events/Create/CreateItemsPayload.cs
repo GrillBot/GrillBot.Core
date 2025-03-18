@@ -1,12 +1,8 @@
-﻿using GrillBot.Core.RabbitMQ;
+﻿namespace GrillBot.Core.Services.AuditLog.Models.Events.Create;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Events.Create;
-
-public class CreateItemsPayload : IPayload
+public class CreateItemsPayload
 {
-    public string QueueName => "audit:create_items";
-
-    public List<LogRequest> Items { get; set; } = new();
+    public List<LogRequest> Items { get; set; } = [];
 
     public CreateItemsPayload()
     {
@@ -17,7 +13,7 @@ public class CreateItemsPayload : IPayload
         Items = items;
     }
 
-    public CreateItemsPayload(LogRequest item) : this(new List<LogRequest> { item })
+    public CreateItemsPayload(LogRequest item) : this([item])
     {
     }
 }

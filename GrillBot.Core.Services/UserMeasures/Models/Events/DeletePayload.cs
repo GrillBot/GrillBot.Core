@@ -1,11 +1,7 @@
-﻿using GrillBot.Core.RabbitMQ;
+﻿namespace GrillBot.Core.Services.UserMeasures.Models.Events;
 
-namespace GrillBot.Core.Services.UserMeasures.Models.Events;
-
-public class DeletePayload : IPayload
+public class DeletePayload
 {
-    public string QueueName => "user_measures:delete";
-
     public Guid Id { get; set; }
 
     public DeletePayload()

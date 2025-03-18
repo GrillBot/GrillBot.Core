@@ -1,11 +1,7 @@
-﻿using GrillBot.Core.RabbitMQ;
+﻿namespace GrillBot.Core.Services.RubbergodService.Models.Events.Pins;
 
-namespace GrillBot.Core.Services.RubbergodService.Models.Events.Pins;
-
-public class ClearPinCachePayload : IPayload
+public class ClearPinCachePayload
 {
-    public string QueueName => "rubbergod:clear_pin_cache";
-
     public string GuildId { get; set; } = null!;
     public string ChannelId { get; set; } = null!;
 

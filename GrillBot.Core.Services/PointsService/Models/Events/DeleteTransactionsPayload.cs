@@ -1,11 +1,7 @@
-﻿using GrillBot.Core.RabbitMQ;
+﻿namespace GrillBot.Core.Services.PointsService.Models.Events;
 
-namespace GrillBot.Core.Services.PointsService.Models.Events;
-
-public class DeleteTransactionsPayload : IPayload
+public class DeleteTransactionsPayload
 {
-    public string QueueName => "points:delete_transactions";
-
     public string GuildId { get; set; } = null!;
     public string MessageId { get; set; } = null!;
     public string? ReactionId { get; set; }

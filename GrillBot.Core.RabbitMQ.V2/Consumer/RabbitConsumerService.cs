@@ -1,5 +1,7 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Dispatcher;
 using GrillBot.Core.RabbitMQ.V2.Factory;
+using GrillBot.Core.RabbitMQ.V2.Messages;
+using GrillBot.Core.RabbitMQ.V2.Publisher;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -90,6 +92,14 @@ public class RabbitConsumerService(
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occured while processing message.");
+
+            var rawMessage = Convert.ToBase64String(body);
+            var message = new RabbitErrorMessage(ex, args.Exchange, queueName, headers, handlerType.Name, rawMessage);
+
+            await scope.ServiceProvider
+                .GetRequiredService<IRabbitPublisher>()
+                .PublishAsync("Internal", message, "RabbitErrors");
+
             await channel.BasicNackAsync(args.DeliveryTag, false, false);
         }
     }

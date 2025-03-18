@@ -1,13 +1,10 @@
-﻿using GrillBot.Core.RabbitMQ;
-using GrillBot.Core.Services.SearchingService.Models.Events.Users;
+﻿using GrillBot.Core.Services.SearchingService.Models.Events.Users;
 
 namespace GrillBot.Core.Services.SearchingService.Models.Events;
 
-public class SynchronizationPayload : IPayload
+public class SynchronizationPayload
 {
-    public string QueueName => "searching:synchronization";
-
-    public List<UserSynchronizationItem> Users { get; set; } = new();
+    public List<UserSynchronizationItem> Users { get; set; } = [];
 
     public SynchronizationPayload()
     {
@@ -15,6 +12,6 @@ public class SynchronizationPayload : IPayload
 
     public SynchronizationPayload(IEnumerable<UserSynchronizationItem> users)
     {
-        Users = users.ToList();
+        Users = [.. users];
     }
 }

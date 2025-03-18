@@ -1,12 +1,9 @@
-﻿using GrillBot.Core.RabbitMQ;
-using GrillBot.Core.Services.AuditLog.Enums;
+﻿using GrillBot.Core.Services.AuditLog.Enums;
 
 namespace GrillBot.Core.Services.AuditLog.Models.Events.Recalculation;
 
-public class RecalculationPayload : IPayload
+public class RecalculationPayload
 {
-    public string QueueName => "audit:recalculation";
-
     public LogType Type { get; set; }
     public InteractionRecalculationData? Interaction { get; set; }
     public ApiRecalculationData? Api { get; set; }

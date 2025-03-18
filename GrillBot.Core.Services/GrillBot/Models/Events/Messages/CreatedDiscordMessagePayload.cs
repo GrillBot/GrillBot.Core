@@ -1,16 +1,12 @@
-﻿using GrillBot.Core.RabbitMQ;
+﻿namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
 
-namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
-
-public class CreatedDiscordMessagePayload : IPayload
+public class CreatedDiscordMessagePayload
 {
-    public string QueueName => "grillbot:created_message";
-
     public string? GuildId { get; set; }
     public string ChannelId { get; set; } = null!;
     public string MessageId { get; set; } = null!;
     public string ServiceId { get; set; } = null!;
-    public Dictionary<string, string> ServiceData { get; set; } = new();
+    public Dictionary<string, string> ServiceData { get; set; } = [];
 
     public CreatedDiscordMessagePayload()
     {
