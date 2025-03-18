@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Authors>GrillBot</Authors>
+		<Description>Core package for RabbitMQ integration in the services and GrillBot.</Description>
+		<Copyright>All rights reserved</Copyright>
+		<PackageProjectUrl>https://grillbot.eu/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/GrillBot/GrillBot.Core.RabbitMQ</RepositoryUrl>
+		<RepositoryType>GitHub</RepositoryType>
+		<Version>2.0.0</Version>
+		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+		<CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="RabbitMQ.Client" Version="7.1.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\GrillBot.Core\GrillBot.Core.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -20,6 +20,7 @@ jobs:
       RabbitMQPackage: ${{ steps.filter.outputs.RabbitMQpackage }}
       RedisPackage: ${{ steps.filter.outputs.RedisPackage }}
       MetricsPackage: ${{ steps.filter.outputs.MetricsPackage }}
+      RabbitV2Package: ${{ steps.filter.outputs.RabbitV2Package }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,6 +39,8 @@ jobs:
               - 'GrillBot.Core.Redis/GrillBot.Core.Redis.csproj'
             MetricsPackage:
               - 'GrillBot.Core.Metrics/GrillBot.Core.Metrics.csproj'
+            RabbitV2Package:
+              - 'GrillBot.Core.RabbitMQ.V2/GrillBot.Core.RabbitMQ.V2.csproj'
   BuildPackages:
     runs-on: ubuntu-latest
     steps:
@@ -67,6 +70,10 @@ jobs:
           dotnet restore -r linux-x64 GrillBot.Core.Redis.Tests/
           dotnet build -c Release --no-self-contained GrillBot.Core.Redis/
           dotnet build -c Release --no-self-contained GrillBot.Core.Redis.Tests/
+      - name: GrillBot.Core.RabbitMQ.V2
+        run: |
+          dotnet restore -r linux-x64 GrillBot.Core.RabbitMQ.V2/
+          dotnet build -c Release --no-self-contained GrillBot.Core.RabbitMQ.V2/
   TestPackages:
     runs-on: ubuntu-latest
     needs: [BuildPackages]
@@ -133,3 +140,10 @@ jobs:
           dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.Metrics/
           dotnet pack -c Release --nologo --include-symbols GrillBot.Core.Metrics/
           dotnet nuget push GrillBot.Core.Metrics/bin/Release/*.nupkg --skip-duplicate
+      - name: GrillBot.Core.RabbitMQ.V2
+        if: needs.CheckNugetPublishPossibility.outputs.RabbitV2Package == 'true'
+        run: |
+            dotnet restore -r linux-x64 GrillBot.Core.RabbitMQ.V2/
+            dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.RabbitMQ.V2/
+            dotnet pack -c Release --nologo --include-symbols GrillBot.Core.RabbitMQ.V2/
+            dotnet nuget push GrillBot.Core.RabbitMQ.V2/bin/Release/*.nupkg --skip-duplicate
