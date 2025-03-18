@@ -11,19 +11,19 @@ public class RabbitJsonMessageDispatcher(
     ILogger<RabbitJsonMessageDispatcher> _logger
 ) : BaseRabbitMessageDispatcher(serializer)
 {
-    public override async Task<RabbitConsumptionResult> HandleMessageAsync(IRabbitMessageHandler handler, byte[] body)
+    public override async Task<RabbitConsumptionResult> HandleMessageAsync(IRabbitMessageHandler handler, byte[] body, Dictionary<string, string> headers)
     {
         try
         {
             var serializer = GetSerializer<IJsonRabbitMessageSerializer>();
             var jsonNode = await serializer.DeserializeToJsonObjectAsync(body);
 
-            return await handler.HandleAsync(jsonNode);
+            return await handler.HandleAsync(jsonNode, headers);
         }
         catch (JsonException ex)
         {
             _logger.LogWarning(ex, "An error occured while JSON deserialization. Trying process message with raw data.");
-            return await base.HandleMessageAsync(handler, body);
+            return await base.HandleMessageAsync(handler, body, headers);
         }
     }
 }

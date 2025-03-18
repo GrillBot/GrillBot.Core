@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Text;
 
 #pragma warning disable S3604 // Member initializer values should not be redundant
 namespace GrillBot.Core.RabbitMQ.V2.Consumer;
@@ -64,11 +65,20 @@ public class RabbitConsumerService(
         var handlerType = handler.GetType();
         var body = args.Body.ToArray();
 
+        var headers = args.BasicProperties?.Headers?
+            .Select(o => new
+            {
+                o.Key,
+                Value = o.Value is byte[] bytes ? Encoding.UTF8.GetString(bytes) : (o.Value?.ToString() ?? "")
+            })
+            .Where(o => !string.IsNullOrEmpty(o.Value))
+            .ToDictionary(o => o.Key, o => o.Value) ?? [];
+
         _logger.LogInformation("Received new message. Length: {Length}, Handler: {Name}", body.Length, handlerType.Name);
 
         try
         {
-            var result = await _dispatcher.HandleMessageAsync(handler, body);
+            var result = await _dispatcher.HandleMessageAsync(handler, body, headers);
 
             if (result == RabbitConsumptionResult.Success)
                 await channel.BasicAckAsync(args.DeliveryTag, false);
