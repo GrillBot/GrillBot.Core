@@ -9,17 +9,17 @@ namespace GrillBot.Core.Services.ImageProcessing;
 public interface IImageProcessingClient : IServiceClient
 {
     [Post("/api/image/peepoLove")]
-    Task<byte[]> CreatePeepoloveImageAsync(PeepoRequest request, CancellationToken cancellationToken = default);
+    Task<Stream> CreatePeepoloveImageAsync(PeepoRequest request, CancellationToken cancellationToken = default);
 
     [Post("/api/image/peepoangry")]
-    Task<byte[]> CreatePeepoangryImageAsync(PeepoRequest request, CancellationToken cancellationToken = default);
+    Task<Stream> CreatePeepoangryImageAsync(PeepoRequest request, CancellationToken cancellationToken = default);
 
     [Post("/api/image/points")]
-    Task<byte[]> CreatePointsImageAsync(PointsRequest request, CancellationToken cancellationToken = default);
+    Task<Stream> CreatePointsImageAsync(PointsRequest request, CancellationToken cancellationToken = default);
 
     [Post("/api/image/without-accident")]
-    Task<byte[]> CreateWithoutAccidentImageAsync(WithoutAccidentImageRequest request, CancellationToken cancellationToken = default);
+    Task<Stream> CreateWithoutAccidentImageAsync(WithoutAccidentImageRequest request, CancellationToken cancellationToken = default);
 
     [Post("/api/image/chart")]
-    Task<byte[]> CreateChartImageAsync(ChartRequest request, CancellationToken cancellationToken = default);
+    Task<Stream> CreateChartImageAsync(ChartRequest request, CancellationToken cancellationToken = default);
 }
