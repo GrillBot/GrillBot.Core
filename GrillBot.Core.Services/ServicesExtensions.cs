@@ -32,7 +32,10 @@ public static class ServicesExtensions
             throw new ArgumentException("Missing service attribute in the client interface.");
 
         var isThirdParty = configuration.GetValue<bool>($"Services:{serviceName}:IsThirdParty");
-        var uri = new Uri(configuration[$"Services:{serviceName}:Api"]!);
+        var uri = configuration[$"Services:{serviceName}:Api"]!;
+
+        if (string.IsNullOrEmpty(uri))
+            return;
 
         services
             .AddScoped<IServiceClientExecutor<TInterface>, ServiceClientExecutor<TInterface>>()
@@ -66,7 +69,7 @@ public static class ServicesExtensions
             })
             .ConfigureHttpClient(client =>
             {
-                client.BaseAddress = uri;
+                client.BaseAddress = new Uri(uri);
                 client.Timeout = Timeout.InfiniteTimeSpan;
             })
             .AddHttpMessageHandler<Common.Handlers.HttpClientHandler>()
