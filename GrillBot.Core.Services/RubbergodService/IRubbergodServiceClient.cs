@@ -10,12 +10,12 @@ namespace GrillBot.Core.Services.RubbergodService;
 [Service("RubbergodService")]
 public interface IRubbergodServiceClient : IServiceClient
 {
-    [Get("api/karma")]
+    [Get("/api/karma")]
     Task<PaginatedResponse<UserKarma>> GetKarmaPageAsync([Query] PaginatedParams parameters);
 
-    [Get("api/pins/{guildId}/{channelId}")]
+    [Get("/api/pins/{guildId}/{channelId}")]
     Task<byte[]> GetPinsAsync(ulong guildId, ulong channelId, [Query] bool markdown);
 
-    [Get("api/help/slashcommands")]
+    [Get("/api/help/slashcommands")]
     Task<Dictionary<string, Cog>> GetSlashCommandsAsync();
 }

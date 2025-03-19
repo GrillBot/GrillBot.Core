@@ -12,13 +12,13 @@ namespace GrillBot.Core.Services.PointsService;
 [Service("PointsService")]
 public interface IPointsServiceClient : IServiceClient
 {
-    [Post("api/admin/list")]
+    [Post("/api/admin/list")]
     Task<PaginatedResponse<TransactionItem>> GetTransactionListAsync(AdminListRequest request, CancellationToken cancellationToken = default);
 
-    [Post("api/chart")]
+    [Post("/api/chart")]
     Task<List<PointsChartItem>> GetChartDataAsync(AdminListRequest request, CancellationToken cancellationToken = default);
 
-    [Get("api/leaderboard/{guildId}")]
+    [Get("/api/leaderboard/{guildId}")]
     Task<List<BoardItem>> GetLeaderboardAsync(
         string guildId,
         [Query] int skip,
@@ -28,39 +28,39 @@ public interface IPointsServiceClient : IServiceClient
         CancellationToken cancellationToken = default
     );
 
-    [Get("api/leaderboard/{guildId}/count")]
+    [Get("/api/leaderboard/{guildId}/count")]
     Task<int> GetLeaderboardCountAsync(string guildId, CancellationToken cancellationToken = default);
 
-    [Post("api/merge")]
+    [Post("/api/merge")]
     Task<MergeResult?> MergeValidTransctionsAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/status/{guildId}/{userId}")]
+    [Get("/api/status/{guildId}/{userId}")]
     Task<PointsStatus> GetStatusOfPointsAsync(string guildId, string userId, CancellationToken cancellationToken = default);
 
-    [Get("api/status/{guildId}/{userId}/image")]
+    [Get("/api/status/{guildId}/{userId}/image")]
     Task<ImagePointsStatus?> GetImagePointsStatusAsync(string guildId, string userId, CancellationToken cancellationToken = default);
 
-    [Post("api/transaction/transfer")]
+    [Post("/api/transaction/transfer")]
     Task TransferPointsAsync(TransferPointsRequest request, CancellationToken cancellationToken = default);
 
-    [Post("api/transaction/increment")]
+    [Post("/api/transaction/increment")]
     Task IncrementPointsAsync(IncrementPointsRequest request, CancellationToken cancellationToken = default);
 
-    [Get("api/transaction/{guildId}/{userId}")]
+    [Get("/api/transaction/{guildId}/{userId}")]
     Task<bool> ExistsAnyTransactionAsync(string guildId, string userId, CancellationToken cancellationToken = default);
 
-    [Get("api/diag/status")]
+    [Get("/api/diag/status")]
     Task<StatusInfo> GetStatusInfoAsync(CancellationToken cancellationToken = default);
 
-    [Post("api/user/list")]
+    [Post("/api/user/list")]
     Task<PaginatedResponse<UserListItem>> GetUserListAsync(UserListRequest request, CancellationToken cancellationToken = default);
 
-    [Get("api/transaction/{guildId}/count")]
+    [Get("/api/transaction/{guildId}/count")]
     Task<int> GetTransactionsCountForGuildAsync(string guildId, CancellationToken cancellationToken = default);
 
-    [Get("api/user/{guildId}/{userId}/info")]
+    [Get("/api/user/{guildId}/{userId}/info")]
     Task<UserInfo> GetUserInfoAsync(string guildId, string userId, CancellationToken cancellationToken = default);
 
-    [Get("api/channel/{guildId}/{channelId}/info")]
+    [Get("/api/channel/{guildId}/{channelId}/info")]
     Task<ChannelInfo> GetChannelInfoAsync(string guildId, string channelId, CancellationToken cancellationToken = default);
 }

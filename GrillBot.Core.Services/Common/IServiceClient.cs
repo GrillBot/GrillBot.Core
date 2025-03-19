@@ -5,12 +5,12 @@ namespace GrillBot.Core.Services.Common;
 
 public interface IServiceClient
 {
-    [Head("health")]
+    [Head("/health")]
     Task IsHealthyAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/diag")]
+    [Get("/api/diag")]
     Task<DiagnosticInfo> GetDiagnosticsAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/diag/uptime")]
+    [Get("/api/diag/uptime")]
     Task<long> GetUptimeAsync(CancellationToken cancellationToken = default);
 }

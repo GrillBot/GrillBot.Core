@@ -10,24 +10,24 @@ namespace GrillBot.Core.Services.RemindService;
 [Service("Remind")]
 public interface IRemindServiceClient : IServiceClient
 {
-    [Post("api/remind/process-pending")]
+    [Post("/api/remind/process-pending")]
     Task<ProcessPendingRemindersResult> ProcessPendingRemindersAsync();
 
-    [Put("api/remind/cancel")]
+    [Put("/api/remind/cancel")]
     Task CancelReminderAsync(CancelReminderRequest request);
 
-    [Post("api/remind/list")]
+    [Post("/api/remind/list")]
     Task<PaginatedResponse<RemindMessageItem>> GetReminderListAsync(ReminderListRequest request);
 
-    [Post("api/remind/create")]
+    [Post("/api/remind/create")]
     Task<CreateReminderResult> CreateReminderAsync(CreateReminderRequest request);
 
-    [Post("api/remind/copy")]
+    [Post("/api/remind/copy")]
     Task<CreateReminderResult> CopyReminderAsync(CopyReminderRequest request);
 
-    [Post("api/remind/suggestions/{userId}")]
+    [Post("/api/remind/suggestions/{userId}")]
     Task<List<ReminderSuggestionItem>> GetSuggestionsAsync(string userId);
 
-    [Post("api/remind/postpone/{notificationMessageId}/{hours}")]
+    [Post("/api/remind/postpone/{notificationMessageId}/{hours}")]
     Task PostponeRemindAsync(string notificationMessageId, int hours);
 }

@@ -10,12 +10,12 @@ namespace GrillBot.Core.Services.SearchingService;
 [Service("Searching")]
 public interface ISearchingServiceClient : IServiceClient
 {
-    [Post("api/items/list")]
+    [Post("/api/items/list")]
     Task<PaginatedResponse<SearchListItem>> GetSearchingListAsync(SearchingListRequest request);
 
-    [Get("api/items/suggestions/{guildId}/{channelId}")]
+    [Get("/api/items/suggestions/{guildId}/{channelId}")]
     Task<List<SearchSuggestion>> GetSuggestionsAsync(string guildId, string channelId);
 
-    [Delete("api/items/remove/{id}")]
+    [Delete("/api/items/remove/{id}")]
     Task RemoveSearchingAsync(long id);
 }

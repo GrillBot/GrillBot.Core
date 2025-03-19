@@ -9,18 +9,18 @@ namespace GrillBot.Core.Services.Graphics;
 [Service("Graphics")]
 public interface IGraphicsClient : IServiceClient
 {
-    [Post("chart")]
+    [Post("/chart")]
     Task<byte[]> CreateChartAsync(ChartRequestData request);
 
-    [Post("image/without-accident")]
+    [Post("/image/without-accident")]
     Task<byte[]> CreateWithoutAccidentImage(WithoutAccidentRequestData request);
 
-    [Post("image/points")]
+    [Post("/image/points")]
     Task<byte[]> CreatePointsImageAsync(PointsImageRequest imageRequest);
 
-    [Post("image/peepo/angry")]
+    [Post("/image/peepo/angry")]
     Task<List<byte[]>> CreatePeepoAngryAsync(List<byte[]> avatarFrames);
 
-    [Post("image/peepo/love")]
+    [Post("/image/peepo/love")]
     Task<List<byte[]>> CreatePeepoLoveAsync(List<byte[]> avatarFrames);
 }

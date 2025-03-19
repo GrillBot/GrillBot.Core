@@ -15,54 +15,54 @@ namespace GrillBot.Core.Services.AuditLog;
 [Service("AuditLog")]
 public interface IAuditLogServiceClient : IServiceClient
 {
-    [Post("api/logItem/search")]
+    [Post("/api/logItem/search")]
     Task<PaginatedResponse<LogListItem>> SearchItemsAsync(SearchRequest request, CancellationToken cancellationToken = default);
 
-    [Get("api/logItem/{id}")]
+    [Get("/api/logItem/{id}")]
     Task<Detail?> GetDetailAsync(Guid id, CancellationToken cancellationToken = default);
 
-    [Post("api/archivation")]
+    [Post("/api/archivation")]
     Task<ArchivationResult?> CreateArchivationDataAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/statistics/api/stats")]
+    [Get("/api/statistics/api/stats")]
     Task<ApiStatistics> GetApiStatisticsAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/statistics/auditlog")]
+    [Get("/api/statistics/auditlog")]
     Task<AuditLogStatistics> GetAuditLogStatisticsAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/statistics/avgtimes")]
+    [Get("/api/statistics/avgtimes")]
     Task<AvgExecutionTimes> GetAvgTimesAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/statistics/interactions/stats")]
+    [Get("/api/statistics/interactions/stats")]
     Task<InteractionStatistics> GetInteractionStatisticsAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/statistics/api/userstats/{criteria}")]
+    [Get("/api/statistics/api/userstats/{criteria}")]
     Task<List<UserActionCountItem>> GetUserApiStatisticsAsync(string criteria, CancellationToken cancellationToken = default);
 
-    [Get("api/statistics/interactions/userstats")]
+    [Get("/api/statistics/interactions/userstats")]
     Task<List<UserActionCountItem>> GetUserCommandStatisticsAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/info/jobs")]
+    [Get("/api/info/jobs")]
     Task<List<JobInfo>> GetJobsInfoAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/info/guild/{guildId}/count")]
+    [Get("/api/info/guild/{guildId}/count")]
     Task<int> GetItemsCountOfGuildAsync(ulong guildId, CancellationToken cancellationToken = default);
 
-    [Get("api/dashboard/api/{apiGroup}")]
+    [Get("/api/dashboard/api/{apiGroup}")]
     Task<List<DashboardInfoRow>> GetApiDashboardAsync(string apiGroup, CancellationToken cancellationToken = default);
 
-    [Get("api/dashboard/interactions")]
+    [Get("/api/dashboard/interactions")]
     Task<List<DashboardInfoRow>> GetInteractionsDashboardAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/dashboard/jobs")]
+    [Get("/api/dashboard/jobs")]
     Task<List<DashboardInfoRow>> GetJobsDashboardAsync(CancellationToken cancellationToken = default);
 
-    [Get("api/dashboard/todayavgtimes")]
+    [Get("/api/dashboard/todayavgtimes")]
     Task<TodayAvgTimes> GetTodayAvgTimes(CancellationToken cancellationToken = default);
 
-    [Get("api/diag/status")]
+    [Get("/api/diag/status")]
     Task<StatusInfo> GetStatusInfoAsync(CancellationToken cancellationToken = default);
 
-    [Delete("api/logItem/{id}")]
+    [Delete("/api/logItem/{id}")]
     Task DeleteItemAsync(Guid id, CancellationToken cancellationToken = default);
 }
