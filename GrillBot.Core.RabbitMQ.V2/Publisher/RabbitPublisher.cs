@@ -43,7 +43,7 @@ public class RabbitPublisher(
             await using var connection = await _connectionFactory.CreateAsync();
             await using var channel = await _channelFactory.CreateChannelAsync(connection, topicName, queueName);
 
-            await channel.BasicPublishAsync(topicName, "", true, body);
+            await channel.BasicPublishAsync(topicName, queueName, true, body);
         }
         catch (global::RabbitMQ.Client.Exceptions.AlreadyClosedException) when (retry < MAX_RETRIES)
         {
