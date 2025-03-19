@@ -10,8 +10,8 @@ public class RabbitChannelFactory : IRabbitChannelFactory
         var deadLetterTopicName = $"{topicName}.dead_letter";
         var deadLetterQueueName = $"{queueName}.dead_letter";
 
-        await channel.ExchangeDeclareAsync(topicName, ExchangeType.Fanout, true); // Basic topic.
-        await channel.ExchangeDeclareAsync(deadLetterTopicName, ExchangeType.Fanout, true);
+        await channel.ExchangeDeclareAsync(topicName, ExchangeType.Topic, true); // Basic topic.
+        await channel.ExchangeDeclareAsync(deadLetterTopicName, ExchangeType.Topic, true);
 
         if (string.IsNullOrEmpty(queueName))
             return channel;
@@ -23,11 +23,11 @@ public class RabbitChannelFactory : IRabbitChannelFactory
 
         // Basic queue
         await channel.QueueDeclareAsync(queueName, true, false, false, queueArgs);
-        await channel.QueueBindAsync(queueName, topicName, "");
+        await channel.QueueBindAsync(queueName, topicName, queueName);
 
         // Dead letter queues
         await channel.QueueDeclareAsync(deadLetterQueueName, true, false, false);
-        await channel.QueueBindAsync(deadLetterQueueName, deadLetterTopicName, "");
+        await channel.QueueBindAsync(deadLetterQueueName, deadLetterTopicName, deadLetterQueueName);
 
         return channel;
     }
