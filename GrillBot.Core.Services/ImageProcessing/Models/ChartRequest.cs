@@ -4,5 +4,5 @@ namespace GrillBot.Core.Services.ImageProcessing.Models;
 
 public class ChartRequest
 {
-    public List<ChartRequestData> Requests { get; set; } = new();
+    public List<ChartRequestData> Requests { get; set; } = [];
 }

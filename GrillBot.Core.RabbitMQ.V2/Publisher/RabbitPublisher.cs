@@ -1,4 +1,5 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Factory;
+using GrillBot.Core.RabbitMQ.V2.Messages;
 using GrillBot.Core.RabbitMQ.V2.Serialization;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
@@ -14,10 +15,10 @@ public class RabbitPublisher(
 {
     private const int MAX_RETRIES = 5;
 
-    public Task PublishAsync<T>(string topicName, T data, string queueName, Dictionary<string, string>? headers = null)
-        => PublishAsync(topicName, [data], queueName, headers);
+    public Task PublishAsync<T>(string topic, string queue, T data, Dictionary<string, string?>? headers = null)
+        => PublishAsync(topic, queue, [data], headers);
 
-    public async Task PublishAsync<T>(string topicName, List<T> data, string queueName, Dictionary<string, string>? headers = null)
+    public async Task PublishAsync<T>(string topic, string queue, List<T> data, Dictionary<string, string?>? headers = null)
     {
         if (data.Count == 0)
             return;
@@ -28,27 +29,36 @@ public class RabbitPublisher(
             Headers = headers?.ToDictionary(o => o.Key, o => (object?)o.Value)
         };
 
-        _logger.LogInformation("Publishing messages to the topic {TopicName}. Count: {Count}, Queue: \"{QueueName}\"", topicName, data.Count, queueName);
+        _logger.LogInformation("Publishing messages to the topic {Topic}. Count: {Count}, Queue: \"{Queue}\"", topic, data.Count, queue);
         foreach (var item in data)
         {
             var messageData = await _serializer.SerializeMessageAsync(item);
-            await PublishAsync(topicName, queueName, properties, messageData);
+            await PublishAsync(topic, queue, properties, messageData);
         }
     }
 
-    private async Task PublishAsync(string topicName, string queueName, BasicProperties properties, byte[] body, int retry = 0)
+    public Task PublishAsync<T>(T message, Dictionary<string, string?>? headers = null) where T : IRabbitMessage
+        => PublishAsync(message.Topic, message.Queue, [message], headers);
+
+    public async Task PublishAsync<T>(List<T> messages, Dictionary<string, string?>? headers = null) where T : IRabbitMessage
+    {
+        foreach (var group in messages.GroupBy(m => new { m.Topic, m.Queue }))
+            await PublishAsync(group.Key.Topic, group.Key.Queue, group.ToList(), headers);
+    }
+
+    private async Task PublishAsync(string topic, string queue, BasicProperties properties, byte[] body, int retry = 0)
     {
         try
         {
             await using var connection = await _connectionFactory.CreateAsync();
-            await using var channel = await _channelFactory.CreateChannelAsync(connection, topicName, queueName);
+            await using var channel = await _channelFactory.CreateChannelAsync(connection, topic, queue);
 
-            await channel.BasicPublishAsync(topicName, queueName, true, body);
+            await channel.BasicPublishAsync(topic, queue, true, body);
         }
         catch (global::RabbitMQ.Client.Exceptions.AlreadyClosedException) when (retry < MAX_RETRIES)
         {
             await Task.Delay(1000);
-            await PublishAsync(topicName, queueName, properties, body, retry + 1);
+            await PublishAsync(topic, queue, properties, body, retry + 1);
         }
     }
 }

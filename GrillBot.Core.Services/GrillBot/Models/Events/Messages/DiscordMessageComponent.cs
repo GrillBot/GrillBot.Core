@@ -4,8 +4,8 @@ namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
 
 public class DiscordMessageComponent
 {
-    public List<ButtonComponent> Buttons { get; set; } = new();
-    public List<string> ComponentOrder { get; set; } = new();
+    public List<ButtonComponent> Buttons { get; set; } = [];
+    public List<string> ComponentOrder { get; set; } = [];
 
     public void AddButton(ButtonComponent component)
         => AddComponent(() => Buttons, component, "Button");

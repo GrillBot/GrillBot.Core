@@ -10,7 +10,8 @@ public class JsonRabbitMessageSerializer : BaseRabbitMessageSerializer, IJsonRab
     {
         PropertyNameCaseInsensitive = true,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        WriteIndented = false
+        WriteIndented = false,
+        IgnoreReadOnlyProperties = true
     };
 
     public async Task<JsonNode?> DeserializeToJsonObjectAsync(byte[] bytes, Encoding? encoding = null)

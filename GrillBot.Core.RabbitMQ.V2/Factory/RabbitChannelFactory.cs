@@ -4,16 +4,16 @@ namespace GrillBot.Core.RabbitMQ.V2.Factory;
 
 public class RabbitChannelFactory : IRabbitChannelFactory
 {
-    public async Task<IChannel> CreateChannelAsync(IConnection connection, string topicName, string? queueName = null)
+    public async Task<IChannel> CreateChannelAsync(IConnection connection, string topic, string? queue = null)
     {
         var channel = await connection.CreateChannelAsync();
-        var deadLetterTopicName = $"{topicName}.dead_letter";
-        var deadLetterQueueName = $"{queueName}.dead_letter";
+        var deadLetterTopicName = $"{topic}.dead_letter";
+        var deadLetterQueueName = $"{topic}.{queue}.dead_letter";
 
-        await channel.ExchangeDeclareAsync(topicName, ExchangeType.Topic, true); // Basic topic.
+        await channel.ExchangeDeclareAsync(topic, ExchangeType.Topic, true); // Basic topic.
         await channel.ExchangeDeclareAsync(deadLetterTopicName, ExchangeType.Topic, true);
 
-        if (string.IsNullOrEmpty(queueName))
+        if (string.IsNullOrEmpty(queue))
             return channel;
 
         var queueArgs = new Dictionary<string, object?>
@@ -22,8 +22,9 @@ public class RabbitChannelFactory : IRabbitChannelFactory
         };
 
         // Basic queue
+        var queueName = $"{topic}.{queue}";
         await channel.QueueDeclareAsync(queueName, true, false, false, queueArgs);
-        await channel.QueueBindAsync(queueName, topicName, queueName);
+        await channel.QueueBindAsync(queueName, topic, queue);
 
         // Dead letter queues
         await channel.QueueDeclareAsync(deadLetterQueueName, true, false, false);

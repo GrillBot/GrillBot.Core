@@ -12,7 +12,7 @@ public class EmbedRequest
     public bool ContainsFooter { get; set; }
     public string? ProviderName { get; set; }
     public string? ThumbnailInfo { get; set; }
-    public List<EmbedFieldBuilder> Fields { get; set; } = new();
+    public List<EmbedFieldBuilder> Fields { get; set; } = [];
 
     public EmbedRequest()
     {

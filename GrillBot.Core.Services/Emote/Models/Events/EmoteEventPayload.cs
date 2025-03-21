@@ -1,7 +1,12 @@
-﻿namespace GrillBot.Core.Services.Emote.Models.Events;
+﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-public class EmoteEventPayload
+namespace GrillBot.Core.Services.Emote.Models.Events;
+
+public class EmoteEventPayload : IRabbitMessage
 {
+    public string Topic => "Emote";
+    public string Queue => "EmoteEvent";
+
     public string GuildId { get; set; } = null!;
     public string UserId { get; set; } = null!;
     public string EmoteId { get; set; } = null!;

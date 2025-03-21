@@ -98,7 +98,7 @@ public class RabbitConsumerService(
 
             await scope.ServiceProvider
                 .GetRequiredService<IRabbitPublisher>()
-                .PublishAsync("Internal", message, "RabbitErrors");
+                .PublishAsync(message);
 
             await channel.BasicNackAsync(args.DeliveryTag, false, false);
         }

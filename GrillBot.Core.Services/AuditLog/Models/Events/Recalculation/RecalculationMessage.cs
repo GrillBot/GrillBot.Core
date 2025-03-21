@@ -1,19 +1,23 @@
-﻿using GrillBot.Core.Services.AuditLog.Enums;
+﻿using GrillBot.Core.RabbitMQ.V2.Messages;
+using GrillBot.Core.Services.AuditLog.Enums;
 
 namespace GrillBot.Core.Services.AuditLog.Models.Events.Recalculation;
 
-public class RecalculationPayload
+public class RecalculationMessage : IRabbitMessage
 {
+    public string Topic => "AuditLog";
+    public string Queue => "Recalculation";
+
     public LogType Type { get; set; }
     public InteractionRecalculationData? Interaction { get; set; }
     public ApiRecalculationData? Api { get; set; }
     public JobRecalculationData? Job { get; set; }
 
-    public RecalculationPayload()
+    public RecalculationMessage()
     {
     }
 
-    public RecalculationPayload(LogType type, InteractionRecalculationData? interaction = null, ApiRecalculationData? api = null, JobRecalculationData? job = null)
+    public RecalculationMessage(LogType type, InteractionRecalculationData? interaction = null, ApiRecalculationData? api = null, JobRecalculationData? job = null)
     {
         Type = type;
         Interaction = interaction;

@@ -1,9 +1,13 @@
 ﻿using Discord;
+using GrillBot.Core.RabbitMQ.V2.Messages;
 
 namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
 
-public class DiscordMessagePayload
+public class DiscordMessagePayload : IRabbitMessage
 {
+    public string Topic => "GrillBot";
+    public string Queue => "SendMessage";
+
     public string? GuildId { get; set; }
     public string ChannelId { get; set; } = null!;
     public string? Content { get; set; }

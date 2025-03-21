@@ -1,7 +1,12 @@
-﻿namespace GrillBot.Core.Services.UserMeasures.Models.Events;
+﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-public class UnverifyModifyPayload
+namespace GrillBot.Core.Services.UserMeasures.Models.Events;
+
+public class UnverifyModifyPayload : IRabbitMessage
 {
+    public string Topic => "UserMeasures";
+    public string Queue => "UnverifyModify";
+
     public long LogSetId { get; set; }
     public DateTime? NewEndUtc { get; set; }
 

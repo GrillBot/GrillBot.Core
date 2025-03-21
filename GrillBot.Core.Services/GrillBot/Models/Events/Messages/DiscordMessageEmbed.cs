@@ -12,7 +12,7 @@ public class DiscordMessageEmbed
     public DiscordMessageEmbedFooter? Footer { get; set; }
     public string? ImageUrl { get; set; }
     public string? ThumbnailUrl { get; set; }
-    public List<DiscordMessageEmbedField> Fields { get; set; } = new();
+    public List<DiscordMessageEmbedField> Fields { get; set; } = [];
     public DateTime? Timestamp { get; set; }
     public bool UseCurrentTimestamp { get; set; }
 

@@ -2,8 +2,11 @@
 
 namespace GrillBot.Core.RabbitMQ.V2.Messages;
 
-public class RabbitErrorMessage
+public class RabbitErrorMessage : IRabbitMessage
 {
+    public string Topic => "GrillBot";
+    public string Queue => "RabbitErrors";
+
     public string AssemblyName { get; set; } = null!;
     public string TopicName { get; set; } = null!;
     public string QueueName { get; set; } = null!;

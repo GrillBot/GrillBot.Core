@@ -1,7 +1,12 @@
-﻿namespace GrillBot.Core.Services.PointsService.Models.Events;
+﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-public class UserRecalculationPayload
+namespace GrillBot.Core.Services.PointsService.Models.Events;
+
+public class UserRecalculationPayload : IRabbitMessage
 {
+    public string Topic => "Points";
+    public string Queue => "UserRecalculation";
+
     public string GuildId { get; set; } = null!;
     public string UserId { get; set; } = null!;
 

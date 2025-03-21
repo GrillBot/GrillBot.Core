@@ -1,4 +1,5 @@
 ﻿using GrillBot.Core.Infrastructure.Auth;
+using GrillBot.Core.RabbitMQ.V2.Messages;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -7,10 +8,10 @@ namespace GrillBot.Core.RabbitMQ.V2.Consumer;
 
 public abstract class RabbitMessageHandlerBase<TMessage>(
     ILoggerFactory _loggerFactory
-) : IRabbitMessageHandler where TMessage : class
+) : IRabbitMessageHandler where TMessage : class, IRabbitMessage, new()
 {
-    public abstract string TopicName { get; }
-    public abstract string QueueName { get; }
+    public virtual string TopicName => new TMessage().Topic;
+    public virtual string QueueName => new TMessage().Queue;
 
     protected ILogger Logger
         => _loggerFactory.CreateLogger(GetType());

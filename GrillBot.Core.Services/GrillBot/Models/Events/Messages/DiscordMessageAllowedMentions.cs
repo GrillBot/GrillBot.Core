@@ -5,8 +5,8 @@ namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
 public class DiscordMessageAllowedMentions
 {
     public AllowedMentionTypes? AllowedTypes { get; set; }
-    public List<ulong> RoleIds { get; set; } = new();
-    public List<ulong> UserIds { get; set; } = new();
+    public List<ulong> RoleIds { get; set; } = [];
+    public List<ulong> UserIds { get; set; } = [];
     public bool? MentionRepliedUser { get; set; }
 
     public DiscordMessageAllowedMentions()
