@@ -3,8 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GrillBot.Core.Database.Repository;
 
-public abstract class RepositoryBase<TContext>(TContext _context, ICounterManager _counterManager) where TContext : DbContext
+public abstract class RepositoryBase<TContext>(TContext _context, ICounterManager _counterManager) : IDisposable where TContext : DbContext
 {
+    private bool disposedValue;
+
+    protected ICounterManager CounterManager => _counterManager;
+    protected TContext DbContext => _context;
+
     public Task AddAsync<TEntity>(TEntity entity) where TEntity : class
         => _context.Set<TEntity>().AddAsync(entity).AsTask();
 
@@ -33,5 +38,27 @@ public abstract class RepositoryBase<TContext>(TContext _context, ICounterManage
     {
         using (_counterManager.Create("Repository.Migrations"))
             return (await _context.Database.GetPendingMigrationsAsync()).Any();
+    }
+
+    protected virtual void DisposeInternal() { }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+                DisposeInternal();
+            }
+
+            disposedValue = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 }

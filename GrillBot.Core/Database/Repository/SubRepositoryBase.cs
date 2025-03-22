@@ -5,6 +5,8 @@ namespace GrillBot.Core.Database.Repository;
 
 public abstract class SubRepositoryBase<TContext>(TContext _context, ICounterManager _counterManager) where TContext : DbContext
 {
+    protected TContext DbContext => _context;
+
     protected IQueryable<TEntity> CreateQuery<TEntity>(IQueryableModel<TEntity> parameters, bool disableTracking = false,
         bool splitQuery = false) where TEntity : class
     {
