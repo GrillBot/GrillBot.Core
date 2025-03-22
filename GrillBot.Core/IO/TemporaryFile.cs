@@ -22,6 +22,15 @@ public sealed class TemporaryFile : IDisposable
     public Task WriteAllLinesAsync(IEnumerable<string> lines) => File.WriteAllLinesAsync(Path, lines);
     public Task WriteAllTextAsync(string content) => File.WriteAllTextAsync(Path, content);
 
+    public async Task WriteStreamAsync(Stream stream)
+    {
+        await using var fileStream = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+
+        stream.Seek(0, SeekOrigin.Begin);
+        await stream.CopyToAsync(fileStream);
+        await fileStream.FlushAsync();
+    }
+
     public void Dispose()
     {
         if (File.Exists(Path))

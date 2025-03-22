@@ -22,7 +22,7 @@ public class ValidationProblemDetailsExtensionsTests
     public void AggregateAndThrow()
     {
         var details = new ValidationProblemDetails();
-        details.Errors.Add("Err", new[] { "Error" });
+        details.Errors.Add("Err", ["Error"]);
         details.AggregateAndThrow();
     }
 
@@ -40,7 +40,7 @@ public class ValidationProblemDetailsExtensionsTests
     public void ThrowFirstError()
     {
         var details = new ValidationProblemDetails();
-        details.Errors.Add("Err", new[] { "Error" });
+        details.Errors.Add("Err", ["Error"]);
         details.ThrowFirstError();
     }
 }

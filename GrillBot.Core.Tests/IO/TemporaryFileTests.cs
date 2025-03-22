@@ -1,4 +1,5 @@
 ﻿using GrillBot.Core.IO;
+using Microsoft.Testing.Platform.Extensions.Messages;
 
 namespace GrillBot.Core.Tests.IO;
 
@@ -64,7 +65,7 @@ public class TemporaryFileTests
     {
         using var file = new TemporaryFile("txt");
 
-        await file.WriteAllBytesAsync(new byte[] { 1, 2, 3, 4 });
+        await file.WriteAllBytesAsync([1, 2, 3, 4]);
         var result = await file.ReadAllBytesAsync();
 
         Assert.AreEqual(4, result.Length);
@@ -98,5 +99,19 @@ public class TemporaryFileTests
         using var file = new TemporaryFile("txt");
 
         Assert.IsFalse(string.IsNullOrEmpty(file.Filename));
+    }
+
+    [TestMethod]
+    public async Task WriteStreamAsync()
+    {
+        byte[] data = [1, 2, 3, 4];
+
+        await using var sourceStream = new MemoryStream(data);
+        using var file = new TemporaryFile("txt");
+
+        await file.WriteStreamAsync(sourceStream);
+        var result = await file.ReadAllBytesAsync();
+
+        Assert.AreEqual(data.Length, result.Length);
     }
 }
