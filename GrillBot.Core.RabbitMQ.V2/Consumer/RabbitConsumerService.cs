@@ -53,8 +53,8 @@ public class RabbitConsumerService(
         var consumer = new AsyncEventingBasicConsumer(channel);
         consumer.ReceivedAsync += (_, args) => OnQueueMessageReceivedAsync(args, queueName, channel);
 
-        await channel.BasicConsumeAsync(queueName, false, consumer);
-        _consumers.Add($"{topicName}/{queueName}", consumer);
+        await channel.BasicConsumeAsync($"{topicName}.{queueName}", false, consumer);
+        _consumers.Add($"{topicName}.{queueName}", consumer);
     }
 
     private async Task OnQueueMessageReceivedAsync(BasicDeliverEventArgs args, string queueName, IChannel channel)
