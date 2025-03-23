@@ -6,7 +6,7 @@ namespace GrillBot.Core.RabbitMQ.V2.Serialization.Json;
 
 public class JsonRabbitMessageSerializer : BaseRabbitMessageSerializer, IJsonRabbitMessageSerializer
 {
-    private static readonly JsonSerializerOptions _serializerOptions = new()
+    public static readonly JsonSerializerOptions SerializerOptions = new()
     {
         PropertyNameCaseInsensitive = true,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -22,7 +22,7 @@ public class JsonRabbitMessageSerializer : BaseRabbitMessageSerializer, IJsonRab
 
     public override Task<byte[]> SerializeMessageAsync<T>(T data, Encoding? encoding = null)
     {
-        var json = JsonSerializer.Serialize(data, _serializerOptions);
+        var json = JsonSerializer.Serialize(data, SerializerOptions);
         var bytes = (encoding ?? Encoding.UTF8).GetBytes(json);
 
         return Task.FromResult(bytes);

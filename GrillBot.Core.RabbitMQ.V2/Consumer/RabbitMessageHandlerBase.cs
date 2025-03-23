@@ -1,5 +1,6 @@
 ﻿using GrillBot.Core.Infrastructure.Auth;
 using GrillBot.Core.RabbitMQ.V2.Messages;
+using GrillBot.Core.RabbitMQ.V2.Serialization.Json;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -20,7 +21,7 @@ public abstract class RabbitMessageHandlerBase<TMessage>(
     {
         try
         {
-            var deserializedMessage = message?.Deserialize<TMessage>();
+            var deserializedMessage = message?.Deserialize<TMessage>(JsonRabbitMessageSerializer.SerializerOptions);
             if (deserializedMessage is null)
                 return RabbitConsumptionResult.Reject;
 
