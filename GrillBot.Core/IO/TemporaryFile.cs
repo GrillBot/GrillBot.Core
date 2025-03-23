@@ -26,7 +26,6 @@ public sealed class TemporaryFile : IDisposable
     {
         await using var fileStream = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
-        stream.Seek(0, SeekOrigin.Begin);
         await stream.CopyToAsync(fileStream);
         await fileStream.FlushAsync();
     }
