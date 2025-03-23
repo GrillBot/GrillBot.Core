@@ -6,6 +6,7 @@ namespace GrillBot.Core.Services.Common.Exceptions;
 public class ClientBadRequestException : ClientException
 {
     public Dictionary<string, string[]> ValidationErrors { get; } = [];
+    public string? RawData { get; }
 
     public ClientBadRequestException()
     {
@@ -19,9 +20,10 @@ public class ClientBadRequestException : ClientException
     {
     }
 
-    public ClientBadRequestException(ValidationProblemDetails problemDetails) : base(HttpStatusCode.BadRequest)
+    public ClientBadRequestException(ValidationProblemDetails problemDetails, string? rawData) : base(HttpStatusCode.BadRequest)
     {
         ValidationErrors = problemDetails.Errors.ToDictionary(o => o.Key, o => o.Value);
+        RawData = rawData;
     }
 
     public ClientBadRequestException(string? message, Exception? inner, HttpStatusCode? statusCode) : base(message, inner, statusCode)

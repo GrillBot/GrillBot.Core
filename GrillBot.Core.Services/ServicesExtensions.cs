@@ -12,6 +12,7 @@ using GrillBot.Core.Services.RubbergodService;
 using GrillBot.Core.Services.SearchingService;
 using GrillBot.Core.Services.UserMeasures;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
@@ -20,6 +21,7 @@ using Refit;
 using System.Net;
 using System.Net.Http.Json;
 using System.Reflection;
+using System.Text.Json;
 
 namespace GrillBot.Core.Services;
 
@@ -48,8 +50,9 @@ public static class ServicesExtensions
 
                     if (response.StatusCode == HttpStatusCode.BadRequest)
                     {
-                        var problemDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-                        return new ClientBadRequestException(problemDetails!);
+                        var rawData = await response.Content.ReadAsStringAsync();
+                        var problemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(rawData);
+                        return new ClientBadRequestException(problemDetails!, rawData);
                     }
 
                     if (response.StatusCode == HttpStatusCode.NotFound)
