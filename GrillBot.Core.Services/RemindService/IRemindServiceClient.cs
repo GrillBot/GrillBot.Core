@@ -11,23 +11,23 @@ namespace GrillBot.Core.Services.RemindService;
 public interface IRemindServiceClient : IServiceClient
 {
     [Post("/api/remind/process-pending")]
-    Task<ProcessPendingRemindersResult> ProcessPendingRemindersAsync();
+    Task<ProcessPendingRemindersResult> ProcessPendingRemindersAsync(CancellationToken cancellationToken = default);
 
     [Put("/api/remind/cancel")]
-    Task CancelReminderAsync(CancelReminderRequest request);
+    Task CancelReminderAsync(CancelReminderRequest request, CancellationToken cancellationToken = default);
 
     [Post("/api/remind/list")]
-    Task<PaginatedResponse<RemindMessageItem>> GetReminderListAsync(ReminderListRequest request);
+    Task<PaginatedResponse<RemindMessageItem>> GetReminderListAsync(ReminderListRequest request, CancellationToken cancellationToken = default);
 
     [Post("/api/remind/create")]
-    Task<CreateReminderResult> CreateReminderAsync(CreateReminderRequest request);
+    Task<CreateReminderResult> CreateReminderAsync(CreateReminderRequest request, CancellationToken cancellationToken = default);
 
     [Post("/api/remind/copy")]
-    Task<CreateReminderResult> CopyReminderAsync(CopyReminderRequest request);
+    Task<CreateReminderResult> CopyReminderAsync(CopyReminderRequest request, CancellationToken cancellationToken = default);
 
     [Post("/api/remind/suggestions/{userId}")]
-    Task<List<ReminderSuggestionItem>> GetSuggestionsAsync(string userId);
+    Task<List<ReminderSuggestionItem>> GetSuggestionsAsync(string userId, CancellationToken cancellationToken = default);
 
     [Post("/api/remind/postpone/{notificationMessageId}/{hours}")]
-    Task PostponeRemindAsync(string notificationMessageId, int hours);
+    Task PostponeRemindAsync(string notificationMessageId, int hours, CancellationToken cancellationToken = default);
 }

@@ -9,5 +9,5 @@ namespace GrillBot.Core.Services.Graphics;
 public interface IGraphicsClient : IServiceClient
 {
     [Post("/chart")]
-    Task<Stream> CreateChartAsync(ChartRequestData request);
+    Task<Stream> CreateChartAsync(ChartRequestData request, CancellationToken cancellationToken = default);
 }

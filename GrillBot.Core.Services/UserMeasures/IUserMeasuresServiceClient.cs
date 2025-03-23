@@ -12,17 +12,17 @@ namespace GrillBot.Core.Services.UserMeasures;
 public interface IUserMeasuresServiceClient : IServiceClient
 {
     [Get("/api/dashboard")]
-    Task<List<DashboardRow>> GetDashboardDataAsync();
+    Task<List<DashboardRow>> GetDashboardDataAsync(CancellationToken cancellationToken = default);
 
     [Get("/api/info/count/{guildId}")]
-    Task<int> GetItemsCountOfGuildAsync(string guildId);
+    Task<int> GetItemsCountOfGuildAsync(string guildId, CancellationToken cancellationToken = default);
 
     [Post("/api/measures/list")]
-    Task<PaginatedResponse<MeasuresItem>> GetMeasuresListAsync(MeasuresListParams parameters);
+    Task<PaginatedResponse<MeasuresItem>> GetMeasuresListAsync(MeasuresListParams parameters, CancellationToken cancellationToken = default);
 
     [Get("/api/user/{guildId}/{userId}")]
-    Task<UserInfo> GetUserInfoAsync(string guildId, string userId);
+    Task<UserInfo> GetUserInfoAsync(string guildId, string userId, CancellationToken cancellationToken = default);
 
     [Delete("/api/measures")]
-    Task DeleteMeasureAsync([Query] DeleteMeasuresRequest request);
+    Task DeleteMeasureAsync([Query] DeleteMeasuresRequest request, CancellationToken cancellationToken = default);
 }
