@@ -68,7 +68,8 @@ public static class ServicesExtensions
                 {
                     { "IsThirdParty", isThirdParty },
                     { "ServiceName", serviceName }
-                }
+                },
+                ContentSerializer = new SystemTextJsonContentSerializer(GetJsonSerializerOptions())
             })
             .ConfigureHttpClient(client =>
             {
@@ -92,5 +93,19 @@ public static class ServicesExtensions
         services.RegisterService<IRemindServiceClient>(configuration);
         services.RegisterService<ISearchingServiceClient>(configuration);
         services.RegisterService<IGraphicsClient>(configuration);
+    }
+
+    private static JsonSerializerOptions GetJsonSerializerOptions()
+    {
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = false
+        };
+
+        options.Converters.Add(new ObjectToInferredTypesConverter());
+
+        return options;
     }
 }
