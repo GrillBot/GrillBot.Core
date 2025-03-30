@@ -17,7 +17,6 @@ jobs:
     outputs:
       CorePackage: ${{ steps.filter.outputs.CorePackage }}
       ServicesPackage: ${{ steps.filter.outputs.ServicesPackage }}
-      RabbitMQPackage: ${{ steps.filter.outputs.RabbitMQpackage }}
       RedisPackage: ${{ steps.filter.outputs.RedisPackage }}
       MetricsPackage: ${{ steps.filter.outputs.MetricsPackage }}
       RabbitV2Package: ${{ steps.filter.outputs.RabbitV2Package }}
@@ -33,8 +32,6 @@ jobs:
               - 'GrillBot.Core/GrillBot.Core.csproj'
             ServicesPackage:
               - 'GrillBot.Core.Services/GrillBot.Core.Services.csproj'
-            RabbitMQPackage:
-              - 'GrillBot.Core.RabbitMQ/GrillBot.Core.RabbitMQ.csproj'
             RedisPackage:
               - 'GrillBot.Core.Redis/GrillBot.Core.Redis.csproj'
             MetricsPackage:
@@ -56,10 +53,6 @@ jobs:
           dotnet restore -r linux-x64 GrillBot.Core.Tests/
           dotnet build -c Release --no-self-contained GrillBot.Core/
           dotnet build -c Release --no-self-contained GrillBot.Core.Tests/
-      - name: GrillBot.Core.RabbitMQ
-        run: |
-          dotnet restore -r linux-x64 GrillBot.Core.RabbitMQ/
-          dotnet build -c Release --no-self-contained GrillBot.Core.RabbitMQ/
       - name: GrillBot.Core.Services
         run: |
           dotnet restore -r linux-x64 GrillBot.Core.Services/
@@ -112,13 +105,6 @@ jobs:
           dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core/
           dotnet pack -c Release --nologo --include-symbols GrillBot.Core/
           dotnet nuget push GrillBot.Core/bin/Release/*.nupkg --skip-duplicate
-      - name: GrillBot.Core.RabbitMQ
-        if: needs.CheckNugetPublishPossibility.outputs.RabbitMQPackage == 'true'
-        run: |
-          dotnet restore -r linux-x64 GrillBot.Core.RabbitMQ/
-          dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.RabbitMQ/
-          dotnet pack -c Release --nologo --include-symbols GrillBot.Core.RabbitMQ/
-          dotnet nuget push GrillBot.Core.RabbitMQ/bin/Release/*.nupkg --skip-duplicate
       - name: GrillBot.Core.Services
         if: needs.CheckNugetPublishPossibility.outputs.ServicesPackage == 'true'
         run: |
