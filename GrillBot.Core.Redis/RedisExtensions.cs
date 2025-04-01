@@ -28,6 +28,14 @@ public static class RedisExtensions
 
         services.AddScoped(provider => provider.GetRequiredService<ConnectionMultiplexer>().GetDatabase());
 
+        services.AddScoped(provider =>
+        {
+            var config = provider.GetRequiredService<IConfiguration>().GetSection("Redis")!;
+            var connection = provider.GetRequiredService<ConnectionMultiplexer>();
+
+            return connection.GetServer(config["Endpoint"]!);
+        });
+
         return services.AddStackExchangeRedisCache(opt =>
         {
             opt.Configuration = redisConfig["Endpoint"]!;
