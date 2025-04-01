@@ -1,6 +1,7 @@
 ﻿using GrillBot.Core.Redis.Policy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace GrillBot.Core.Redis;
 
@@ -19,15 +20,18 @@ public static class RedisExtensions
         if (!redisConfig.Exists())
             return services;
 
+        services.AddScoped(provider =>
+        {
+            var config = provider.GetRequiredService<IConfiguration>().GetSection("Redis")!;
+            return ConnectionMultiplexer.Connect(CreateRedisOptions(config));
+        });
+
+        services.AddScoped(provider => provider.GetRequiredService<ConnectionMultiplexer>().GetDatabase());
+
         return services.AddStackExchangeRedisCache(opt =>
         {
             opt.Configuration = redisConfig["Endpoint"]!;
-            opt.ConfigurationOptions = new()
-            {
-                AbortOnConnectFail = true,
-                EndPoints = { redisConfig["Endpoint"]! },
-                Password = redisConfig["Password"]!
-            };
+            opt.ConfigurationOptions = CreateRedisOptions(redisConfig);
         });
     }
 
@@ -54,12 +58,17 @@ public static class RedisExtensions
         return services.AddStackExchangeRedisOutputCache(opt =>
         {
             opt.Configuration = redisConfig["Endpoint"]!;
-            opt.ConfigurationOptions = new()
-            {
-                AbortOnConnectFail = true,
-                EndPoints = { redisConfig["Endpoint"]! },
-                Password = redisConfig["Password"]!
-            };
+            opt.ConfigurationOptions = CreateRedisOptions(redisConfig);
         });
+    }
+
+    private static ConfigurationOptions CreateRedisOptions(IConfigurationSection redisConfig)
+    {
+        return new()
+        {
+            AbortOnConnectFail = true,
+            EndPoints = { redisConfig["Endpoint"]! },
+            Password = redisConfig["Password"]!
+        };
     }
 }
