@@ -10,15 +10,15 @@ namespace GrillBot.Core.Services.InviteService;
 [Service("InviteService")]
 public interface IInviteServiceClient : IServiceClient
 {
-    [Post("/cached-invites/list")]
+    [Post("/api/cached-invites/list")]
     Task<PaginatedResponse<Invite>> GetCachedInvitesAsync(InviteListRequest request, CancellationToken cancellationToken = default);
 
-    [Post("/used-invites/list")]
+    [Post("/api/used-invites/list")]
     Task<PaginatedResponse<Invite>> GetUsedInvitesAsync(InviteListRequest request, CancellationToken cancellationToken = default);
 
-    [Post("/invite-uses/list")]
+    [Post("/api/invite-uses/list")]
     Task<PaginatedResponse<InviteUse>> GetInviteUsesAsync(InviteUseListRequest request, CancellationToken cancellationToken = default);
 
-    [Post("/invite-user-uses/list")]
+    [Post("/api/invite-user-uses/list")]
     Task<PaginatedResponse<UserInviteUse>> GetUserInviteUsesAsync(UserInviteUseListRequest request, CancellationToken cancellationToken = default);
 }
