@@ -1,0 +1,24 @@
+﻿using GrillBot.Core.Models.Pagination;
+using GrillBot.Core.Services.Common;
+using GrillBot.Core.Services.Common.Attributes;
+using GrillBot.Core.Services.InviteService.Models.Request;
+using GrillBot.Core.Services.InviteService.Models.Response;
+using Refit;
+
+namespace GrillBot.Core.Services.InviteService;
+
+[Service("InviteService")]
+public interface IInviteServiceClient : IServiceClient
+{
+    [Post("/cached-invites/list")]
+    Task<PaginatedResponse<Invite>> GetCachedInvitesAsync(InviteListRequest request, CancellationToken cancellationToken = default);
+
+    [Post("/used-invites/list")]
+    Task<PaginatedResponse<Invite>> GetUsedInvitesAsync(InviteListRequest request, CancellationToken cancellationToken = default);
+
+    [Post("/invite-uses/list")]
+    Task<PaginatedResponse<InviteUse>> GetInviteUsesAsync(InviteUseListRequest request, CancellationToken cancellationToken = default);
+
+    [Post("/invite-user-uses/list")]
+    Task<PaginatedResponse<UserInviteUse>> GetUserInviteUsesAsync(UserInviteUseListRequest request, CancellationToken cancellationToken = default);
+}

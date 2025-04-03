@@ -6,20 +6,19 @@ using GrillBot.Core.Services.Common.Executor;
 using GrillBot.Core.Services.Emote;
 using GrillBot.Core.Services.Graphics;
 using GrillBot.Core.Services.ImageProcessing;
+using GrillBot.Core.Services.InviteService;
 using GrillBot.Core.Services.PointsService;
 using GrillBot.Core.Services.RemindService;
 using GrillBot.Core.Services.RubbergodService;
 using GrillBot.Core.Services.SearchingService;
 using GrillBot.Core.Services.UserMeasures;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.Extensions.Http;
 using Refit;
 using System.Net;
-using System.Net.Http.Json;
 using System.Reflection;
 using System.Text.Json;
 
@@ -93,6 +92,7 @@ public static class ServicesExtensions
         services.RegisterService<IRemindServiceClient>(configuration);
         services.RegisterService<ISearchingServiceClient>(configuration);
         services.RegisterService<IGraphicsClient>(configuration);
+        services.RegisterService<IInviteServiceClient>(configuration);
     }
 
     private static JsonSerializerOptions GetJsonSerializerOptions()
