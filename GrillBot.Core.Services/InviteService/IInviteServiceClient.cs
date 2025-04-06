@@ -21,4 +21,7 @@ public interface IInviteServiceClient : IServiceClient
 
     [Post("/api/invite/invite-user-uses/list")]
     Task<PaginatedResponse<UserInviteUse>> GetUserInviteUsesAsync(UserInviteUseListRequest request, CancellationToken cancellationToken = default);
+
+    [Get("/api/invite/guild/{guildId}/count")]
+    Task<int> GetInvitesCountOfGuildAsync(ulong guildId, CancellationToken cancellationToken = default);
 }
