@@ -28,6 +28,6 @@ public interface IRemindServiceClient : IServiceClient
     [Post("/api/remind/suggestions/{userId}")]
     Task<List<ReminderSuggestionItem>> GetSuggestionsAsync(string userId, CancellationToken cancellationToken = default);
 
-    [Post("/api/remind/postpone/{notificationMessageId}/{hours}")]
+    [Put("/api/remind/postpone/{notificationMessageId}/{hours}")]
     Task PostponeRemindAsync(string notificationMessageId, int hours, CancellationToken cancellationToken = default);
 }
