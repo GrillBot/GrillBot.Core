@@ -62,4 +62,16 @@ public class CurrentUserProvider : ICurrentUserProvider
         _headers[AUTH_HEADER_NAME] = $"Bearer {jwtToken}";
         _jwtToken = ReadJwtToken();
     }
+
+    public Dictionary<string, string>? ToDictionary()
+    {
+        var jwtToken = EncodedJwtToken;
+        if (string.IsNullOrEmpty(jwtToken))
+            return null;
+
+        return new Dictionary<string, string>
+        {
+            { AUTH_HEADER_NAME, jwtToken }
+        };
+    }
 }

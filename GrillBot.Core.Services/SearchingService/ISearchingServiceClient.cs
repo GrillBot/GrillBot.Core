@@ -14,8 +14,17 @@ public interface ISearchingServiceClient : IServiceClient
     Task<PaginatedResponse<SearchListItem>> GetSearchingListAsync(SearchingListRequest request, CancellationToken cancellationToken = default);
 
     [Get("/api/items/suggestions/{guildId}/{channelId}")]
-    Task<List<SearchSuggestion>> GetSuggestionsAsync(string guildId, string channelId, CancellationToken cancellationToken = default);
+    Task<List<SearchSuggestion>> GetSuggestionsAsync(
+        string guildId,
+        string channelId,
+        [Header("Authorization")] string? authorizationToken = null,
+        CancellationToken cancellationToken = default
+    );
 
     [Delete("/api/items/remove/{id}")]
-    Task RemoveSearchingAsync(long id, CancellationToken cancellationToken = default);
+    Task RemoveSearchingAsync(
+        long id,
+        [Header("Authorization")] string? authorizationToken = null,
+        CancellationToken cancellationToken = default
+    );
 }

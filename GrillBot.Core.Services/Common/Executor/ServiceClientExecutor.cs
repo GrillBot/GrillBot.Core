@@ -1,4 +1,5 @@
-﻿using GrillBot.Core.Services.Common.Attributes;
+﻿using GrillBot.Core.Infrastructure.Auth;
+using GrillBot.Core.Services.Common.Attributes;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
@@ -6,19 +7,24 @@ namespace GrillBot.Core.Services.Common.Executor;
 
 public class ServiceClientExecutor<TServiceInterface>(
     IConfiguration _configuration,
-    TServiceInterface _serviceClient
+    TServiceInterface _serviceClient,
+    ICurrentUserProvider _currentUser
 ) : IServiceClientExecutor<TServiceInterface> where TServiceInterface : IServiceClient
 {
-    public async Task<TResult> ExecuteRequestAsync<TResult>(Func<TServiceInterface, CancellationToken, Task<TResult>> executeRequest)
+    public async Task<TResult> ExecuteRequestAsync<TResult>(Func<TServiceInterface, ServiceExecutorContext, Task<TResult>> executeRequest)
     {
         using var cancellationTokenSource = CreateCancellationToken();
-        return await executeRequest(_serviceClient, cancellationTokenSource.Token);
+        var context = CreateContext(cancellationTokenSource);
+
+        return await executeRequest(_serviceClient, context);
     }
 
-    public async Task ExecuteRequestAsync(Func<TServiceInterface, CancellationToken, Task> executionRequest)
+    public async Task ExecuteRequestAsync(Func<TServiceInterface, ServiceExecutorContext, Task> executionRequest)
     {
         using var cancellationTokenSource = CreateCancellationToken();
-        await executionRequest(_serviceClient, cancellationTokenSource.Token);
+        var context = CreateContext(cancellationTokenSource);
+
+        await executionRequest(_serviceClient, context);
     }
 
     private CancellationTokenSource CreateCancellationToken()
@@ -31,5 +37,10 @@ public class ServiceClientExecutor<TServiceInterface>(
     {
         var serviceName = typeof(TServiceInterface).GetCustomAttribute<ServiceAttribute>()!.ServiceName;
         return _configuration.GetValue<TimeSpan>($"Services:{serviceName}:Timeout");
+    }
+
+    private ServiceExecutorContext CreateContext(CancellationTokenSource cancellationTokenSource)
+    {
+        return new ServiceExecutorContext(_currentUser.EncodedJwtToken, cancellationTokenSource.Token);
     }
 }

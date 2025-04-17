@@ -12,4 +12,5 @@ public interface ICurrentUserProvider
     string? ThirdPartyKey { get; }
 
     void SetCustomToken(string jwtToken);
+    Dictionary<string, string>? ToDictionary();
 }

@@ -11,10 +11,22 @@ namespace GrillBot.Core.Services.Emote;
 public interface IEmoteServiceClient : IServiceClient
 {
     [Delete("/api/statistics/{guildId}/{emoteId}")]
-    Task<int> DeleteStatisticsAsync(string guildId, string emoteId, [Query] string? userId = null, CancellationToken cancellationToken = default);
+    Task<int> DeleteStatisticsAsync(
+        string guildId,
+        string emoteId,
+        [Query] string? userId = null,
+        [Header("Authorization")] string? authorizationToken = null,
+        CancellationToken cancellationToken = default
+    );
 
     [Put("/api/statistics/{guildId}/{sourceEmoteId}/{destinationEmoteId}/merge")]
-    Task<MergeStatisticsResult> MergeStatisticsAsync(string guildId, string sourceEmoteId, string destinationEmoteId, CancellationToken cancellationToken = default);
+    Task<MergeStatisticsResult> MergeStatisticsAsync(
+        string guildId,
+        string sourceEmoteId,
+        string destinationEmoteId,
+        [Header("Authorization")] string? authorizationToken = null,
+        CancellationToken cancellationToken = default
+    );
 
     [Post("/api/statistics/emoteUsersUsage")]
     Task<PaginatedResponse<EmoteUserUsageItem>> GetUserEmoteUsageListAsync(EmoteUserUsageListRequest request, CancellationToken cancellationToken = default);
