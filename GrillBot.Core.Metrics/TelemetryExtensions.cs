@@ -33,7 +33,10 @@ public static class TelemetryExtensions
         });
 
         builder.Services.AddHttpLogging(c => c.LoggingFields = HttpLoggingFields.All);
-        builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(opt => opt.Filter = ctx => ctx.Request.Path != "/metrics");
+
+        builder.Services.Configure<AspNetCoreTraceInstrumentationOptions>(
+            opt => opt.Filter = ctx => ctx.Request.Path != "/metrics" && ctx.Request.Path != "/health"
+        );
 
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(b => b.AddService(builder.Environment.ApplicationName))
