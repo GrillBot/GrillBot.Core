@@ -23,8 +23,8 @@ public interface IPointsServiceClient : IServiceClient
         string guildId,
         [Query] int skip,
         [Query] int count,
-        [Query] LeaderboardColumnFlag columns,
-        [Query] LeaderboardSortOptions sortOptions,
+        [Query(delimiter: ",")] LeaderboardColumnFlag columns,
+        [Query] LeaderboardSortOptions sort,
         CancellationToken cancellationToken = default
     );
 
