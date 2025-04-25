@@ -15,8 +15,8 @@ public class RabbitJsonMessageDispatcher(
     {
         try
         {
-            var serializer = GetSerializer<IJsonRabbitMessageSerializer>();
-            var jsonNode = await serializer.DeserializeToJsonObjectAsync(body);
+            var jsonSerializer = GetSerializer<IJsonRabbitMessageSerializer>();
+            var jsonNode = await jsonSerializer.DeserializeToJsonObjectAsync(body);
 
             return await handler.HandleAsync(jsonNode, headers);
         }

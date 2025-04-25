@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using GrillBot.Core.RabbitMQ.V2.Options;
+using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 
 namespace GrillBot.Core.RabbitMQ.V2.Factory;
@@ -11,12 +12,13 @@ public class RabbitConnectionFactory(IConfiguration _configuration) : IRabbitCon
         if (!configuration.Exists())
             throw new InvalidOperationException("Missing RabbitMQ configuration section.");
 
+        var options = configuration.Get<RabbitOptions>()!;
         var factory = new ConnectionFactory
         {
-            HostName = configuration["Hostname"]!,
-            Password = configuration["Password"]!,
-            UserName = configuration["Username"]!,
-            RequestedHeartbeat = TimeSpan.FromSeconds(30)
+            HostName = options.Hostname,
+            Password = options.Password,
+            UserName = options.Username,
+            RequestedHeartbeat = options.HeartBeat
         };
 
         return await factory.CreateConnectionAsync();

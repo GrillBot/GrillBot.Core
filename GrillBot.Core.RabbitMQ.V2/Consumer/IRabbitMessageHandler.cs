@@ -9,4 +9,6 @@ public interface IRabbitMessageHandler
 
     Task<RabbitConsumptionResult> HandleAsync(JsonNode? message, Dictionary<string, string> headers);
     Task<RabbitConsumptionResult> HandleRawMessageAsync(string rawMessage, Dictionary<string, string> headers);
+
+    bool HandleException(Exception exception);
 }

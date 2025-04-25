@@ -10,12 +10,13 @@
 		<PackageProjectUrl>https://grillbot.eu/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/GrillBot/GrillBot.Core.RabbitMQ</RepositoryUrl>
 		<RepositoryType>GitHub</RepositoryType>
-		<Version>2.1.2</Version>
+		<Version>2.2.0</Version>
 		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
 		<CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Polly" Version="8.5.2" />
 		<PackageReference Include="RabbitMQ.Client" Version="7.1.1" />
 	</ItemGroup>
 

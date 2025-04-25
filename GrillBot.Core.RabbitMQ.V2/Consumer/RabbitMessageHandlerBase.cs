@@ -41,6 +41,8 @@ public abstract class RabbitMessageHandlerBase<TMessage>(
         Dictionary<string, string> headers
     );
 
+    public virtual bool HandleException(Exception exception) => false;
+
     public Task<RabbitConsumptionResult> HandleRawMessageAsync(string rawMessage, Dictionary<string, string> headers)
     {
         Logger.LogWarning("{Message}", rawMessage);

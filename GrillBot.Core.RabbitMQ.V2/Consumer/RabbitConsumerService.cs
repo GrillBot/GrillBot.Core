@@ -1,15 +1,17 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Dispatcher;
 using GrillBot.Core.RabbitMQ.V2.Factory;
 using GrillBot.Core.RabbitMQ.V2.Messages;
+using GrillBot.Core.RabbitMQ.V2.Options;
 using GrillBot.Core.RabbitMQ.V2.Publisher;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 
-#pragma warning disable S3604 // Member initializer values should not be redundant
 namespace GrillBot.Core.RabbitMQ.V2.Consumer;
 
 public class RabbitConsumerService(
@@ -17,7 +19,8 @@ public class RabbitConsumerService(
     ILogger<RabbitConsumerService> _logger,
     IRabbitConnectionFactory _connectionFactory,
     IRabbitMessageDispatcher _dispatcher,
-    IRabbitChannelFactory _channelFactory
+    IRabbitChannelFactory _channelFactory,
+    IOptions<RabbitOptions> _options
 ) : IHostedService
 {
     private readonly Dictionary<string, AsyncDefaultBasicConsumer> _consumers = [];
@@ -42,7 +45,7 @@ public class RabbitConsumerService(
     private IRabbitMessageHandler[] FindHandlers()
     {
         using var scope = _serviceProvider.CreateScope();
-        return scope.ServiceProvider.GetServices<IRabbitMessageHandler>().ToArray();
+        return [.. scope.ServiceProvider.GetServices<IRabbitMessageHandler>()];
     }
 
     private async Task InitializeConsumerAsync(string topicName, string queueName)
@@ -78,9 +81,16 @@ public class RabbitConsumerService(
 
         _logger.LogInformation("Received new message. Length: {Length}, Handler: {Name}", body.Length, handlerType.Name);
 
+        var handlePolicy = Policy
+            .Handle<Exception>(handler.HandleException)
+            .WaitAndRetryAsync(
+                _options.Value.MaxRetryCount,
+                _ => _options.Value.RetryDelay
+            );
+
         try
         {
-            var result = await _dispatcher.HandleMessageAsync(handler, body, headers);
+            var result = await handlePolicy.ExecuteAsync(() => _dispatcher.HandleMessageAsync(handler, body, headers));
 
             if (result == RabbitConsumptionResult.Success)
                 await channel.BasicAckAsync(args.DeliveryTag, false);

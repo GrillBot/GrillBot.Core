@@ -2,6 +2,7 @@
 using GrillBot.Core.RabbitMQ.V2.Dispatcher;
 using GrillBot.Core.RabbitMQ.V2.Factory;
 using GrillBot.Core.RabbitMQ.V2.HealthChecks;
+using GrillBot.Core.RabbitMQ.V2.Options;
 using GrillBot.Core.RabbitMQ.V2.Publisher;
 using GrillBot.Core.RabbitMQ.V2.Serialization;
 using GrillBot.Core.RabbitMQ.V2.Serialization.Json;
@@ -20,6 +21,7 @@ public static class RabbitExtensions
         if (!configuration.GetSection("RabbitMQ").Exists())
             return services;
 
+        services.Configure<RabbitOptions>(configuration.GetSection("RabbitMQ"));
         services.AddSingleton<IRabbitConnectionFactory, RabbitConnectionFactory>();
         services.AddSingleton<IRabbitMessageSerializer, JsonRabbitMessageSerializer>();
         services.AddSingleton<IRabbitMessageDispatcher, RabbitJsonMessageDispatcher>();
