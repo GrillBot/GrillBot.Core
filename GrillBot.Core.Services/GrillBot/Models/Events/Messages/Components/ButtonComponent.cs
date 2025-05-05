@@ -53,4 +53,16 @@ public class ButtonComponent
 
     public Discord.ButtonComponent ToDiscordComponent()
         => ToBuilder().Build();
+
+    public static ButtonComponent FromDiscordComponent(Discord.ButtonComponent component)
+    {
+        return new ButtonComponent(
+            component.Label,
+            component.CustomId,
+            component.Style,
+            component.Emote?.ToString(),
+            component.Url,
+            component.IsDisabled
+        );
+    }
 }

@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
+namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages.Embeds;
 
 public class DiscordMessageEmbed
 {
@@ -42,7 +42,7 @@ public class DiscordMessageEmbed
         Footer = footer;
         ImageUrl = imageUrl;
         ThumbnailUrl = thumbnailUrl;
-        Fields = fields.Take(EmbedBuilder.MaxFieldCount).ToList();
+        Fields = [.. fields.Take(EmbedBuilder.MaxFieldCount)];
         Timestamp = timestamp;
         UseCurrentTimestamp = useCurrentTimestamp;
     }
@@ -88,5 +88,22 @@ public class DiscordMessageEmbed
         {
             return false;
         }
+    }
+
+    public static DiscordMessageEmbed FromEmbed(IEmbed embed)
+    {
+        return new DiscordMessageEmbed(
+            embed.Url,
+            embed.Title,
+            embed.Description,
+            DiscordMessageEmbedAuthor.FromEmbed(embed.Author),
+            embed.Color?.RawValue,
+            DiscordMessageEmbedFooter.FromEmbed(embed.Footer),
+            embed.Image?.Url,
+            embed.Thumbnail?.Url,
+            embed.Fields.Select(DiscordMessageEmbedField.FromEmbed),
+            embed.Timestamp?.DateTime,
+            false
+        );
     }
 }

@@ -1,6 +1,4 @@
-﻿using GrillBot.Core.Services.GrillBot.Models.Events.Messages.Components;
-
-namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
+﻿namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages.Components;
 
 public class DiscordMessageComponent
 {
@@ -32,5 +30,20 @@ public class DiscordMessageComponent
                 _ => null
             })
             .Where(o => o is not null)!;
+    }
+
+    public static DiscordMessageComponent? FromComponents(IEnumerable<Discord.IMessageComponent> components)
+    {
+        var result = new DiscordMessageComponent();
+
+        var buttonsQuery = components
+            .Where(o => o.Type == Discord.ComponentType.Button)
+            .OfType<Discord.ButtonComponent>()
+            .Select(ButtonComponent.FromDiscordComponent);
+
+        foreach (var button in buttonsQuery)
+            result.AddButton(button);
+
+        return result.ComponentOrder.Count > 0 ? result : null;
     }
 }
