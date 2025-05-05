@@ -18,7 +18,7 @@ public class DiscordSendMessagePayload : DiscordMessagePayloadData, IRabbitMessa
     }
 
     public DiscordSendMessagePayload(
-        ulong guildId,
+        ulong? guildId,
         ulong channelId,
         string? content,
         IEnumerable<DiscordMessageFile> attachments,
