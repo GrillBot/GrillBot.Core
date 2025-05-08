@@ -15,8 +15,7 @@ public class DiscordMessagePayloadData
     public Dictionary<string, string> ServiceData { get; set; } = [];
     public DiscordMessageComponent? Components { get; set; }
 
-    public bool CanUseLocalizedEmbeds => ServiceData.TryGetValue("UseLocalizedEmbeds", out var _useLocalizedEmbeds) && _useLocalizedEmbeds == "true";
-    public bool CanUseLocalizedContent => ServiceData.TryGetValue("UseLocalizedContent", out var _useLocalizedContent) && _useLocalizedContent == "true";
+    public bool CanUseLocalization => ServiceData.TryGetValue("UseLocalization", out var _useLocalization) && _useLocalization == "true";
     public string? Locale => ServiceData.TryGetValue("Language", out var _locale) ? _locale : null;
 
     public DiscordMessagePayloadData()
@@ -44,12 +43,10 @@ public class DiscordMessagePayloadData
         Components = components;
     }
 
-    public DiscordMessagePayloadData WithLocalization(bool useLocalizedEmbeds = true, bool useLocalizedContent = true, string? locale = null)
+    public DiscordMessagePayloadData WithLocalization(bool useLocalization = true, string? locale = null)
     {
-        if (useLocalizedContent)
-            ServiceData.TryAdd("UseLocalizedContent", "true");
-        if (useLocalizedEmbeds)
-            ServiceData.TryAdd("UseLocalizedEmbeds", "true");
+        if (useLocalization)
+            ServiceData.Add("UseLocalization", "true");
         if (!string.IsNullOrEmpty(locale))
             ServiceData.TryAdd("Language", locale);
 
