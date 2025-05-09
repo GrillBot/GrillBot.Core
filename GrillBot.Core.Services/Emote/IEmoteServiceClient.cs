@@ -74,5 +74,5 @@ public interface IEmoteServiceClient : IServiceClient
     Task<int> StartSuggestionsVotingAsync(ulong guildId, CancellationToken cancellationToken = default);
 
     [Post("/api/emotesuggestions/vote/finish")]
-    Task FinishSuggestionVotesAsync(CancellationToken cancellationToken = default);
+    Task<int> FinishSuggestionVotesAsync(CancellationToken cancellationToken = default);
 }
