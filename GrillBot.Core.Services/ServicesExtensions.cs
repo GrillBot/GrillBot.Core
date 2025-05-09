@@ -76,7 +76,7 @@ public static class ServicesExtensions
                 client.Timeout = Timeout.InfiniteTimeSpan;
             })
             .AddHttpMessageHandler<Common.Handlers.HttpClientHandler>()
-            .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(1, _ => TimeSpan.FromSeconds(5)));
+            .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError().WaitAndRetryAsync(2, _ => TimeSpan.FromSeconds(5)));
     }
 
     public static void AddExternalServices(this IServiceCollection services, IConfiguration configuration)

@@ -2,7 +2,11 @@
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
 using GrillBot.Core.Services.Emote.Models.Request;
+using GrillBot.Core.Services.Emote.Models.Request.EmoteSuggestions;
+using GrillBot.Core.Services.Emote.Models.Request.Guild;
 using GrillBot.Core.Services.Emote.Models.Response;
+using GrillBot.Core.Services.Emote.Models.Response.EmoteSuggestions;
+using GrillBot.Core.Services.Emote.Models.Response.Guild;
 using Refit;
 
 namespace GrillBot.Core.Services.Emote;
@@ -45,4 +49,30 @@ public interface IEmoteServiceClient : IServiceClient
 
     [Get("/api/statistics/count/{guildId}")]
     Task<long> GetStatisticsCountInGuildAsync(string guildId, CancellationToken cancellationToken = default);
+
+    [Put("/api/guild/{guildId}")]
+    Task UpdateGuildAsync(ulong guildId, GuildRequest request, CancellationToken cancellationToken = default);
+
+    [Get("/api/guild/{guildId}")]
+    Task<GuildData> GetGuildAsync(ulong guildId, CancellationToken cancellationToken = default);
+
+    [Post("api/emotesuggestions/list")]
+    Task<PaginatedResponse<EmoteSuggestionItem>> GetEmoteSuggestionsAsync(EmoteSuggestionsListRequest request, CancellationToken cancellationToken = default);
+
+    [Put("/api/emotesuggestions/approve/{suggestionId}")]
+    Task SetSuggestionApprovalAsync(
+        Guid suggestionId,
+        [Query] bool isApproved,
+        [Header("Authorization")] string? authorizationToken = null,
+        CancellationToken cancellationToken = default
+    );
+
+    [Post("/api/emotesuggestions/{suggestionId}/votes")]
+    Task<PaginatedResponse<EmoteSuggestionVoteItem>> GetSuggestionVotesAsync(Guid suggestionId, EmoteSuggestionVoteListRequest request, CancellationToken cancellationToken = default);
+
+    [Post("/api/emotesuggestions/vote/{guildId}")]
+    Task<int> StartSuggestionsVotingAsync(ulong guildId, CancellationToken cancellationToken = default);
+
+    [Post("/api/emotesuggestions/vote/finish")]
+    Task FinishSuggestionVotesAsync(CancellationToken cancellationToken = default);
 }
