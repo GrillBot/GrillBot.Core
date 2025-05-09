@@ -56,7 +56,7 @@ public interface IEmoteServiceClient : IServiceClient
     [Get("/api/guild/{guildId}")]
     Task<GuildData> GetGuildAsync(ulong guildId, CancellationToken cancellationToken = default);
 
-    [Post("api/emotesuggestions/list")]
+    [Post("/api/emotesuggestions/list")]
     Task<PaginatedResponse<EmoteSuggestionItem>> GetEmoteSuggestionsAsync(EmoteSuggestionsListRequest request, CancellationToken cancellationToken = default);
 
     [Put("/api/emotesuggestions/approve/{suggestionId}")]
