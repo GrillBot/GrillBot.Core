@@ -6,10 +6,10 @@ namespace GrillBot.Core.Services.Emote.Models.Request.Guild;
 public class GuildRequest : IDictionaryObject
 {
     [DiscordId]
-    public ulong? SuggestionChannelId { get; set; }
+    public string? SuggestionChannelId { get; set; }
 
     [DiscordId]
-    public ulong? VoteChannelId { get; set; }
+    public string? VoteChannelId { get; set; }
 
     public TimeSpan VoteTime { get; set; }
 
@@ -17,8 +17,8 @@ public class GuildRequest : IDictionaryObject
     {
         return new Dictionary<string, string?>()
         {
-            { nameof(SuggestionChannelId), SuggestionChannelId?.ToString() },
-            { nameof(VoteChannelId), VoteChannelId?.ToString() },
+            { nameof(SuggestionChannelId), SuggestionChannelId },
+            { nameof(VoteChannelId), VoteChannelId },
             { nameof(VoteTime), VoteTime.ToString("c") }
         };
     }

@@ -9,7 +9,7 @@ namespace GrillBot.Core.Services.Emote.Models.Request.EmoteSuggestions;
 public class EmoteSuggestionVoteListRequest : IDictionaryObject
 {
     [DiscordId]
-    public ulong? UserId { get; set; }
+    public string? UserId { get; set; }
 
     public PaginatedParams Pagination { get; set; } = new();
     public SortParameters Sort { get; set; } = new();
@@ -18,7 +18,7 @@ public class EmoteSuggestionVoteListRequest : IDictionaryObject
     {
         var result = new Dictionary<string, string?>
         {
-            { nameof(UserId), UserId?.ToString() }
+            { nameof(UserId), UserId }
         };
 
         result.MergeDictionaryObjects(Pagination, nameof(Pagination));

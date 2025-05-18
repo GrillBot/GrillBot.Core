@@ -9,10 +9,10 @@ namespace GrillBot.Core.Services.Emote.Models.Request.EmoteSuggestions;
 public class EmoteSuggestionsListRequest : IDictionaryObject
 {
     [DiscordId]
-    public ulong? GuildId { get; set; }
+    public string? GuildId { get; set; }
 
     [DiscordId]
-    public ulong? FromUserId { get; set; }
+    public string? FromUserId { get; set; }
     public DateTime? SuggestedFrom { get; set; }
     public DateTime? SuggestedTo { get; set; }
     public string? NameContains { get; set; }
@@ -30,8 +30,8 @@ public class EmoteSuggestionsListRequest : IDictionaryObject
     {
         var result = new Dictionary<string, string?>
         {
-            { nameof(GuildId), GuildId?.ToString() },
-            { nameof(FromUserId), FromUserId?.ToString() },
+            { nameof(GuildId), GuildId },
+            { nameof(FromUserId), FromUserId },
             { nameof(SuggestedFrom), SuggestedFrom?.ToString("o") },
             { nameof(SuggestedTo), SuggestedTo?.ToString("o") },
             { nameof(NameContains), NameContains },
