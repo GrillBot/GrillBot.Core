@@ -56,7 +56,9 @@ jobs:
       - name: GrillBot.Core.Services
         run: |
           dotnet restore -r linux-x64 GrillBot.Core.Services/
+          dotnet restore -r linux-x64 GrillBot.Core.Services.Tests/
           dotnet build -c Release --no-self-contained GrillBot.Core.Services/
+          dotnet build -c Release --no-self-contained GrillBot.Core.Services.Tests/
       - name: GrillBot.Core.Redis
         run: |
           dotnet restore -r linux-x64 GrillBot.Core.Redis/
@@ -81,6 +83,8 @@ jobs:
         run: dotnet test -c Debug GrillBot.Core.Tests/
       - name: GrillBot.Core.Redis
         run: dotnet test -c Debug GrillBot.Core.Redis.Tests/
+      - name: GrillBot.Core.Services
+        run: dotnet test -c Debug GrillBot.Core.Services.Tests/
   PublishPackages:
     runs-on: ubuntu-latest
     needs: [CheckNugetPublishPossibility, BuildPackages, TestPackages]

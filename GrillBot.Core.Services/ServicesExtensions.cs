@@ -3,6 +3,7 @@ using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
 using GrillBot.Core.Services.Common.Exceptions;
 using GrillBot.Core.Services.Common.Executor;
+using GrillBot.Core.Services.Common.Formatters;
 using GrillBot.Core.Services.Emote;
 using GrillBot.Core.Services.Graphics;
 using GrillBot.Core.Services.ImageProcessing;
@@ -68,7 +69,8 @@ public static class ServicesExtensions
                     { "IsThirdParty", isThirdParty },
                     { "ServiceName", serviceName }
                 },
-                ContentSerializer = new SystemTextJsonContentSerializer(GetJsonSerializerOptions())
+                ContentSerializer = new SystemTextJsonContentSerializer(GetJsonSerializerOptions()),
+                UrlParameterFormatter = new GrillBotUrlParameterFormatter()
             })
             .ConfigureHttpClient(client =>
             {

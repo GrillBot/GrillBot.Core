@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrillBot.Core.Metrics", "Gr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrillBot.Core.RabbitMQ.V2", "GrillBot.Core.RabbitMQ.V2\GrillBot.Core.RabbitMQ.V2.csproj", "{52DBF003-16EA-4D4D-9AD8-5314C171FBA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrillBot.Core.Services.Tests", "GrillBot.Core.Services.Tests\GrillBot.Core.Services.Tests.csproj", "{ADC0905B-018E-48BD-8428-655BD1F46D64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{52DBF003-16EA-4D4D-9AD8-5314C171FBA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52DBF003-16EA-4D4D-9AD8-5314C171FBA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52DBF003-16EA-4D4D-9AD8-5314C171FBA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADC0905B-018E-48BD-8428-655BD1F46D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADC0905B-018E-48BD-8428-655BD1F46D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADC0905B-018E-48BD-8428-655BD1F46D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADC0905B-018E-48BD-8428-655BD1F46D64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{84ADA844-3A9D-4635-B006-7148B3D7A05B} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
 		{9C898C46-CD6D-463E-A837-1C4A314FE15A} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
 		{9862281D-0E24-4DE9-8A86-CF80C0D663EA} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
+		{ADC0905B-018E-48BD-8428-655BD1F46D64} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2126920-802D-4561-B18D-BB1C35AE37C1}
