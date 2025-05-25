@@ -52,7 +52,7 @@ public class TelemetryCollector
         counter[key]++;
     }
 
-    private static IEnumerable<Measurement<int>> GetMeasurements(ConcurrentDictionary<(string queue, string topic), int> counter)
+    private static IEnumerable<Measurement<int>> GetMeasurements(ConcurrentDictionary<(string topic, string queue), int> counter)
     {
         return counter
             .Select(o => new Measurement<int>(
