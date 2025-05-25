@@ -59,6 +59,8 @@ public static class TelemetryExtensions
             provider => provider.GetRequiredService<IMeterFactory>().Create(METER_NAME)
         );
 
+        builder.Services.AddHostedService<TelemetryService>();
+
         return builder;
     }
 
