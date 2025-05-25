@@ -8,15 +8,13 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using System.Diagnostics.Metrics;
 
 namespace GrillBot.Core.Metrics;
 
 public static class TelemetryExtensions
 {
-    public static IServiceCollection AddMetrics(this IServiceCollection services)
-    {
-        return services;
-    }
+    private const string METER_NAME = "GrillBot-ServiceMeter";
 
     public static IHostApplicationBuilder AddTelemetry(this IHostApplicationBuilder builder)
     {
@@ -53,7 +51,12 @@ public static class TelemetryExtensions
                 .AddRuntimeInstrumentation()
                 .AddProcessInstrumentation()
                 .AddPrometheusExporter()
+                .AddMeter(METER_NAME)
             );
+
+        builder.Services.AddSingleton(
+            provider => provider.GetRequiredService<IMeterFactory>().Create(METER_NAME)
+        );
 
         return builder;
     }
