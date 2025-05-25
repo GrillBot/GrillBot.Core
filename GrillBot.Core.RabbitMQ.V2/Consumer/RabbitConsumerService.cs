@@ -3,6 +3,7 @@ using GrillBot.Core.RabbitMQ.V2.Factory;
 using GrillBot.Core.RabbitMQ.V2.Messages;
 using GrillBot.Core.RabbitMQ.V2.Options;
 using GrillBot.Core.RabbitMQ.V2.Publisher;
+using GrillBot.Core.RabbitMQ.V2.Telemetry;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,8 @@ public class RabbitConsumerService(
     IRabbitConnectionFactory _connectionFactory,
     IRabbitMessageDispatcher _dispatcher,
     IRabbitChannelFactory _channelFactory,
-    IOptions<RabbitOptions> _options
+    IOptions<RabbitOptions> _options,
+    TelemetryCollector _telemetry
 ) : IHostedService
 {
     private readonly Dictionary<string, AsyncDefaultBasicConsumer> _consumers = [];
@@ -80,6 +82,7 @@ public class RabbitConsumerService(
             .ToDictionary(o => o.Key, o => o.Value) ?? [];
 
         _logger.LogInformation("Received new message. Length: {Length}, Handler: {Name}", body.Length, handlerType.Name);
+        _telemetry.IncrementConsumer(args.Exchange, queueName);
 
         var handlePolicy = Policy
             .Handle<Exception>(handler.HandleException)

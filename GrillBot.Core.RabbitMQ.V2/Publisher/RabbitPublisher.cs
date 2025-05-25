@@ -1,6 +1,7 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Factory;
 using GrillBot.Core.RabbitMQ.V2.Messages;
 using GrillBot.Core.RabbitMQ.V2.Serialization;
+using GrillBot.Core.RabbitMQ.V2.Telemetry;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 
@@ -10,7 +11,8 @@ public class RabbitPublisher(
     IRabbitConnectionFactory _connectionFactory,
     IRabbitMessageSerializer _serializer,
     ILogger<RabbitPublisher> _logger,
-    IRabbitChannelFactory _channelFactory
+    IRabbitChannelFactory _channelFactory,
+    TelemetryCollector _telemetry
 ) : IRabbitPublisher
 {
     private const int MAX_RETRIES = 5;
@@ -50,6 +52,8 @@ public class RabbitPublisher(
     {
         try
         {
+            _telemetry.IncrementProducer(topic, queue);
+
             await using var connection = await _connectionFactory.CreateAsync();
             await using var channel = await _channelFactory.CreateChannelAsync(connection, topic, queue);
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using GrillBot.Core.Metrics.CustomTelemetry;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -66,4 +67,7 @@ public static class TelemetryExtensions
         app.UseOpenTelemetryPrometheusScrapingEndpoint();
         app.UseHttpLogging();
     }
+
+    public static IServiceCollection AddCustomTelemetryBuilder<TBuilder>(this IServiceCollection services) where TBuilder : class, ICustomTelemetryBuilder
+        => services.AddSingleton<ICustomTelemetryBuilder, TBuilder>();
 }

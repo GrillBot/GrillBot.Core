@@ -1,4 +1,5 @@
-﻿using GrillBot.Core.RabbitMQ.V2.Consumer;
+﻿using GrillBot.Core.Metrics.CustomTelemetry;
+using GrillBot.Core.RabbitMQ.V2.Consumer;
 using GrillBot.Core.RabbitMQ.V2.Dispatcher;
 using GrillBot.Core.RabbitMQ.V2.Factory;
 using GrillBot.Core.RabbitMQ.V2.HealthChecks;
@@ -6,6 +7,7 @@ using GrillBot.Core.RabbitMQ.V2.Options;
 using GrillBot.Core.RabbitMQ.V2.Publisher;
 using GrillBot.Core.RabbitMQ.V2.Serialization;
 using GrillBot.Core.RabbitMQ.V2.Serialization.Json;
+using GrillBot.Core.RabbitMQ.V2.Telemetry;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -28,6 +30,10 @@ public static class RabbitExtensions
         services.AddSingleton<IRabbitChannelFactory, RabbitChannelFactory>();
         services.AddScoped<IRabbitPublisher, RabbitPublisher>();
         services.AddHostedService<RabbitConsumerService>();
+
+        // Telemetry
+        services.AddSingleton<TelemetryCollector>();
+        services.AddSingleton<ICustomTelemetryBuilder, RabbitTelemetryBuilder>();
 
         services
             .AddHealthChecks()
