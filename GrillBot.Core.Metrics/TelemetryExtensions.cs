@@ -1,4 +1,6 @@
-﻿using GrillBot.Core.Metrics.CustomTelemetry;
+﻿using GrillBot.Core.Metrics.Collectors;
+using GrillBot.Core.Metrics.Initializer;
+using GrillBot.Core.Metrics.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +17,7 @@ namespace GrillBot.Core.Metrics;
 
 public static class TelemetryExtensions
 {
-    private const string METER_NAME = "GrillBot-ServiceMeter";
+    public const string METER_NAME = "GrillBot-ServiceMeter";
 
     public static IHostApplicationBuilder AddTelemetry(this IHostApplicationBuilder builder)
     {
@@ -70,6 +72,14 @@ public static class TelemetryExtensions
         app.UseHttpLogging();
     }
 
-    public static IServiceCollection AddCustomTelemetryBuilder<TBuilder>(this IServiceCollection services) where TBuilder : class, ICustomTelemetryBuilder
-        => services.AddSingleton<ICustomTelemetryBuilder, TBuilder>();
+    public static IServiceCollection AddTelemetryInitializer<TInitializer>(this IServiceCollection services) where TInitializer : TelemetryInitializer
+        => services.AddSingleton<TelemetryInitializer, TInitializer>();
+
+    public static IServiceCollection AddTelemetryCollector<TCollector>(this IServiceCollection services) where TCollector : class, ITelemetryCollector
+    {
+        services.AddSingleton<TCollector>();
+        services.AddSingleton<ITelemetryCollector, TCollector>();
+
+        return services;
+    }
 }
