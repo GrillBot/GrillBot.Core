@@ -77,8 +77,8 @@ public static class TelemetryExtensions
 
     public static IServiceCollection AddTelemetryCollector<TCollector>(this IServiceCollection services) where TCollector : class, ITelemetryCollector
     {
-        services.AddSingleton<TCollector>();
         services.AddSingleton<ITelemetryCollector, TCollector>();
+        services.AddSingleton(provider => provider.GetServices<ITelemetryCollector>().OfType<TCollector>().First());
 
         return services;
     }
