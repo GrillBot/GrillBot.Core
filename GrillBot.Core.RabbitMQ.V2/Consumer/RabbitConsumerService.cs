@@ -22,7 +22,7 @@ public class RabbitConsumerService(
     IRabbitMessageDispatcher _dispatcher,
     IRabbitChannelFactory _channelFactory,
     IOptions<RabbitOptions> _options,
-    TelemetryCollector _telemetry
+    RabbitTelemetryCollector _collector
 ) : IHostedService
 {
     private readonly Dictionary<string, AsyncDefaultBasicConsumer> _consumers = [];
@@ -82,7 +82,7 @@ public class RabbitConsumerService(
             .ToDictionary(o => o.Key, o => o.Value) ?? [];
 
         _logger.LogInformation("Received new message. Length: {Length}, Handler: {Name}", body.Length, handlerType.Name);
-        _telemetry.IncrementConsumer(args.Exchange, queueName);
+        _collector.IncrementConsumer(args.Exchange, queueName);
 
         var handlePolicy = Policy
             .Handle<Exception>(handler.HandleException)

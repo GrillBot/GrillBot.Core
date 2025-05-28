@@ -12,7 +12,7 @@ public class RabbitPublisher(
     IRabbitMessageSerializer _serializer,
     ILogger<RabbitPublisher> _logger,
     IRabbitChannelFactory _channelFactory,
-    TelemetryCollector _telemetry
+    RabbitTelemetryCollector _collector
 ) : IRabbitPublisher
 {
     private const int MAX_RETRIES = 5;
@@ -52,7 +52,7 @@ public class RabbitPublisher(
     {
         try
         {
-            _telemetry.IncrementProducer(topic, queue);
+            _collector.IncrementProducer(topic, queue);
 
             await using var connection = await _connectionFactory.CreateAsync();
             await using var channel = await _channelFactory.CreateChannelAsync(connection, topic, queue);

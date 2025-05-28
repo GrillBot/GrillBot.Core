@@ -1,4 +1,4 @@
-﻿using GrillBot.Core.Metrics.CustomTelemetry;
+﻿using GrillBot.Core.Metrics;
 using GrillBot.Core.RabbitMQ.V2.Consumer;
 using GrillBot.Core.RabbitMQ.V2.Dispatcher;
 using GrillBot.Core.RabbitMQ.V2.Factory;
@@ -32,8 +32,7 @@ public static class RabbitExtensions
         services.AddHostedService<RabbitConsumerService>();
 
         // Telemetry
-        services.AddSingleton<TelemetryCollector>();
-        services.AddSingleton<ICustomTelemetryBuilder, RabbitTelemetryBuilder>();
+        services.AddTelemetryCollector<RabbitTelemetryCollector>();
 
         services
             .AddHealthChecks()
