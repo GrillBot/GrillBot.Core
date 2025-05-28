@@ -17,5 +17,5 @@ public class TelemetryCounter(
         => WithLock(() => new Measurement<long>(_value, Tags));
 
     public override Instrument CreateInstrument(Meter meter)
-        => meter.CreateObservableGauge(Name, Get, description: Description);
+        => meter.CreateObservableCounter(Name, Get, description: Description);
 }
