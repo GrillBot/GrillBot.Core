@@ -65,7 +65,7 @@ public interface IAuditLogServiceClient : IServiceClient
 
     [Get("/api/statistics/api/periodStats")]
     Task<Dictionary<string, long>> GetApiPeriodStatisticsAsync(
-        [Query(CollectionFormat.Multi)] string[] apiGroups,
+        [Query(CollectionFormat.Multi)] string[] group,
         [Query] string groupingKey,
         CancellationToken cancellationToken = default
     );
