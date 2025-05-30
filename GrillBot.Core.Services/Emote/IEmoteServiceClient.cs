@@ -75,4 +75,7 @@ public interface IEmoteServiceClient : IServiceClient
 
     [Post("/api/emotesuggestions/vote/finish")]
     Task<int> FinishSuggestionVotesAsync(CancellationToken cancellationToken = default);
+
+    [Get("/api/emotesuggestions/preview/{suggestionId}")]
+    Task<Stream> GetEmoteSuggestionImagePreviewAsync(Guid suggestionId, CancellationToken cancellationToken = default);
 }
