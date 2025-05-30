@@ -63,6 +63,19 @@ public interface IAuditLogServiceClient : IServiceClient
     [Get("/api/diag/status")]
     Task<StatusInfo> GetStatusInfoAsync(CancellationToken cancellationToken = default);
 
+    [Get("/api/statistics/api/periodStats")]
+    Task<Dictionary<string, long>> GetApiPeriodStatisticsAsync(
+        [Query(CollectionFormat.Multi)] string[] apiGroups,
+        [Query] string groupingKey,
+        CancellationToken cancellationToken = default
+    );
+
+    [Get("/api/statistics/auditlog/periodStats")]
+    Task<Dictionary<string, long>> GetAuditLogPeriodStatisticsAsync([Query] string groupingKey, CancellationToken cancellationToken = default);
+
+    [Get("/api/statistics/interactions/periodStats")]
+    Task<Dictionary<string, long>> GetInteractionsPeriodStatisticsAsync([Query] string groupingKey, CancellationToken cancellationToken = default);
+
     [Delete("/api/logItem/{id}")]
     Task DeleteItemAsync(Guid id, CancellationToken cancellationToken = default);
 }
