@@ -30,5 +30,5 @@ public class TelemetryCounterContainer(string name, string? description = null) 
     }
 
     public override Instrument CreateInstrument(Meter meter)
-        => meter.CreateObservableGauge(Name, Get, description: Description);
+        => meter.CreateObservableCounter(Name, Get, description: Description);
 }
