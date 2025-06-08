@@ -29,8 +29,9 @@ public class DiscordEditMessagePayload : DiscordMessagePayloadData, IRabbitMessa
         MessageFlags? flags = null,
         DiscordMessageEmbed? embed = null,
         Dictionary<string, string>? serviceData = null,
-        DiscordMessageComponent? components = null
-    ) : base(content, attachments, serviceId, allowedMentions, flags, embed, serviceData, components)
+        DiscordMessageComponent? components = null,
+        DiscordMessageReference? reference = null
+    ) : base(content, attachments, serviceId, allowedMentions, flags, embed, serviceData, components, reference)
     {
         GuildId = guildId;
         ChannelId = channelId;

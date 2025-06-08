@@ -14,6 +14,7 @@ public class DiscordMessagePayloadData
     public string ServiceId { get; set; } = null!;
     public Dictionary<string, string> ServiceData { get; set; } = [];
     public DiscordMessageComponent? Components { get; set; }
+    public DiscordMessageReference? Reference { get; set; }
 
     public bool CanUseLocalization => ServiceData.TryGetValue("UseLocalization", out var _useLocalization) && _useLocalization == "true";
     public string? Locale => ServiceData.TryGetValue("Language", out var _locale) ? _locale : null;
@@ -30,7 +31,8 @@ public class DiscordMessagePayloadData
         MessageFlags? flags = null,
         DiscordMessageEmbed? embed = null,
         Dictionary<string, string>? serviceData = null,
-        DiscordMessageComponent? components = null
+        DiscordMessageComponent? components = null,
+        DiscordMessageReference? reference = null
     )
     {
         Content = content;
@@ -41,6 +43,7 @@ public class DiscordMessagePayloadData
         ServiceId = serviceId;
         ServiceData = serviceData ?? [];
         Components = components;
+        Reference = reference;
     }
 
     public DiscordMessagePayloadData WithLocalization(bool useLocalization = true, string? locale = null)
