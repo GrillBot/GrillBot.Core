@@ -11,23 +11,25 @@ public class ServiceClientExecutor<TServiceInterface>(
     ICurrentUserProvider _currentUser
 ) : IServiceClientExecutor<TServiceInterface> where TServiceInterface : IServiceClient
 {
-    public async Task<TResult> ExecuteRequestAsync<TResult>(Func<TServiceInterface, ServiceExecutorContext, Task<TResult>> executeRequest)
+    public async Task<TResult> ExecuteRequestAsync<TResult>(Func<TServiceInterface, ServiceExecutorContext, Task<TResult>> executeRequest, CancellationToken cancellationToken = default)
     {
-        using var cancellationTokenSource = CreateCancellationToken();
-        var context = CreateContext(cancellationTokenSource);
+        using var timeoutCancellationTokenSource = CreateTimeoutCancellationToken();
+        using var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(timeoutCancellationTokenSource.Token, cancellationToken);
 
+        var context = CreateContext(cancellationTokenSource);
         return await executeRequest(_serviceClient, context);
     }
 
-    public async Task ExecuteRequestAsync(Func<TServiceInterface, ServiceExecutorContext, Task> executionRequest)
+    public async Task ExecuteRequestAsync(Func<TServiceInterface, ServiceExecutorContext, Task> executionRequest, CancellationToken cancellationToken = default)
     {
-        using var cancellationTokenSource = CreateCancellationToken();
-        var context = CreateContext(cancellationTokenSource);
+        using var timeoutCancellationTokenSource = CreateTimeoutCancellationToken();
+        using var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(timeoutCancellationTokenSource.Token, cancellationToken);
 
+        var context = CreateContext(cancellationTokenSource);
         await executionRequest(_serviceClient, context);
     }
 
-    private CancellationTokenSource CreateCancellationToken()
+    private CancellationTokenSource CreateTimeoutCancellationToken()
     {
         var timeout = GetTimeout();
         return new CancellationTokenSource(timeout);
