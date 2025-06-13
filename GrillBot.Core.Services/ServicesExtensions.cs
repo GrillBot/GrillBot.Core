@@ -95,6 +95,7 @@ public static class ServicesExtensions
         services.RegisterService<ISearchingServiceClient>(configuration);
         services.RegisterService<IGraphicsClient>(configuration);
         services.RegisterService<IInviteServiceClient>(configuration);
+        services.RegisterService<UserManagementService.IUserManagementServiceClient>(configuration);
     }
 
     private static JsonSerializerOptions GetJsonSerializerOptions()
