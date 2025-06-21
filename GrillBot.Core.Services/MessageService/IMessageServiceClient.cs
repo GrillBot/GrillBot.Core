@@ -20,7 +20,7 @@ public interface IMessageServiceClient : IServiceClient
     Task<PaginatedResponse<AutoReplyDefinition>> GetAutoReplyDefinitionListAsync(AutoReplyDefinitionListRequest request, CancellationToken cancellationToken = default);
 
     [Delete("/api/autoreply/{id}")]
-    Task<ApiResponse<object>> DeleteAutoReplyDefinitionAsync(Guid id, CancellationToken cancellationToken = default);
+    Task DeleteAutoReplyDefinitionAsync(Guid id, CancellationToken cancellationToken = default);
 
     [Put("/api/autoreply/{id}")]
     Task<AutoReplyDefinition> UpdateAutoReplyDefinitionAsync(Guid id, [Body] AutoReplyDefinitionRequest request, CancellationToken cancellationToken = default);
