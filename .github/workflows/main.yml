@@ -32,23 +32,27 @@ jobs:
         id: detect_packages
         shell: bash
         run: |
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          declare -A unique_packages=()
           package_list_array=()
-          declare -A unique_packages
 
           changed_files=$(echo "${{ steps.gitdiff.outputs.changed_files }}" | tr '\n' ' ')
 
           for file in $changed_files; do
-            # Match only .csproj files NOT in folders with ".Tests" in the name
+            # Match .csproj files NOT in .Tests folders
             if [[ "$file" =~ ^([^/]+)/(.*\.csproj)$ && ! "$file" =~ \.Tests/ ]]; then
               folder="${BASH_REMATCH[1]}"
-              if [ -z "${unique_packages["$folder"]}" ]; then
-                package_list_array+=("\"$folder\"")
+              if [[ -z "${unique_packages[$folder]+x}" ]]; then
                 unique_packages["$folder"]=1
+                package_list_array+=("\"$folder\"")
               fi
             fi
           done
 
           packages_json="[$(IFS=,; echo "${package_list_array[*]}")]"
+
           echo "packages=$packages_json" >> $GITHUB_OUTPUT
 
       - name: Dump detected packages
