@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Authors>GrillBot</Authors>
+        <Description>Core library for healthchecks.</Description>
+        <Copyright>All rights reserved</Copyright>
+        <PackageProjectUrl>https://grillbot.eu/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/GrillBot/GrillBot.Core</RepositoryUrl>
+        <RepositoryType>GitHub</RepositoryType>
+        <Version>1.0.0</Version>
+        <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+        <CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
+    </ItemGroup>
+
+</Project>
