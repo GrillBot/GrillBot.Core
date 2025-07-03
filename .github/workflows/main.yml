@@ -30,6 +30,7 @@ jobs:
 
       - name: Detect changed NuGet packages
         id: detect_packages
+        shell: bash
         run: |
           package_list_array=()
           declare -A unique_packages
