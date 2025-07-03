@@ -41,12 +41,15 @@ jobs:
           changed_files=$(echo "${{ steps.gitdiff.outputs.changed_files }}" | tr '\n' ' ')
 
           for file in $changed_files; do
-            # Match only .csproj files NOT in .Tests folders
-            if [[ "$file" =~ ^([^/]+)/[^/]*\.csproj$ && ! "$file" =~ \.Tests/ ]]; then
-              folder="${BASH_REMATCH[1]}"
-              if [[ -z "${unique_packages[$folder]+x}" ]]; then
-                unique_packages["$folder"]=1
-                package_list_array+=("\"$folder\"")
+            # Check if it's a .csproj file in a top-level folder
+            if [[ "$file" =~ ^([^/]+)/[^/]*\.csproj$ ]]; then
+              # Exclude anything with ".Tests" in the folder name
+              if [[ "$file" != *".Tests/"* ]]; then
+                folder="${BASH_REMATCH[1]}"
+                if [[ -z "${unique_packages[$folder]+x}" ]]; then
+                  unique_packages["$folder"]=1
+                  package_list_array+=("\"$folder\"")
+                fi
               fi
             fi
           done
