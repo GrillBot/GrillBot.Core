@@ -12,34 +12,54 @@ env:
   DOTNET_NOLOGO: true
 
 jobs:
-  CheckNugetPublishPossibility:
+  DetectChangedPackages:
     runs-on: ubuntu-latest
     outputs:
-      CorePackage: ${{ steps.filter.outputs.CorePackage }}
-      ServicesPackage: ${{ steps.filter.outputs.ServicesPackage }}
-      RedisPackage: ${{ steps.filter.outputs.RedisPackage }}
-      MetricsPackage: ${{ steps.filter.outputs.MetricsPackage }}
-      RabbitV2Package: ${{ steps.filter.outputs.RabbitV2Package }}
+      DeploymentMatrix: ${{ steps.detect_packages.outputs.packages }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Paths filter
-        uses: dorny/paths-filter@v3
-        id: filter
         with:
-          filters: |
-            CorePackage:
-              - 'GrillBot.Core/GrillBot.Core.csproj'
-            ServicesPackage:
-              - 'GrillBot.Core.Services/GrillBot.Core.Services.csproj'
-            RedisPackage:
-              - 'GrillBot.Core.Redis/GrillBot.Core.Redis.csproj'
-            MetricsPackage:
-              - 'GrillBot.Core.Metrics/GrillBot.Core.Metrics.csproj'
-            RabbitV2Package:
-              - 'GrillBot.Core.RabbitMQ.V2/GrillBot.Core.RabbitMQ.V2.csproj'
+          fetch-depth: 0
+
+      - name: Detect changed files
+        id: gitdiff
+        run: |
+          changed=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | xargs)
+          echo "changed_files=$changed" >> $GITHUB_OUTPUT
+
+      - name: Detect changed NuGet packages
+        id: detect_packages
+        run: |
+          package_list_array=()
+          declare -A unique_packages
+
+          changed_files=$(echo "${{ steps.gitdiff.outputs.changed_files }}" | tr '\n' ' ')
+
+          for file in $changed_files; do
+            # Match only .csproj files NOT in folders with ".Tests" in the name
+            if [[ "$file" =~ ^([^/]+)/(.*\.csproj)$ && ! "$file" =~ \.Tests/ ]]; then
+              folder="${BASH_REMATCH[1]}"
+              if [ -z "${unique_packages["$folder"]}" ]; then
+                package_list_array+=("\"$folder\"")
+                unique_packages["$folder"]=1
+              fi
+            fi
+          done
+
+          packages_json="[$(IFS=,; echo "${package_list_array[*]}")]"
+          echo "packages=$packages_json" >> $GITHUB_OUTPUT
+
+      - name: Dump detected packages
+        run: |
+          echo "Detected packages: ${{ steps.detect_packages.outputs.packages }}"
   BuildPackages:
     runs-on: ubuntu-latest
+    needs: [DetectChangedPackages]
+    if: ${{ needs.DetectChangedPackages.outputs.DeploymentMatrix != '[]' }}
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.DetectChangedPackages.outputs.DeploymentMatrix) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -47,31 +67,22 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-      - name: GrillBot.Core
+      - name: Build ${{ matrix.package }}
         run: |
-          dotnet restore -r linux-x64 GrillBot.Core/
-          dotnet restore -r linux-x64 GrillBot.Core.Tests/
-          dotnet build -c Release --no-self-contained GrillBot.Core/
-          dotnet build -c Release --no-self-contained GrillBot.Core.Tests/
-      - name: GrillBot.Core.Services
-        run: |
-          dotnet restore -r linux-x64 GrillBot.Core.Services/
-          dotnet restore -r linux-x64 GrillBot.Core.Services.Tests/
-          dotnet build -c Release --no-self-contained GrillBot.Core.Services/
-          dotnet build -c Release --no-self-contained GrillBot.Core.Services.Tests/
-      - name: GrillBot.Core.Redis
-        run: |
-          dotnet restore -r linux-x64 GrillBot.Core.Redis/
-          dotnet restore -r linux-x64 GrillBot.Core.Redis.Tests/
-          dotnet build -c Release --no-self-contained GrillBot.Core.Redis/
-          dotnet build -c Release --no-self-contained GrillBot.Core.Redis.Tests/
-      - name: GrillBot.Core.RabbitMQ.V2
-        run: |
-          dotnet restore -r linux-x64 GrillBot.Core.RabbitMQ.V2/
-          dotnet build -c Release --no-self-contained GrillBot.Core.RabbitMQ.V2/
+          dotnet restore -r linux-x64 ${{ matrix.package }}/
+          dotnet build -c Release --no-self-contained ${{ matrix.package }}/
+
+          if [ -d "${{matrix.package}}.Tests" ]; then
+            dotnet restore -r linux-x64 ${{ matrix.package }}.Tests/
+            dotnet build -c Release --no-self-contained ${{ matrix.package }}.Tests/
+          fi
   TestPackages:
     runs-on: ubuntu-latest
-    needs: [BuildPackages]
+    needs: [BuildPackages, DetectChangedPackages]
+    if: ${{ needs.DetectChangedPackages.outputs.DeploymentMatrix != '[]' }}
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.DetectChangedPackages.outputs.DeploymentMatrix) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -79,16 +90,18 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
-      - name: GrillBot.Core
-        run: dotnet test -c Debug GrillBot.Core.Tests/
-      - name: GrillBot.Core.Redis
-        run: dotnet test -c Debug GrillBot.Core.Redis.Tests/
-      - name: GrillBot.Core.Services
-        run: dotnet test -c Debug GrillBot.Core.Services.Tests/
+      - name: Test ${{ matrix.package }}
+        run: |
+          if [ -d "${{matrix.package}}.Tests" ]; then
+            dotnet test -c Debug ${{ matrix.package }}.Tests/
+          fi
   PublishPackages:
     runs-on: ubuntu-latest
-    needs: [CheckNugetPublishPossibility, BuildPackages, TestPackages]
-    if: github.ref == 'refs/heads/master'
+    needs: [DetectChangedPackages, BuildPackages, TestPackages]
+    if: github.ref == 'refs/heads/master' && needs.DetectChangedPackages.outputs.DeploymentMatrix != '[]'
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.DetectChangedPackages.outputs.DeploymentMatrix) }}
     permissions:
       packages: write
       contents: read
@@ -102,38 +115,9 @@ jobs:
           source-url: https://nuget.pkg.github.com/GrillBot/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: GrillBot.Core
-        if: needs.CheckNugetPublishPossibility.outputs.CorePackage == 'true'
+      - name: Publish package
         run: |
-          dotnet restore -r linux-x64 GrillBot.Core/
-          dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core/
-          dotnet pack -c Release --nologo --include-symbols GrillBot.Core/
-          dotnet nuget push GrillBot.Core/bin/Release/*.nupkg --skip-duplicate
-      - name: GrillBot.Core.Services
-        if: needs.CheckNugetPublishPossibility.outputs.ServicesPackage == 'true'
-        run: |
-          dotnet restore -r linux-x64 GrillBot.Core.Services/
-          dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.Services/
-          dotnet pack -c Release --nologo --include-symbols GrillBot.Core.Services/
-          dotnet nuget push GrillBot.Core.Services/bin/Release/*.nupkg --skip-duplicate
-      - name: GrillBot.Core.Redis
-        if: needs.CheckNugetPublishPossibility.outputs.RedisPackage == 'true'
-        run: |
-          dotnet restore -r linux-x64 GrillBot.Core.Redis/
-          dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.Redis/
-          dotnet pack -c Release --nologo --include-symbols GrillBot.Core.Redis/
-          dotnet nuget push GrillBot.Core.Redis/bin/Release/*.nupkg --skip-duplicate
-      - name: GrillBot.Core.Metrics
-        if: needs.CheckNugetPublishPossibility.outputs.MetricsPackage == 'true'
-        run: |
-          dotnet restore -r linux-x64 GrillBot.Core.Metrics/
-          dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.Metrics/
-          dotnet pack -c Release --nologo --include-symbols GrillBot.Core.Metrics/
-          dotnet nuget push GrillBot.Core.Metrics/bin/Release/*.nupkg --skip-duplicate
-      - name: GrillBot.Core.RabbitMQ.V2
-        if: needs.CheckNugetPublishPossibility.outputs.RabbitV2Package == 'true'
-        run: |
-            dotnet restore -r linux-x64 GrillBot.Core.RabbitMQ.V2/
-            dotnet build -c Release -r linux-x64 --no-self-contained --no-restore GrillBot.Core.RabbitMQ.V2/
-            dotnet pack -c Release --nologo --include-symbols GrillBot.Core.RabbitMQ.V2/
-            dotnet nuget push GrillBot.Core.RabbitMQ.V2/bin/Release/*.nupkg --skip-duplicate
+          dotnet restore -r linux-x64 ${{ matrix.package }}/
+          dotnet build -c Release --no-self-contained --no-restore ${{ matrix.package }}/
+          dotnet pack -c Release --nologo --include-symbols ${{ matrix.package }}/
+          dotnet nuget push ${{ matrix.package }}/bin/Release/*.nupkg --skip-duplicate
