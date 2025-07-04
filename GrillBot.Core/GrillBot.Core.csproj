@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<Authors>GrillBot</Authors>
-		<Description>Core library for all .NET projects of GrillBot infrastrucure.</Description>
-		<Copyright>All rights reserved</Copyright>
-		<PackageProjectUrl>https://grillbot.eu/</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/GrillBot/GrillBot.Core</RepositoryUrl>
-		<RepositoryType>GitHub</RepositoryType>
-		<Version>2.2.3</Version>
-		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
-		<CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Authors>GrillBot</Authors>
+        <Description>Core library for all .NET projects of GrillBot infrastrucure.</Description>
+        <Copyright>All rights reserved</Copyright>
+        <PackageProjectUrl>https://grillbot.eu/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/GrillBot/GrillBot.Core</RepositoryUrl>
+        <RepositoryType>GitHub</RepositoryType>
+        <Version>2.3.0</Version>
+        <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+        <CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Discord.Net.Core" Version="3.17.4" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.17" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.17" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Discord.Net.Core" Version="3.17.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.17" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.17" />
+    </ItemGroup>
 
 </Project>

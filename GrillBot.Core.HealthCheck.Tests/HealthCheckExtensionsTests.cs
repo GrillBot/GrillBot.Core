@@ -25,5 +25,7 @@ public class HealthCheckExtensionsTests
         var healthBuilder = app.MapHealthChecks();
 
         Assert.IsNotNull(healthBuilder);
+        Assert.IsNotNull(healthBuilder.SimpleEndpointBuilder);
+        Assert.IsNotNull(healthBuilder.DetailedEndpointBuilder);
     }
 }

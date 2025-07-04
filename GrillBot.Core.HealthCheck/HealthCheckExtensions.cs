@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using GrillBot.Core.Extensions;
+using GrillBot.Core.HealthCheck.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,14 +14,19 @@ public static class HealthCheckExtensions
         return HealthCheckServiceCollectionExtensions.AddHealthChecks(services);
     }
 
-    public static IEndpointConventionBuilder MapHealthChecks(this IEndpointRouteBuilder endpoints, string pattern = "/health")
+    public static HealthCheckEndpointRouteConfiguration MapHealthChecks(this IEndpointRouteBuilder endpoints, string pattern = "/health")
     {
+        // Simple endpoint for public health check. Does not return detailed information.
+        var simpleEndpoint = HealthCheckEndpointRouteBuilderExtensions.MapHealthChecks(endpoints, pattern).RequireUserAgent();
+
         var options = new HealthCheckOptions
         {
             Predicate = _ => true,
             ResponseWriter = HealthCheckWriter.WriteResponseAsync
         };
 
-        return HealthCheckEndpointRouteBuilderExtensions.MapHealthChecks(endpoints, pattern, options);
+        // Detailed health check endpoint that returns JSON response. Only for certified purposes.
+        var fullEndpoint = HealthCheckEndpointRouteBuilderExtensions.MapHealthChecks(endpoints, $"{pattern}/json", options).RequireUserAgent();
+        return new(simpleEndpoint, fullEndpoint);
     }
 }
