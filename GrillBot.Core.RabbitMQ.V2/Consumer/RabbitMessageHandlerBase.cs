@@ -17,7 +17,7 @@ public abstract class RabbitMessageHandlerBase<TMessage>(
     protected ILogger Logger
         => _loggerFactory.CreateLogger(GetType());
 
-    public async Task<RabbitConsumptionResult> HandleAsync(JsonNode? message, Dictionary<string, string> headers)
+    public async Task<RabbitConsumptionResult> HandleAsync(JsonNode? message, Dictionary<string, string> headers, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -26,7 +26,7 @@ public abstract class RabbitMessageHandlerBase<TMessage>(
                 return RabbitConsumptionResult.Reject;
 
             var currentUser = new CurrentUserProvider(headers);
-            return await HandleInternalAsync(deserializedMessage, currentUser, headers);
+            return await HandleInternalAsync(deserializedMessage, currentUser, headers, cancellationToken);
         }
         catch (JsonException ex)
         {
@@ -38,12 +38,13 @@ public abstract class RabbitMessageHandlerBase<TMessage>(
     protected abstract Task<RabbitConsumptionResult> HandleInternalAsync(
         TMessage message,
         ICurrentUserProvider currentUser,
-        Dictionary<string, string> headers
+        Dictionary<string, string> headers,
+        CancellationToken cancellationToken = default
     );
 
     public virtual bool HandleException(Exception exception) => false;
 
-    public Task<RabbitConsumptionResult> HandleRawMessageAsync(string rawMessage, Dictionary<string, string> headers)
+    public Task<RabbitConsumptionResult> HandleRawMessageAsync(string rawMessage, Dictionary<string, string> headers, CancellationToken cancellationToken = default)
     {
         Logger.LogWarning("{Message}", rawMessage);
         foreach (var header in headers)

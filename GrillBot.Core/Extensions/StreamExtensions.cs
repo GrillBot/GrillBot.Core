@@ -10,10 +10,10 @@ public static class StreamExtensions
         return ms.ToArray();
     }
 
-    public static async Task<byte[]> ToByteArrayAsync(this Stream stream)
+    public static async Task<byte[]> ToByteArrayAsync(this Stream stream, CancellationToken cancellationToken = default)
     {
         await using var ms = new MemoryStream();
-        await stream.CopyToAsync(ms);
+        await stream.CopyToAsync(ms, cancellationToken);
 
         return ms.ToArray();
     }

@@ -9,6 +9,8 @@ public abstract class ApiActionBase
     protected object?[] Parameters { get; set; } = null!;
     protected ICurrentUserProvider CurrentUser { get; private set; } = null!;
 
+    protected CancellationToken CancellationToken => HttpContext.RequestAborted;
+
     public void Init(HttpContext httpContext, object?[] parameters, ICurrentUserProvider currentUser)
     {
         Parameters = parameters;

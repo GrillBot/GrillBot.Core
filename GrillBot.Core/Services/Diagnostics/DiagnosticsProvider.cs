@@ -14,10 +14,10 @@ public class DiagnosticsProvider(DiagnosticsManager _manager, ICounterManager _c
         _statisticsProvider = statisticsProvider;
     }
 
-    public async Task<DiagnosticInfo> GetInfoAsync()
+    public async Task<DiagnosticInfo> GetInfoAsync(CancellationToken cancellationToken = default)
     {
         var process = Process.GetCurrentProcess();
-        var databaseStatistics = _statisticsProvider is null ? null : await _statisticsProvider.GetTableStatisticsAsync();
+        var databaseStatistics = _statisticsProvider is null ? null : await _statisticsProvider.GetTableStatisticsAsync(cancellationToken);
         var operationStats = _counterManager.GetStatistics();
         var now = DateTime.Now;
 

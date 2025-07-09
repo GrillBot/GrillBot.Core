@@ -12,12 +12,12 @@ public class RequestFilter(DiagnosticsManager _diagnosticsManager, IEnumerable<I
 
         SetXssProtection(context.HttpContext.Response);
         foreach (var filter in _filters)
-            await filter.BeforeExecutionAsync();
+            await filter.BeforeExecutionAsync(context.HttpContext.RequestAborted);
 
         var result = await next();
 
         foreach (var filter in _filters)
-            await filter.AfterExecutionAsync();
+            await filter.AfterExecutionAsync(context.HttpContext.RequestAborted);
 
         await _diagnosticsManager.OnRequestEndAsync(context, result, startAt);
     }

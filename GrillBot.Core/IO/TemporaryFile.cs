@@ -1,4 +1,6 @@
 ﻿#pragma warning disable IDE0290 // Use primary constructor
+using Microsoft.AspNetCore.Http;
+
 namespace GrillBot.Core.IO;
 
 public sealed class TemporaryFile : IDisposable
@@ -15,19 +17,19 @@ public sealed class TemporaryFile : IDisposable
     public void ChangeExtension(string newExtension)
         => Path = System.IO.Path.ChangeExtension(Path, newExtension);
 
-    public Task<byte[]> ReadAllBytesAsync() => File.ReadAllBytesAsync(Path);
-    public Task<string[]> ReadAllLinesAsync() => File.ReadAllLinesAsync(Path);
-    public Task<string> ReadAllTextAsync() => File.ReadAllTextAsync(Path);
-    public Task WriteAllBytesAsync(byte[] bytes) => File.WriteAllBytesAsync(Path, bytes);
-    public Task WriteAllLinesAsync(IEnumerable<string> lines) => File.WriteAllLinesAsync(Path, lines);
-    public Task WriteAllTextAsync(string content) => File.WriteAllTextAsync(Path, content);
+    public Task<byte[]> ReadAllBytesAsync(CancellationToken cancellationToken = default) => File.ReadAllBytesAsync(Path, cancellationToken);
+    public Task<string[]> ReadAllLinesAsync(CancellationToken cancellationToken = default) => File.ReadAllLinesAsync(Path, cancellationToken);
+    public Task<string> ReadAllTextAsync(CancellationToken cancellationToken = default) => File.ReadAllTextAsync(Path, cancellationToken);
+    public Task WriteAllBytesAsync(byte[] bytes, CancellationToken cancellationToken = default) => File.WriteAllBytesAsync(Path, bytes, cancellationToken);
+    public Task WriteAllLinesAsync(IEnumerable<string> lines, CancellationToken cancellationToken = default) => File.WriteAllLinesAsync(Path, lines, cancellationToken);
+    public Task WriteAllTextAsync(string content, CancellationToken cancellationToken = default) => File.WriteAllTextAsync(Path, content, cancellationToken);
 
-    public async Task WriteStreamAsync(Stream stream)
+    public async Task WriteStreamAsync(Stream stream, CancellationToken cancellationToken = default)
     {
         await using var fileStream = new FileStream(Path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
-        await stream.CopyToAsync(fileStream);
-        await fileStream.FlushAsync();
+        await stream.CopyToAsync(fileStream, cancellationToken);
+        await fileStream.FlushAsync(cancellationToken);
     }
 
     public void Dispose()

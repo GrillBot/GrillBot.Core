@@ -4,5 +4,5 @@ namespace GrillBot.Core.Services.Diagnostics;
 
 public interface IDiagnosticsProvider
 {
-    Task<DiagnosticInfo> GetInfoAsync();
+    Task<DiagnosticInfo> GetInfoAsync(CancellationToken cancellationToken = default);
 }

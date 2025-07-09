@@ -8,7 +8,7 @@ public class RabbitHealthCheck(Factory.IRabbitConnectionFactory _connectionFacto
     {
         try
         {
-            await using var connection = await _connectionFactory.CreateAsync();
+            await using var connection = await _connectionFactory.CreateAsync(cancellationToken);
             await using var channel = await connection.CreateChannelAsync(cancellationToken: cancellationToken);
 
             return HealthCheckResult.Healthy();

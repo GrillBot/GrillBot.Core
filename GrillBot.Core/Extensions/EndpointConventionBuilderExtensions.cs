@@ -35,7 +35,7 @@ public static class EndpointConventionBuilderExtensions
                             Title = "User-Agent header is required.",
                             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
                         };
-                        await JsonSerializer.SerializeAsync(ctx.Response.Body, problem);
+                        await JsonSerializer.SerializeAsync(ctx.Response.Body, problem, cancellationToken: ctx.RequestAborted);
                     }
                     return;
                 }

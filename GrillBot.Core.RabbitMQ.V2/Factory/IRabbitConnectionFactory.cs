@@ -4,5 +4,5 @@ namespace GrillBot.Core.RabbitMQ.V2.Factory;
 
 public interface IRabbitConnectionFactory
 {
-    Task<IConnection> CreateAsync();
+    Task<IConnection> CreateAsync(CancellationToken cancellationToken = default);
 }

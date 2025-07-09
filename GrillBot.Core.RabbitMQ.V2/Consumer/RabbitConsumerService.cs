@@ -30,7 +30,7 @@ public class RabbitConsumerService(
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         foreach (var handler in FindHandlers())
-            await InitializeConsumerAsync(handler.TopicName, handler.QueueName);
+            await InitializeConsumerAsync(handler.TopicName, handler.QueueName, cancellationToken);
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
@@ -50,15 +50,15 @@ public class RabbitConsumerService(
         return [.. scope.ServiceProvider.GetServices<IRabbitMessageHandler>()];
     }
 
-    private async Task InitializeConsumerAsync(string topicName, string queueName)
+    private async Task InitializeConsumerAsync(string topicName, string queueName, CancellationToken cancellationToken = default)
     {
-        var connection = await _connectionFactory.CreateAsync();
-        var channel = await _channelFactory.CreateChannelAsync(connection, topicName, queueName);
+        var connection = await _connectionFactory.CreateAsync(cancellationToken);
+        var channel = await _channelFactory.CreateChannelAsync(connection, topicName, queueName, cancellationToken);
 
         var consumer = new AsyncEventingBasicConsumer(channel);
         consumer.ReceivedAsync += (_, args) => OnQueueMessageReceivedAsync(args, queueName, channel);
 
-        await channel.BasicConsumeAsync($"{topicName}.{queueName}", false, consumer);
+        await channel.BasicConsumeAsync($"{topicName}.{queueName}", false, consumer, cancellationToken);
         _consumers.Add($"{topicName}.{queueName}", consumer);
     }
 
@@ -68,6 +68,8 @@ public class RabbitConsumerService(
 
         var handler = scope.ServiceProvider.GetServices<IRabbitMessageHandler>()
             .First(o => o.TopicName == args.Exchange && o.QueueName == queueName);
+
+        var app = scope.ServiceProvider.GetRequiredService<IHostApplicationLifetime>();
 
         var handlerType = handler.GetType();
         var body = args.Body.ToArray();
@@ -93,14 +95,14 @@ public class RabbitConsumerService(
 
         try
         {
-            var result = await handlePolicy.ExecuteAsync(() => _dispatcher.HandleMessageAsync(handler, body, headers));
+            var result = await handlePolicy.ExecuteAsync(ct => _dispatcher.HandleMessageAsync(handler, body, headers, ct), app.ApplicationStopping);
 
             if (result == RabbitConsumptionResult.Success)
-                await channel.BasicAckAsync(args.DeliveryTag, false);
+                await channel.BasicAckAsync(args.DeliveryTag, false, app.ApplicationStopping);
             else if (result == RabbitConsumptionResult.Retry)
-                await channel.BasicNackAsync(args.DeliveryTag, false, true);
+                await channel.BasicNackAsync(args.DeliveryTag, false, true, app.ApplicationStopping);
             else // Reject
-                await channel.BasicNackAsync(args.DeliveryTag, false, false);
+                await channel.BasicNackAsync(args.DeliveryTag, false, false, app.ApplicationStopping);
         }
         catch (Exception ex)
         {
@@ -111,9 +113,9 @@ public class RabbitConsumerService(
 
             await scope.ServiceProvider
                 .GetRequiredService<IRabbitPublisher>()
-                .PublishAsync(message);
+                .PublishAsync(message, cancellationToken: app.ApplicationStopping);
 
-            await channel.BasicNackAsync(args.DeliveryTag, false, false);
+            await channel.BasicNackAsync(args.DeliveryTag, false, false, app.ApplicationStopping);
         }
     }
 }

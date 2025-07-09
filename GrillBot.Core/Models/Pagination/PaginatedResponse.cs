@@ -9,19 +9,19 @@ public class PaginatedResponse<TModel>
     public int Page { get; set; }
     public long TotalItemsCount { get; set; }
 
-    public static async Task<PaginatedResponse<TEntity>> CreateWithEntityAsync<TEntity>(IQueryable<TEntity> query, PaginatedParams @params)
+    public static async Task<PaginatedResponse<TEntity>> CreateWithEntityAsync<TEntity>(IQueryable<TEntity> query, PaginatedParams @params, CancellationToken cancellationToken = default)
     {
         var result = new PaginatedResponse<TEntity>
         {
             Page = Math.Max(@params.Page, 0),
-            TotalItemsCount = await query.CountAsync()
+            TotalItemsCount = await query.CountAsync(cancellationToken)
         };
 
         if (result.TotalItemsCount == 0 || @params.OnlyCount)
             return result;
 
         query = query.Skip(@params.Skip()).Take(@params.PageSize);
-        result.Data.AddRange(await query.ToListAsync());
+        result.Data.AddRange(await query.ToListAsync(cancellationToken));
 
         return result;
     }

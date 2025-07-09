@@ -15,7 +15,7 @@ public static class DistributedCacheExtensions
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     };
 
-    public static Task SetAsync<T>(this IDistributedCache cache, string key, T value, TimeSpan? expiration)
+    public static Task SetAsync<T>(this IDistributedCache cache, string key, T value, TimeSpan? expiration, CancellationToken cancellationToken = default)
     {
         var cacheOptions = new DistributedCacheEntryOptions();
 
@@ -25,12 +25,12 @@ public static class DistributedCacheExtensions
         var json = JsonSerializer.Serialize(value, _jsonOptions);
         var bytes = Encoding.UTF8.GetBytes(json);
 
-        return cache.SetAsync(key, bytes, cacheOptions);
+        return cache.SetAsync(key, bytes, cacheOptions, cancellationToken);
     }
 
-    public static async Task<T?> GetAsync<T>(this IDistributedCache cache, string key)
+    public static async Task<T?> GetAsync<T>(this IDistributedCache cache, string key, CancellationToken cancellationToken = default)
     {
-        var bytes = await cache.GetAsync(key);
+        var bytes = await cache.GetAsync(key, cancellationToken);
         if (bytes is null)
             return default;
 

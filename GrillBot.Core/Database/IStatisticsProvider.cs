@@ -2,5 +2,5 @@
 
 public interface IStatisticsProvider
 {
-    Task<Dictionary<string, long>> GetTableStatisticsAsync();
+    Task<Dictionary<string, long>> GetTableStatisticsAsync(CancellationToken cancellationToken = default);
 }

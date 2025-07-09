@@ -1,5 +1,4 @@
 ﻿using GrillBot.Core.Services.Diagnostics.Models;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
@@ -18,7 +17,7 @@ public class DiagnosticsManager
         var duration = Convert.ToInt32((now - startAt).TotalMilliseconds);
         var success = result.Exception is null && result.Result is IStatusCodeActionResult { StatusCode: >= 200 };
 
-        await _semaphore.WaitAsync();
+        await _semaphore.WaitAsync(context.HttpContext.RequestAborted);
         try
         {
             var statistics = Statistics.Find(o => o.Endpoint == endpoint);

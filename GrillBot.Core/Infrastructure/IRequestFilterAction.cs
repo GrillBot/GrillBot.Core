@@ -2,6 +2,6 @@
 
 public interface IRequestFilterAction
 {
-    Task BeforeExecutionAsync();
-    Task AfterExecutionAsync();
+    Task BeforeExecutionAsync(CancellationToken cancellationToken = default);
+    Task AfterExecutionAsync(CancellationToken cancellationToken = default);
 }

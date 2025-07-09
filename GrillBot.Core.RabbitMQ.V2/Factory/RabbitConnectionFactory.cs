@@ -6,7 +6,7 @@ namespace GrillBot.Core.RabbitMQ.V2.Factory;
 
 public class RabbitConnectionFactory(IConfiguration _configuration) : IRabbitConnectionFactory
 {
-    public async Task<IConnection> CreateAsync()
+    public async Task<IConnection> CreateAsync(CancellationToken cancellationToken = default)
     {
         var configuration = _configuration.GetSection("RabbitMQ");
         if (!configuration.Exists())
@@ -21,6 +21,6 @@ public class RabbitConnectionFactory(IConfiguration _configuration) : IRabbitCon
             RequestedHeartbeat = options.HeartBeat
         };
 
-        return await factory.CreateConnectionAsync();
+        return await factory.CreateConnectionAsync(cancellationToken);
     }
 }

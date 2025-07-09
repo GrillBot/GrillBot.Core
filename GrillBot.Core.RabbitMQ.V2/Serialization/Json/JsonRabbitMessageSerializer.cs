@@ -14,13 +14,13 @@ public class JsonRabbitMessageSerializer : BaseRabbitMessageSerializer, IJsonRab
         IgnoreReadOnlyProperties = true
     };
 
-    public async Task<JsonNode?> DeserializeToJsonObjectAsync(byte[] bytes, Encoding? encoding = null)
+    public async Task<JsonNode?> DeserializeToJsonObjectAsync(byte[] bytes, Encoding? encoding = null, CancellationToken cancellationToken = default)
     {
-        var rawMessage = await DeserializeToStringAsync(bytes, encoding);
+        var rawMessage = await DeserializeToStringAsync(bytes, encoding, cancellationToken);
         return JsonNode.Parse(rawMessage);
     }
 
-    public override Task<byte[]> SerializeMessageAsync<T>(T data, Encoding? encoding = null)
+    public override Task<byte[]> SerializeMessageAsync<T>(T data, Encoding? encoding = null, CancellationToken cancellationToken = default)
     {
         var json = JsonSerializer.Serialize(data, SerializerOptions);
         var bytes = (encoding ?? Encoding.UTF8).GetBytes(json);

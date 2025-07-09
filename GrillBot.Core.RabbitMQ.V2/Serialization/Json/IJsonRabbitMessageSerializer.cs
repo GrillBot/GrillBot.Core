@@ -5,5 +5,5 @@ namespace GrillBot.Core.RabbitMQ.V2.Serialization.Json;
 
 public interface IJsonRabbitMessageSerializer : IRabbitMessageSerializer
 {
-    Task<JsonNode?> DeserializeToJsonObjectAsync(byte[] bytes, Encoding? encoding = null);
+    Task<JsonNode?> DeserializeToJsonObjectAsync(byte[] bytes, Encoding? encoding = null, CancellationToken cancellationToken = default);
 }
