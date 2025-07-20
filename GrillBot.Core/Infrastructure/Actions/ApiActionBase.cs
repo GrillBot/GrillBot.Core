@@ -65,6 +65,6 @@ public abstract class ApiActionBase : IDisposable
         _cancellationTokenSource?.Dispose();
 
         var tokens = new[] { _manualCancellationToken, HttpContext?.RequestAborted }.Where(o => o is not null).Select(o => o!.Value).ToArray();
-        _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(tokens);
+        _cancellationTokenSource = tokens.Length == 0 ? null : CancellationTokenSource.CreateLinkedTokenSource(tokens);
     }
 }
