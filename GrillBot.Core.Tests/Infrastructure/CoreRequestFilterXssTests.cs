@@ -37,9 +37,9 @@ public class CoreRequestFilterXssTests
 
         var actionContext = new ActionContext(httpContext, routeData, descriptor);
 
-        return new ActionExecutingContext(actionContext, new List<IFilterMetadata>(), new Dictionary<string, object?>(), null!);
+        return new ActionExecutingContext(actionContext, [], new Dictionary<string, object?>(), null!);
     }
 
     private static ActionExecutedContext CreateResult(ActionContext context)
-        => new(context, new List<IFilterMetadata>(), null!);
+        => new(context, [], null!);
 }

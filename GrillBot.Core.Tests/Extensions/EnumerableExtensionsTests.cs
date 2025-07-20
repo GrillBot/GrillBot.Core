@@ -26,12 +26,12 @@ public class EnumerableExtensionsTests
             new()
             {
                 X = 1,
-                SubItems = new List<FlattenClass> { new() { X = 2 } }
+                SubItems = [new() { X = 2 }]
             },
             new()
             {
                 X = 3,
-                SubItems = new List<FlattenClass> { new() { X = 4 } }
+                SubItems = [new() { X = 4 }]
             },
             new() { X = 5 }
         };
