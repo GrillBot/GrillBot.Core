@@ -4,8 +4,8 @@ namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages.Embeds;
 
 public class DiscordMessageEmbedField
 {
-    public string Name { get; set; } = null!;
-    public string Value { get; set; } = null!;
+    public LocalizedMessageContent Name { get; set; } = null!;
+    public LocalizedMessageContent Value { get; set; } = null!;
     public bool IsInline { get; set; }
 
     public DiscordMessageEmbedField()

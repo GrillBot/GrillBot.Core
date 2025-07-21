@@ -4,9 +4,9 @@ namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages.Embeds;
 
 public class DiscordMessageEmbedAuthor
 {
-    public string? Name { get; set; }
-    public string? Url { get; set; }
-    public string? IconUrl { get; set; }
+    public LocalizedMessageContent? Name { get; set; }
+    public LocalizedMessageContent? Url { get; set; }
+    public LocalizedMessageContent? IconUrl { get; set; }
 
     public DiscordMessageEmbedAuthor()
     {
@@ -14,13 +14,23 @@ public class DiscordMessageEmbedAuthor
 
     public DiscordMessageEmbedAuthor(string? name, string? url, string? iconUrl)
     {
-        Name = name;
-        Url = url;
-        IconUrl = iconUrl;
+        Name = string.IsNullOrEmpty(name) ? null : new(name, []);
+        Url = string.IsNullOrEmpty(url) ? null : new(url, []);
+        IconUrl = string.IsNullOrEmpty(iconUrl) ? null : new(iconUrl, []);
     }
 
     public EmbedAuthorBuilder ToBuilder()
-        => new EmbedAuthorBuilder().WithName(Name).WithUrl(Url).WithIconUrl(IconUrl);
+    {
+        var builder = new EmbedAuthorBuilder();
+        if (!string.IsNullOrEmpty(Name?.Key))
+            builder = builder.WithName(Name);
+        if (!string.IsNullOrEmpty(Url?.Key))
+            builder = builder.WithName(Url);
+        if (!string.IsNullOrEmpty(IconUrl?.Key))
+            builder = builder.WithIconUrl(IconUrl);
+
+        return builder;
+    }
 
     public static DiscordMessageEmbedAuthor? FromEmbed(EmbedAuthor? author)
         => author is null ? null : new(author.Value.Name, author.Value.Url, author.Value.IconUrl);

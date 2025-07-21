@@ -22,7 +22,7 @@ public class DiscordEditMessagePayload : DiscordMessagePayloadData, IRabbitMessa
         ulong? guildId,
         ulong channelId,
         ulong messageId,
-        string? content,
+        LocalizedMessageContent? content,
         IEnumerable<DiscordMessageFile> attachments,
         string serviceId,
         DiscordMessageAllowedMentions? allowedMentions = null,

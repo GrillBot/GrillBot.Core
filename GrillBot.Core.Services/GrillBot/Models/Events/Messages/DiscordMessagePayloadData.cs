@@ -6,7 +6,7 @@ namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
 
 public class DiscordMessagePayloadData
 {
-    public string? Content { get; set; }
+    public LocalizedMessageContent? Content { get; set; }
     public List<DiscordMessageFile> Attachments { get; set; } = [];
     public DiscordMessageEmbed? Embed { get; set; }
     public MessageFlags? Flags { get; set; }
@@ -24,7 +24,7 @@ public class DiscordMessagePayloadData
     }
 
     public DiscordMessagePayloadData(
-        string? content,
+        LocalizedMessageContent? content,
         IEnumerable<DiscordMessageFile> attachments,
         string serviceId,
         DiscordMessageAllowedMentions? allowedMentions = null,

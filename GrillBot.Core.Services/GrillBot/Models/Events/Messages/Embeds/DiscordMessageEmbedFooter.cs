@@ -4,8 +4,8 @@ namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages.Embeds;
 
 public class DiscordMessageEmbedFooter
 {
-    public string? Text { get; set; }
-    public string? IconUrl { get; set; }
+    public LocalizedMessageContent? Text { get; set; }
+    public LocalizedMessageContent? IconUrl { get; set; }
 
     public DiscordMessageEmbedFooter()
     {
@@ -13,12 +13,19 @@ public class DiscordMessageEmbedFooter
 
     public DiscordMessageEmbedFooter(string? text, string? iconUrl)
     {
-        Text = text;
-        IconUrl = iconUrl;
+        Text = string.IsNullOrEmpty(text) ? null : new(text, []);
+        IconUrl = string.IsNullOrEmpty(iconUrl) ? null : new(iconUrl, []);
     }
 
     public EmbedFooterBuilder ToBuilder()
-        => new EmbedFooterBuilder().WithText(Text).WithIconUrl(IconUrl);
+    {
+        var builder = new EmbedFooterBuilder();
+        if (!string.IsNullOrEmpty(Text?.Key))
+            builder = builder.WithText(Text);
+        if (!string.IsNullOrEmpty(IconUrl?.Key))
+            builder = builder.WithIconUrl(IconUrl);
+        return builder;
+    }
 
     public static DiscordMessageEmbedFooter? FromEmbed(EmbedFooter? footer)
         => footer is null ? null : new(footer.Value.Text, footer.Value.IconUrl);

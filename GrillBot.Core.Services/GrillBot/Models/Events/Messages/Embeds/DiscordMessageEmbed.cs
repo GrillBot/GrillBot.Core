@@ -4,14 +4,14 @@ namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages.Embeds;
 
 public class DiscordMessageEmbed
 {
-    public string? Url { get; set; }
-    public string? Title { get; set; }
-    public string? Description { get; set; }
+    public LocalizedMessageContent? Url { get; set; }
+    public LocalizedMessageContent? Title { get; set; }
+    public LocalizedMessageContent? Description { get; set; }
     public DiscordMessageEmbedAuthor? Author { get; set; }
     public uint? Color { get; set; }
     public DiscordMessageEmbedFooter? Footer { get; set; }
-    public string? ImageUrl { get; set; }
-    public string? ThumbnailUrl { get; set; }
+    public LocalizedMessageContent? ImageUrl { get; set; }
+    public LocalizedMessageContent? ThumbnailUrl { get; set; }
     public List<DiscordMessageEmbedField> Fields { get; set; } = [];
     public DateTime? Timestamp { get; set; }
     public bool UseCurrentTimestamp { get; set; }
@@ -21,14 +21,14 @@ public class DiscordMessageEmbed
     }
 
     public DiscordMessageEmbed(
-        string? url,
-        string? title,
-        string? description,
+        LocalizedMessageContent? url,
+        LocalizedMessageContent? title,
+        LocalizedMessageContent? description,
         DiscordMessageEmbedAuthor? author,
         uint? color,
         DiscordMessageEmbedFooter? footer,
-        string? imageUrl,
-        string? thumbnailUrl,
+        LocalizedMessageContent? imageUrl,
+        LocalizedMessageContent? thumbnailUrl,
         IEnumerable<DiscordMessageEmbedField> fields,
         DateTime? timestamp,
         bool useCurrentTimestamp
@@ -51,11 +51,11 @@ public class DiscordMessageEmbed
     {
         var builder = new EmbedBuilder();
 
-        if (!string.IsNullOrEmpty(Url))
+        if (!string.IsNullOrEmpty(Url?.Key))
             builder = builder.WithUrl(Url);
-        if (!string.IsNullOrEmpty(Title))
+        if (!string.IsNullOrEmpty(Title?.Key))
             builder = builder.WithTitle(Title);
-        if (!string.IsNullOrEmpty(Description))
+        if (!string.IsNullOrEmpty(Description?.Key))
             builder = builder.WithDescription(Description);
         if (Author is not null)
             builder = builder.WithAuthor(Author.ToBuilder());
@@ -63,9 +63,9 @@ public class DiscordMessageEmbed
             builder = builder.WithColor(Color.Value);
         if (Footer is not null)
             builder = builder.WithFooter(Footer.ToBuilder());
-        if (!string.IsNullOrEmpty(ImageUrl))
+        if (!string.IsNullOrEmpty(ImageUrl?.Key))
             builder = builder.WithImageUrl(ImageUrl);
-        if (!string.IsNullOrEmpty(ThumbnailUrl))
+        if (!string.IsNullOrEmpty(ThumbnailUrl?.Key))
             builder = builder.WithThumbnailUrl(ThumbnailUrl);
         if (Fields.Count > 0)
             builder = builder.WithFields(Fields.Select(f => f.ToBuilder()));
@@ -99,8 +99,8 @@ public class DiscordMessageEmbed
             DiscordMessageEmbedAuthor.FromEmbed(embed.Author),
             embed.Color?.RawValue,
             DiscordMessageEmbedFooter.FromEmbed(embed.Footer),
-            embed.Image?.Url,
-            embed.Thumbnail?.Url,
+            string.IsNullOrEmpty(embed.Image?.Url) ? null : new(embed.Image.Value.Url, []),
+            string.IsNullOrEmpty(embed.Thumbnail?.Url) ? null : new(embed.Thumbnail.Value.Url, []),
             embed.Fields.Select(DiscordMessageEmbedField.FromEmbed),
             embed.Timestamp?.DateTime,
             false

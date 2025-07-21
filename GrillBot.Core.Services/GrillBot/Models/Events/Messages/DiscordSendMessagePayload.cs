@@ -20,7 +20,7 @@ public class DiscordSendMessagePayload : DiscordMessagePayloadData, IRabbitMessa
     public DiscordSendMessagePayload(
         ulong? guildId,
         ulong channelId,
-        string? content,
+        LocalizedMessageContent? content,
         IEnumerable<DiscordMessageFile> attachments,
         string serviceId,
         DiscordMessageAllowedMentions? allowedMentions = null,
