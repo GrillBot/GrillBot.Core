@@ -20,4 +20,11 @@ public static class UserExtensions
             $"{user.GlobalName} / {user.Username}" :
             user.Username;
     }
+
+    public static string GetDisplayName(this IUser user)
+    {
+        if (user is IGuildUser guildUser && !string.IsNullOrEmpty(guildUser.Nickname))
+            return guildUser.Nickname;
+        return string.IsNullOrEmpty(user.GlobalName) ? user.Username : user.GlobalName;
+    }
 }

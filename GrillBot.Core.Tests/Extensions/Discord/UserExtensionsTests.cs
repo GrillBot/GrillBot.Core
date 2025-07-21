@@ -106,11 +106,86 @@ public class UserExtensionsTests
     public void GetFullName_UserWithNoGlobalName_ReturnsUsername()
     {
         var user = Substitute.For<IUser>();
-        user.GlobalName.Returns((string)null);
+        user.GlobalName.Returns((string)null!);
         user.Username.Returns("User");
 
         var result = user.GetFullName();
 
         Assert.AreEqual("User", result);
+    }
+
+    [TestMethod]
+    public void GetDisplayName_GuildUserWithNickname_ReturnsNickname()
+    {
+        var user = Substitute.For<IGuildUser, IUser>();
+        user.Nickname.Returns("Nick");
+        user.GlobalName.Returns("Global");
+        user.Username.Returns("User");
+
+        var result = user.GetDisplayName();
+
+        Assert.AreEqual("Nick", result);
+    }
+
+    [TestMethod]
+    public void GetDisplayName_GuildUserWithNullNickname_ReturnsGlobalNameIfNotNull()
+    {
+        var user = Substitute.For<IGuildUser, IUser>();
+        user.Nickname.Returns((string?)null);
+        user.GlobalName.Returns("Global");
+        user.Username.Returns("User");
+
+        var result = user.GetDisplayName();
+
+        Assert.AreEqual("Global", result);
+    }
+
+    [TestMethod]
+    public void GetDisplayName_GuildUserWithEmptyNickname_ReturnsGlobalNameIfNotNull()
+    {
+        var user = Substitute.For<IGuildUser, IUser>();
+        user.Nickname.Returns(string.Empty);
+        user.GlobalName.Returns("Global");
+        user.Username.Returns("User");
+
+        var result = user.GetDisplayName();
+
+        Assert.AreEqual("Global", result);
+    }
+
+    [TestMethod]
+    public void GetDisplayName_UserWithNullGlobalName_ReturnsUsername()
+    {
+        var user = Substitute.For<IUser>();
+        user.GlobalName.Returns((string?)null);
+        user.Username.Returns("User");
+
+        var result = user.GetDisplayName();
+
+        Assert.AreEqual("User", result);
+    }
+
+    [TestMethod]
+    public void GetDisplayName_UserWithEmptyGlobalName_ReturnsUsername()
+    {
+        var user = Substitute.For<IUser>();
+        user.GlobalName.Returns(string.Empty);
+        user.Username.Returns("User");
+
+        var result = user.GetDisplayName();
+
+        Assert.AreEqual("User", result);
+    }
+
+    [TestMethod]
+    public void GetDisplayName_UserWithGlobalName_ReturnsGlobalName()
+    {
+        var user = Substitute.For<IUser>();
+        user.GlobalName.Returns("Global");
+        user.Username.Returns("User");
+
+        var result = user.GetDisplayName();
+
+        Assert.AreEqual("Global", result);
     }
 }
