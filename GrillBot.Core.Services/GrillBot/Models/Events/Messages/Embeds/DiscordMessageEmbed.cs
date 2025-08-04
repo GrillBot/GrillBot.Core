@@ -52,11 +52,11 @@ public class DiscordMessageEmbed
         var builder = new EmbedBuilder();
 
         if (!string.IsNullOrEmpty(Url?.Key))
-            builder = builder.WithUrl(Url);
+            builder = builder.WithUrl(Url.Key);
         if (!string.IsNullOrEmpty(Title?.Key))
-            builder = builder.WithTitle(Title);
+            builder = builder.WithTitle(Title.Key);
         if (!string.IsNullOrEmpty(Description?.Key))
-            builder = builder.WithDescription(Description);
+            builder = builder.WithDescription(Description.Key);
         if (Author is not null)
             builder = builder.WithAuthor(Author.ToBuilder());
         if (Color is not null)
@@ -64,9 +64,9 @@ public class DiscordMessageEmbed
         if (Footer is not null)
             builder = builder.WithFooter(Footer.ToBuilder());
         if (!string.IsNullOrEmpty(ImageUrl?.Key))
-            builder = builder.WithImageUrl(ImageUrl);
+            builder = builder.WithImageUrl(ImageUrl.Key);
         if (!string.IsNullOrEmpty(ThumbnailUrl?.Key))
-            builder = builder.WithThumbnailUrl(ThumbnailUrl);
+            builder = builder.WithThumbnailUrl(ThumbnailUrl.Key);
         if (Fields.Count > 0)
             builder = builder.WithFields(Fields.Select(f => f.ToBuilder()));
         if (Timestamp is not null)

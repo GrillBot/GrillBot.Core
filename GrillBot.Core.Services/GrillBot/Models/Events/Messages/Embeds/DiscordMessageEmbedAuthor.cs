@@ -23,11 +23,11 @@ public class DiscordMessageEmbedAuthor
     {
         var builder = new EmbedAuthorBuilder();
         if (!string.IsNullOrEmpty(Name?.Key))
-            builder = builder.WithName(Name);
+            builder = builder.WithName(Name.Key);
         if (!string.IsNullOrEmpty(Url?.Key))
-            builder = builder.WithName(Url);
+            builder = builder.WithUrl(Url.Key);
         if (!string.IsNullOrEmpty(IconUrl?.Key))
-            builder = builder.WithIconUrl(IconUrl);
+            builder = builder.WithIconUrl(IconUrl.Key);
 
         return builder;
     }

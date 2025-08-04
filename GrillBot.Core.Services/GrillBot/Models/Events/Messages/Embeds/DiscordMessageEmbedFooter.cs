@@ -21,9 +21,9 @@ public class DiscordMessageEmbedFooter
     {
         var builder = new EmbedFooterBuilder();
         if (!string.IsNullOrEmpty(Text?.Key))
-            builder = builder.WithText(Text);
+            builder = builder.WithText(Text.Key);
         if (!string.IsNullOrEmpty(IconUrl?.Key))
-            builder = builder.WithIconUrl(IconUrl);
+            builder = builder.WithIconUrl(IconUrl.Key);
         return builder;
     }
 

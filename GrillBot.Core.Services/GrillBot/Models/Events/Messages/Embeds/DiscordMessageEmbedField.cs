@@ -20,7 +20,7 @@ public class DiscordMessageEmbedField
     }
 
     public EmbedFieldBuilder ToBuilder()
-        => new EmbedFieldBuilder().WithIsInline(IsInline).WithName(Name).WithValue(Value);
+        => new EmbedFieldBuilder().WithIsInline(IsInline).WithName(Name.Key).WithValue(Value.Key);
 
     public static DiscordMessageEmbedField FromEmbed(EmbedField field)
         => new(field.Name, field.Value, field.Inline);
