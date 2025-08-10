@@ -46,7 +46,7 @@ public interface IUnverifyServiceClient : IServiceClient
     [Post("/api/logs/list")]
     Task<PaginatedResponse<UnverifyLogItem>> GetUnverifyLogsAsync([Body] UnverifyLogListRequest request, CancellationToken cancellationToken = default);
 
-    [Get("/api/logs/{id:guid}")]
+    [Get("/api/logs/{id}")]
     Task<UnverifyLogDetail?> GetUnverifyLogDetailAsync(Guid id, CancellationToken cancellationToken = default);
 
     [Get("/api/logs/archive")]
