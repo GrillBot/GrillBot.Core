@@ -5,6 +5,7 @@ using GrillBot.Core.Services.GrillBot.Models;
 using GrillBot.Core.Services.PointsService.Models.Users;
 using Refit;
 using System.Text.Json.Nodes;
+using UnverifyService.Core.Enums;
 using UnverifyService.Models.Request;
 using UnverifyService.Models.Request.Keepables;
 using UnverifyService.Models.Request.Logs;
@@ -58,7 +59,7 @@ public interface IUnverifyServiceClient : IServiceClient
     [Get("/api/statistics/periodStats")]
     Task<Dictionary<string, long>> GetPeriodStatisticsAsync(
         [Query] string groupingKey,
-        [Query] string operationType,
+        [Query] UnverifyOperationType operationType,
         CancellationToken cancellationToken = default
     );
 
