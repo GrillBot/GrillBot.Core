@@ -26,7 +26,12 @@ public interface IUnverifyServiceClient : IServiceClient
     Task<GuildInfo?> GetGuildInfoAsync(ulong guildId, CancellationToken cancellationToken = default);
 
     [Put("/api/guild/{guildId}")]
-    Task<GuildInfo?> ModifyGuildAsync(ulong guildId, [Body] ModifyGuildRequest request, CancellationToken cancellationToken = default);
+    Task<GuildInfo?> ModifyGuildAsync(
+        ulong guildId,
+        [Body] ModifyGuildRequest request,
+        [Header("Authorization")] string? authorization = null,
+        CancellationToken cancellationToken = default
+    );
 
     // KeepablesController
     [Post("/api/keepables")]
