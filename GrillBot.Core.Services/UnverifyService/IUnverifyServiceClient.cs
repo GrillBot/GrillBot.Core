@@ -2,7 +2,6 @@ using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
 using GrillBot.Core.Services.GrillBot.Models;
-using GrillBot.Core.Services.PointsService.Models.Users;
 using Refit;
 using System.Text.Json.Nodes;
 using UnverifyService.Core.Enums;
@@ -15,6 +14,7 @@ using UnverifyService.Models.Response.Guilds;
 using UnverifyService.Models.Response.Keepables;
 using UnverifyService.Models.Response.Logs;
 using UnverifyService.Models.Response.Logs.Detail;
+using UnverifyService.Models.Response.Users;
 
 namespace UnverifyService;
 
