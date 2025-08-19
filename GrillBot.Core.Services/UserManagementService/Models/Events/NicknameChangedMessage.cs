@@ -1,7 +1,7 @@
 ﻿using Discord;
 using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.UserManagementService.Models.Events;
+namespace UserManagementService.Models.Events;
 
 public class NicknameChangedMessage : IRabbitMessage
 {

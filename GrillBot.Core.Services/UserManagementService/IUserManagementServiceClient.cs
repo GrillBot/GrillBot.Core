@@ -3,7 +3,7 @@ using GrillBot.Core.Services.Common.Attributes;
 using GrillBot.Core.Services.UserManagementService.Models.Response;
 using Refit;
 
-namespace GrillBot.Core.Services.UserManagementService;
+namespace UserManagementService;
 
 [Service("UserManagementService")]
 public interface IUserManagementServiceClient : IServiceClient
