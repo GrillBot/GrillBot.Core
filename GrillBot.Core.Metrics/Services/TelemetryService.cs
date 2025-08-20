@@ -15,6 +15,7 @@ public class TelemetryService(
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _meter.CreateObservableGauge("grillbot_workingset", () => Process.GetCurrentProcess().WorkingSet64, description: "Current working set of the service");
+        _meter.CreateObservableGauge("grillbot_starttime_seconds", () => new DateTimeOffset(Process.GetCurrentProcess().StartTime).ToUniversalTime().ToUnixTimeSeconds(), description: "Start time of service.");
 
         foreach (var component in _collectors.SelectMany(o => o.GetComponents()))
             component.CreateInstrument(_meter);
