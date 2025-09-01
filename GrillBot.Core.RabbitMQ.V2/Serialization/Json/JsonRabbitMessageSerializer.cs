@@ -4,7 +4,7 @@ using System.Text.Json.Nodes;
 
 namespace GrillBot.Core.RabbitMQ.V2.Serialization.Json;
 
-public class JsonRabbitMessageSerializer : BaseRabbitMessageSerializer, IJsonRabbitMessageSerializer
+internal class JsonRabbitMessageSerializer : BaseRabbitMessageSerializer, IJsonRabbitMessageSerializer
 {
     public static readonly JsonSerializerOptions SerializerOptions = new()
     {
@@ -17,7 +17,7 @@ public class JsonRabbitMessageSerializer : BaseRabbitMessageSerializer, IJsonRab
     public async Task<JsonNode?> DeserializeToJsonObjectAsync(byte[] bytes, Encoding? encoding = null, CancellationToken cancellationToken = default)
     {
         var rawMessage = await DeserializeToStringAsync(bytes, encoding, cancellationToken);
-        return JsonNode.Parse(rawMessage);
+        return JsonSerializer.Deserialize<JsonNode>(rawMessage, SerializerOptions);
     }
 
     public override Task<byte[]> SerializeMessageAsync<T>(T data, Encoding? encoding = null, CancellationToken cancellationToken = default)

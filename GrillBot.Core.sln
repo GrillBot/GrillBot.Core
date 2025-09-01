@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrillBot.Core.HealthCheck",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrillBot.Core.HealthCheck.Tests", "GrillBot.Core.HealthCheck.Tests\GrillBot.Core.HealthCheck.Tests.csproj", "{6B7A297A-D17C-48CC-A4AE-806780A4EEEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrillBot.Core.RabbitMQ.V2.Tests", "GrillBot.Core.RabbitMQ.V2.Tests\GrillBot.Core.RabbitMQ.V2.Tests.csproj", "{9EC426D7-C73B-44DD-B948-44DBFA3DEBF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{6B7A297A-D17C-48CC-A4AE-806780A4EEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B7A297A-D17C-48CC-A4AE-806780A4EEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B7A297A-D17C-48CC-A4AE-806780A4EEEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EC426D7-C73B-44DD-B948-44DBFA3DEBF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EC426D7-C73B-44DD-B948-44DBFA3DEBF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EC426D7-C73B-44DD-B948-44DBFA3DEBF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EC426D7-C73B-44DD-B948-44DBFA3DEBF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{9862281D-0E24-4DE9-8A86-CF80C0D663EA} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
 		{ADC0905B-018E-48BD-8428-655BD1F46D64} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
 		{6B7A297A-D17C-48CC-A4AE-806780A4EEEA} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
+		{9EC426D7-C73B-44DD-B948-44DBFA3DEBF7} = {E93C1443-C17D-46F9-9A63-4B08EB381E46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2126920-802D-4561-B18D-BB1C35AE37C1}
