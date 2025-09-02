@@ -17,13 +17,12 @@ public class ValidationProblemDetailsExtensionsTests
         => new ValidationProblemDetails().AggregateAndThrow();
 
     [TestMethod]
-    [ExpectedException(typeof(ValidationException))]
-    [ExcludeFromCodeCoverage]
     public void AggregateAndThrow()
     {
         var details = new ValidationProblemDetails();
         details.Errors.Add("Err", ["Error"]);
-        details.AggregateAndThrow();
+
+        Assert.ThrowsExactly<ValidationException>(details.AggregateAndThrow);
     }
 
     [TestMethod]
@@ -35,12 +34,11 @@ public class ValidationProblemDetailsExtensionsTests
         => new ValidationProblemDetails().ThrowFirstError();
 
     [TestMethod]
-    [ExpectedException(typeof(ValidationException))]
-    [ExcludeFromCodeCoverage]
     public void ThrowFirstError()
     {
         var details = new ValidationProblemDetails();
         details.Errors.Add("Err", ["Error"]);
-        details.ThrowFirstError();
+
+        Assert.ThrowsExactly<ValidationException>(details.ThrowFirstError);
     }
 }

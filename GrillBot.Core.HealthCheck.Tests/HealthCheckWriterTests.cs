@@ -23,7 +23,7 @@ public class HealthCheckWriterTests
         Assert.IsInstanceOfType(result, typeof(EmptyResult));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(HealthStatus.Healthy)]
     [DataRow(HealthStatus.Degraded)]
     public async Task WriteResponseAsync_HealthyOrDegradedStatus_Returns200(HealthStatus status)
