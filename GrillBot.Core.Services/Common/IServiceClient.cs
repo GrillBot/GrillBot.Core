@@ -6,7 +6,7 @@ namespace GrillBot.Core.Services.Common;
 public interface IServiceClient
 {
     [Head("/health")]
-    Task<IApiResponse> IsHealthyAsync(CancellationToken cancellationToken = default);
+    Task<ApiResponse<string>> IsHealthyAsync(CancellationToken cancellationToken = default);
 
     [Get("/api/diag")]
     Task<DiagnosticInfo> GetDiagnosticsAsync(CancellationToken cancellationToken = default);
