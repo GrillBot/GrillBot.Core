@@ -14,7 +14,7 @@ public interface IRubbergodServiceClient : IServiceClient
     Task<PaginatedResponse<UserKarma>> GetKarmaPageAsync([Query] PaginatedParams parameters, CancellationToken cancellationToken = default);
 
     [Get("/api/pins/{guildId}/{channelId}")]
-    Task<byte[]> GetPinsAsync(ulong guildId, ulong channelId, [Query] bool markdown, CancellationToken cancellationToken = default);
+    Task<HttpContent> GetPinsAsync(ulong guildId, ulong channelId, [Query] bool markdown, CancellationToken cancellationToken = default);
 
     [Get("/api/help/slashcommands")]
     Task<Dictionary<string, Cog>> GetSlashCommandsAsync(CancellationToken cancellationToken = default);
