@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Discord;
-using GrillBot.Core.Services.GrillBot.Models;
-using GrillBot.Core.Services.GrillBot.Models.Events.Messages.Embeds;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using GrillBot.Models;
+using GrillBot.Models.Events.Messages.Embeds;
 
 namespace GrillBot.Core.Services.Tests.GrillBot.Models.Events.Messages.Embeds;
 

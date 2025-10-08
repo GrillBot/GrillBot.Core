@@ -1,5 +1,4 @@
-﻿using GrillBot.Core.Services.GrillBot.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using GrillBot.Models;
 
 namespace GrillBot.Core.Services.Tests.GrillBot.Models;
 

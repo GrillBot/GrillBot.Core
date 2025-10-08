@@ -1,7 +1,6 @@
 ﻿using GrillBot.Core.Services.Common.Formatters;
-using GrillBot.Core.Services.PointsService;
-using GrillBot.Core.Services.PointsService.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PointsService;
+using PointsService.Enums;
 using NSubstitute;
 using System.Reflection;
 

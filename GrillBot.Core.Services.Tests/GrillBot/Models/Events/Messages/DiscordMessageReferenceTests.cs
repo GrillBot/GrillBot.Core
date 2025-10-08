@@ -1,6 +1,5 @@
 using Discord;
-using GrillBot.Core.Services.GrillBot.Models.Events.Messages;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using GrillBot.Models.Events.Messages;
 
 namespace GrillBot.Core.Services.Tests.GrillBot.Models.Events.Messages;
 
