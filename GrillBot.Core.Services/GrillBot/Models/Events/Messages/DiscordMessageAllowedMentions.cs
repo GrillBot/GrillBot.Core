@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
+namespace GrillBot.Models.Events.Messages;
 
 public class DiscordMessageAllowedMentions
 {

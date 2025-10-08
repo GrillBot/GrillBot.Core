@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages.Embeds;
+namespace GrillBot.Models.Events.Messages.Embeds;
 
 public class DiscordMessageEmbedFooter
 {

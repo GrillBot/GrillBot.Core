@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.RubbergodService.Models.Events.Karma;
+namespace RubbergodService.Models.Events.Karma;
 
 public class KarmaBatchPayload : IRabbitMessage
 {

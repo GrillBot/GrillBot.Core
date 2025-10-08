@@ -1,8 +1,8 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
-using GrillBot.Core.Services.PointsService.Models.Channels;
-using GrillBot.Core.Services.PointsService.Models.Users;
+using PointsService.Models.Channels;
+using PointsService.Models.Users;
 
-namespace GrillBot.Core.Services.PointsService.Models.Events;
+namespace PointsService.Models.Events;
 
 public class SynchronizationPayload : IRabbitMessage
 {

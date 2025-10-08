@@ -1,8 +1,8 @@
 ﻿using Discord;
-using GrillBot.Core.Services.GrillBot.Models.Events.Messages.Components;
-using GrillBot.Core.Services.GrillBot.Models.Events.Messages.Embeds;
+using GrillBot.Models.Events.Messages.Components;
+using GrillBot.Models.Events.Messages.Embeds;
 
-namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
+namespace GrillBot.Models.Events.Messages;
 
 public class DiscordMessagePayloadData
 {

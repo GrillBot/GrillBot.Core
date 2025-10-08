@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace GrillBot.Core.Services.MessageService.Models.Events.Channels;
+namespace MessageService.Models.Events.Channels;
 
 public class ChannelSynchronizationItem
 {

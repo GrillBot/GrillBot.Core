@@ -5,7 +5,7 @@ using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace GrillBot.Core.Services.RemindService.Models.Request;
+namespace RemindService.Models.Request;
 
 public class ReminderListRequest : IDictionaryObject
 {

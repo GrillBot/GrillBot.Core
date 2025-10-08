@@ -1,7 +1,7 @@
 ﻿using Discord;
 using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.SearchingService.Models.Events;
+namespace SearchingService.Models.Events;
 
 public class SearchItemPayload : IRabbitMessage
 {

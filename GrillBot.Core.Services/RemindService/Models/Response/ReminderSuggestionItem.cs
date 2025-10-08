@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.RemindService.Models.Response;
+﻿namespace RemindService.Models.Response;
 
 public record ReminderSuggestionItem(
     long RemindId,

@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.PointsService.Models;
+﻿namespace PointsService.Models;
 
 public class MergeResult
 {

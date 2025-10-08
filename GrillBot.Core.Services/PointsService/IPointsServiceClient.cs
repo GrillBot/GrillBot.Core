@@ -1,13 +1,13 @@
 ﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
-using GrillBot.Core.Services.PointsService.Enums;
-using GrillBot.Core.Services.PointsService.Models;
-using GrillBot.Core.Services.PointsService.Models.Channels;
-using GrillBot.Core.Services.PointsService.Models.Users;
+using PointsService.Enums;
+using PointsService.Models;
+using PointsService.Models.Channels;
+using PointsService.Models.Users;
 using Refit;
 
-namespace GrillBot.Core.Services.PointsService;
+namespace PointsService;
 
 [Service("PointsService")]
 public interface IPointsServiceClient : IServiceClient

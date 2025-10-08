@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.Infrastructure;
 
-namespace GrillBot.Core.Services.PointsService.Models;
+namespace PointsService.Models;
 
 public class TransferPointsRequest : IDictionaryObject
 {

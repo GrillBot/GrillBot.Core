@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.PointsService.Models.Events;
+﻿namespace PointsService.Models.Events;
 
 public class CreateTransactionPayload : CreateTransactionBasePayload
 {

@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.Infrastructure;
 
-namespace GrillBot.Core.Services.MessageService.Models.Request.AutoReply;
+namespace MessageService.Models.Request.AutoReply;
 
 public class AutoReplyDefinitionRequest : IDictionaryObject
 {

@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.RubbergodService.Models.Events.Karma;
+﻿namespace RubbergodService.Models.Events.Karma;
 
 public class KarmaUser
 {

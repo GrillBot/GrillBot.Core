@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.PointsService.Models.Events;
+namespace PointsService.Models.Events;
 
 public class UserRecalculationPayload : IRabbitMessage
 {

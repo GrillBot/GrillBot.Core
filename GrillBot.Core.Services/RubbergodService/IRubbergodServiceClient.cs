@@ -1,11 +1,11 @@
 ﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
-using GrillBot.Core.Services.RubbergodService.Models.Help;
-using GrillBot.Core.Services.RubbergodService.Models.Karma;
+using RubbergodService.Models.Help;
+using RubbergodService.Models.Karma;
 using Refit;
 
-namespace GrillBot.Core.Services.RubbergodService;
+namespace RubbergodService;
 
 [Service("RubbergodService")]
 public interface IRubbergodServiceClient : IServiceClient

@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.InviteService.Models.Response;
+﻿namespace InviteService.Models.Response;
 
 public record InviteUse(
     string UserId,

@@ -1,11 +1,11 @@
 ﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
-using GrillBot.Core.Services.RemindService.Models.Request;
-using GrillBot.Core.Services.RemindService.Models.Response;
+using RemindService.Models.Request;
+using RemindService.Models.Response;
 using Refit;
 
-namespace GrillBot.Core.Services.RemindService;
+namespace RemindService;
 
 [Service("Remind")]
 public interface IRemindServiceClient : IServiceClient

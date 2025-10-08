@@ -1,11 +1,11 @@
 ﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
-using GrillBot.Core.Services.SearchingService.Models.Request;
-using GrillBot.Core.Services.SearchingService.Models.Response;
+using SearchingService.Models.Request;
+using SearchingService.Models.Response;
 using Refit;
 
-namespace GrillBot.Core.Services.SearchingService;
+namespace SearchingService;
 
 [Service("Searching")]
 public interface ISearchingServiceClient : IServiceClient

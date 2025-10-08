@@ -1,7 +1,7 @@
 ﻿using GrillBot.Core.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 
-namespace GrillBot.Core.Services.UserMeasures.Models.Measures;
+namespace UserMeasures.Models.Measures;
 
 public class DeleteMeasuresRequest : IValidatableObject, IDictionaryObject
 {

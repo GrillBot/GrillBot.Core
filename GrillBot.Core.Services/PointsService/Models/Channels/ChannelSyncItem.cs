@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.PointsService.Models.Channels;
+﻿namespace PointsService.Models.Channels;
 
 public class ChannelSyncItem
 {

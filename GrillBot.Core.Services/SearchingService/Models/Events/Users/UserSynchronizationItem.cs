@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace GrillBot.Core.Services.SearchingService.Models.Events.Users;
+namespace SearchingService.Models.Events.Users;
 
 public class UserSynchronizationItem
 {

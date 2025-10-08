@@ -5,7 +5,7 @@ using GrillBot.Core.Models;
 using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Validation;
 
-namespace GrillBot.Core.Services.PointsService.Models;
+namespace PointsService.Models;
 
 public class AdminListRequest : IValidatableObject, IDictionaryObject
 {

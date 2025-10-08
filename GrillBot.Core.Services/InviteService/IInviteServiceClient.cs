@@ -1,11 +1,11 @@
 ﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
-using GrillBot.Core.Services.InviteService.Models.Request;
-using GrillBot.Core.Services.InviteService.Models.Response;
+using InviteService.Models.Request;
+using InviteService.Models.Response;
 using Refit;
 
-namespace GrillBot.Core.Services.InviteService;
+namespace InviteService;
 
 [Service("InviteService")]
 public interface IInviteServiceClient : IServiceClient

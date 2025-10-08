@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.Services.Diagnostics.Models;
 
-namespace GrillBot.Core.Services.Graphics.Models.Diagnostics;
+namespace Graphics.Models.Diagnostics;
 
 public class Stats
 {

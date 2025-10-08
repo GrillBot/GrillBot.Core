@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.ImageProcessing.Models;
+﻿namespace ImageProcessing.Models;
 
 public class PointsRequest
 {

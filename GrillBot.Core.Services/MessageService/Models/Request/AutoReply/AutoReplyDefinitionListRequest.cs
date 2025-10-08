@@ -3,7 +3,7 @@ using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Models;
 using GrillBot.Core.Models.Pagination;
 
-namespace GrillBot.Core.Services.MessageService.Models.Request.AutoReply;
+namespace MessageService.Models.Request.AutoReply;
 
 public class AutoReplyDefinitionListRequest : IDictionaryObject
 {

@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace GrillBot.Core.Services.MessageService.Models.Events.Users;
+namespace MessageService.Models.Events.Users;
 
 public class UserPayload
 {

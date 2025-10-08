@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.Graphics.Models.Chart;
+﻿namespace Graphics.Models.Chart;
 
 public class Dataset
 {

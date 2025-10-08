@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.UserMeasures.Models.User;
+﻿namespace UserMeasures.Models.User;
 
 public class UserInfo
 {

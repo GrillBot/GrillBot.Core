@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.UserMeasures.Models.Dashboard;
+﻿namespace UserMeasures.Models.Dashboard;
 
 public class DashboardRow
 {

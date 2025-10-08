@@ -3,7 +3,7 @@ using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Models.Pagination;
 using System.ComponentModel.DataAnnotations;
 
-namespace GrillBot.Core.Services.PointsService.Models.Users;
+namespace PointsService.Models.Users;
 
 public class UserListRequest : IDictionaryObject
 {

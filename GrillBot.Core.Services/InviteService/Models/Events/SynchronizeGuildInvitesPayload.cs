@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.InviteService.Models.Events;
+namespace InviteService.Models.Events;
 
 public class SynchronizeGuildInvitesPayload : IRabbitMessage
 {

@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.RemindService.Models.Events;
+namespace RemindService.Models.Events;
 
 public class SendRemindNotificationPayload : IRabbitMessage
 {

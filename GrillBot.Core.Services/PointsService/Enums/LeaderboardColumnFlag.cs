@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.PointsService.Enums;
+﻿namespace PointsService.Enums;
 
 [Flags]
 public enum LeaderboardColumnFlag

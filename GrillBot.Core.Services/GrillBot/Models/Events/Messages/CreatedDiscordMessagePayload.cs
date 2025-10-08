@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages;
+namespace GrillBot.Models.Events.Messages;
 
 public class CreatedDiscordMessagePayload : IRabbitMessage
 {

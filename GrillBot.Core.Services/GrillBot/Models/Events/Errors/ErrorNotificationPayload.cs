@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.GrillBot.Models.Events.Errors;
+namespace GrillBot.Models.Events.Errors;
 
 public class ErrorNotificationPayload : IRabbitMessage
 {

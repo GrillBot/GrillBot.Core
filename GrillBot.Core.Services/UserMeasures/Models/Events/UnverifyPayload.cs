@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.UserMeasures.Models.Events;
+﻿namespace UserMeasures.Models.Events;
 
 public class UnverifyPayload : BasePayload
 {

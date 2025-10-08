@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace GrillBot.Core.Services.RubbergodService.Models.Help;
+namespace RubbergodService.Models.Help;
 
 public class Cog
 {

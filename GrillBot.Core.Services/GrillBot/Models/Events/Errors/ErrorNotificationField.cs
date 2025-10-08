@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.GrillBot.Models.Events.Errors;
+﻿namespace GrillBot.Models.Events.Errors;
 
 public class ErrorNotificationField
 {

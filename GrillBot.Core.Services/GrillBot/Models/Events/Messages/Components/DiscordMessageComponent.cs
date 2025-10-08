@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.GrillBot.Models.Events.Messages.Components;
+﻿namespace GrillBot.Models.Events.Messages.Components;
 
 public class DiscordMessageComponent
 {

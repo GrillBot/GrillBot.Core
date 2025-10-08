@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.GrillBot.Models;
+﻿namespace GrillBot.Models;
 
 public record LocalizedMessageContent(
     string Key,

@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.SearchingService.Models.Response;
+﻿namespace SearchingService.Models.Response;
 
 public record SearchListItem(
     long Id,

@@ -1,6 +1,6 @@
-﻿using GrillBot.Core.Services.Graphics.Models.Chart;
+﻿using Graphics.Models.Chart;
 
-namespace GrillBot.Core.Services.ImageProcessing.Models;
+namespace ImageProcessing.Models;
 
 public class ChartRequest
 {

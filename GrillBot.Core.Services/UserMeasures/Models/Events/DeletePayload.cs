@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.UserMeasures.Models.Events;
+namespace UserMeasures.Models.Events;
 
 public class DeletePayload : IRabbitMessage
 {

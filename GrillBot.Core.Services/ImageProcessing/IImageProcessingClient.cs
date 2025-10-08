@@ -1,9 +1,9 @@
 ﻿using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
-using GrillBot.Core.Services.ImageProcessing.Models;
+using ImageProcessing.Models;
 using Refit;
 
-namespace GrillBot.Core.Services.ImageProcessing;
+namespace ImageProcessing;
 
 [Service("ImageProcessing")]
 public interface IImageProcessingClient : IServiceClient

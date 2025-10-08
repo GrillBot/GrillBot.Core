@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.PointsService.Models.Users;
+﻿namespace PointsService.Models.Users;
 
 public class UserListItem
 {

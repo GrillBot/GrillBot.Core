@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.MessageService.Models.Response.AutoReply;
+﻿namespace MessageService.Models.Response.AutoReply;
 
 public record AutoReplyDefinition(
     Guid Id,

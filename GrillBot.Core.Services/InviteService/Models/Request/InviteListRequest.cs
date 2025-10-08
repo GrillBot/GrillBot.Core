@@ -5,7 +5,7 @@ using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace GrillBot.Core.Services.InviteService.Models.Request;
+namespace InviteService.Models.Request;
 
 public class InviteListRequest : IValidatableObject, IDictionaryObject
 {

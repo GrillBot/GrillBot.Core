@@ -1,7 +1,7 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
-using GrillBot.Core.Services.MessageService.Models.Events.Channels;
+using MessageService.Models.Events.Channels;
 
-namespace GrillBot.Core.Services.MessageService.Models.Events;
+namespace MessageService.Models.Events;
 
 public class SynchronizationPayload : IRabbitMessage
 {

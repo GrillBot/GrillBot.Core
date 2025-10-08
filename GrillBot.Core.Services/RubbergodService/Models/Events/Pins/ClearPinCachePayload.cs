@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.RubbergodService.Models.Events.Pins;
+namespace RubbergodService.Models.Events.Pins;
 
 public class ClearPinCachePayload : IRabbitMessage
 {

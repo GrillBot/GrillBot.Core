@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.Graphics.Models.Diagnostics;
+﻿namespace Graphics.Models.Diagnostics;
 
 public class MemoryInfo
 {

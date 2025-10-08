@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.Graphics.Models.Images;
+﻿namespace Graphics.Models.Images;
 
 public class WithoutAccidentRequestData
 {
