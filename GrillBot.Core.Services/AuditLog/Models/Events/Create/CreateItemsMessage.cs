@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Events.Create;
+namespace AuditLog.Models.Events.Create;
 
 public class CreateItemsMessage : IRabbitMessage
 {

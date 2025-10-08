@@ -1,6 +1,6 @@
-﻿using GrillBot.Core.Services.AuditLog.Enums;
+﻿using AuditLog.Enums;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Response.Search;
+namespace AuditLog.Models.Response.Search;
 
 public class LogListItem
 {

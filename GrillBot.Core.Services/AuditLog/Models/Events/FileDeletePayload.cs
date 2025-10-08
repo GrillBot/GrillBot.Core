@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Events;
+namespace AuditLog.Models.Events;
 
 public class FileDeletePayload : IRabbitMessage
 {

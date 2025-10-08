@@ -1,16 +1,16 @@
 ﻿using GrillBot.Core.Models.Pagination;
-using GrillBot.Core.Services.AuditLog.Models.Request.Search;
-using GrillBot.Core.Services.AuditLog.Models.Response;
-using GrillBot.Core.Services.AuditLog.Models.Response.Detail;
-using GrillBot.Core.Services.AuditLog.Models.Response.Info;
-using GrillBot.Core.Services.AuditLog.Models.Response.Info.Dashboard;
-using GrillBot.Core.Services.AuditLog.Models.Response.Search;
-using GrillBot.Core.Services.AuditLog.Models.Response.Statistics;
+using AuditLog.Models.Request.Search;
+using AuditLog.Models.Response;
+using AuditLog.Models.Response.Detail;
+using AuditLog.Models.Response.Info;
+using AuditLog.Models.Response.Info.Dashboard;
+using AuditLog.Models.Response.Search;
+using AuditLog.Models.Response.Statistics;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
 using Refit;
 
-namespace GrillBot.Core.Services.AuditLog;
+namespace AuditLog;
 
 [Service("AuditLog")]
 public interface IAuditLogServiceClient : IServiceClient

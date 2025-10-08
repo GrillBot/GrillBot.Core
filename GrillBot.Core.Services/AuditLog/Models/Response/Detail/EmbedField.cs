@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.AuditLog.Models.Response.Detail;
+﻿namespace AuditLog.Models.Response.Detail;
 
 public class EmbedField
 {

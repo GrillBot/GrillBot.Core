@@ -2,11 +2,11 @@
 using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Models;
 using GrillBot.Core.Models.Pagination;
-using GrillBot.Core.Services.AuditLog.Enums;
+using AuditLog.Enums;
 using GrillBot.Core.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Request.Search;
+namespace AuditLog.Models.Request.Search;
 
 public class SearchRequest : IDictionaryObject
 {

@@ -1,7 +1,7 @@
 ﻿using Discord;
 using GrillBot.Core.Models;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Response.Detail;
+namespace AuditLog.Models.Response.Detail;
 
 public class GuildUpdatedDetail
 {

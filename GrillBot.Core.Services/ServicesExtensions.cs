@@ -1,5 +1,4 @@
-﻿using GrillBot.Core.Services.AuditLog;
-using GrillBot.Core.Services.Common;
+﻿using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
 using GrillBot.Core.Services.Common.Exceptions;
 using GrillBot.Core.Services.Common.Executor;
@@ -85,7 +84,7 @@ public static class ServicesExtensions
     {
         services.AddScoped<Common.Handlers.HttpClientHandler>();
 
-        services.RegisterService<IAuditLogServiceClient>(configuration);
+        services.RegisterService<AuditLog.IAuditLogServiceClient>(configuration);
         services.RegisterService<IEmoteServiceClient>(configuration);
         services.RegisterService<IImageProcessingClient>(configuration);
         services.RegisterService<IPointsServiceClient>(configuration);

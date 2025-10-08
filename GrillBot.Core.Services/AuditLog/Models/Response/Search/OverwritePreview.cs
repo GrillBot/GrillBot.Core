@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Response.Search;
+namespace AuditLog.Models.Response.Search;
 
 public class OverwritePreview
 {

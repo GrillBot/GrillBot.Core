@@ -1,6 +1,6 @@
-﻿using GrillBot.Core.Services.AuditLog.Enums;
+﻿using AuditLog.Enums;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Response.Detail;
+namespace AuditLog.Models.Response.Detail;
 
 public class Detail
 {

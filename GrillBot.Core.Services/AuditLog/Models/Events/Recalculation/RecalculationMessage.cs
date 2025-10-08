@@ -1,7 +1,7 @@
 ﻿using GrillBot.Core.RabbitMQ.V2.Messages;
-using GrillBot.Core.Services.AuditLog.Enums;
+using AuditLog.Enums;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Events.Recalculation;
+namespace AuditLog.Models.Events.Recalculation;
 
 public class RecalculationMessage : IRabbitMessage
 {

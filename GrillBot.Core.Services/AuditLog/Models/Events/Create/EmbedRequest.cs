@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Events.Create;
+namespace AuditLog.Models.Events.Create;
 
 public class EmbedRequest
 {

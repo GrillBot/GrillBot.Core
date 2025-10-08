@@ -2,7 +2,7 @@
 using GrillBot.Core.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Request.Search;
+namespace AuditLog.Models.Request.Search;
 
 public class UserIdSearchRequest : IDictionaryObject
 {

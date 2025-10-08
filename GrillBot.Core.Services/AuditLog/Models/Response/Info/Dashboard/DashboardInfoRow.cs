@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.AuditLog.Models.Response.Info.Dashboard;
+﻿namespace AuditLog.Models.Response.Info.Dashboard;
 
 public class DashboardInfoRow
 {

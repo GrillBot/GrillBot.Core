@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.AuditLog.Models.Response.Statistics;
+﻿namespace AuditLog.Models.Response.Statistics;
 
 public class UserActionCountItem
 {

@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.AuditLog.Models.Response.Info;
+﻿namespace AuditLog.Models.Response.Info;
 
 public class StatusInfo
 {

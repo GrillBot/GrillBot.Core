@@ -1,6 +1,6 @@
 ﻿using GrillBot.Core.Infrastructure;
 
-namespace GrillBot.Core.Services.AuditLog.Models.Request.Search;
+namespace AuditLog.Models.Request.Search;
 
 public class ExecutionSearchRequest : IDictionaryObject
 {

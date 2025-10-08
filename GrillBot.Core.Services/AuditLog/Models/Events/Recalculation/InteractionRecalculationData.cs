@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.AuditLog.Models.Events.Recalculation;
+﻿namespace AuditLog.Models.Events.Recalculation;
 
 public class InteractionRecalculationData
 {

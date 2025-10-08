@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.AuditLog.Enums;
+﻿namespace AuditLog.Enums;
 
 public enum LogType
 {

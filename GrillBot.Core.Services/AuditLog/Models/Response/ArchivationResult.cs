@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.AuditLog.Models.Response;
+﻿namespace AuditLog.Models.Response;
 
 public class ArchivationResult
 {
