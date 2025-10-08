@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.Emote.Models.Response.EmoteSuggestions;
+﻿namespace Emote.Models.Response.EmoteSuggestions;
 
 public record EmoteSuggestionItem(
     Guid Id,

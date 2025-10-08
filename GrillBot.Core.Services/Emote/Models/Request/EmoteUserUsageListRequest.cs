@@ -5,7 +5,7 @@ using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace GrillBot.Core.Services.Emote.Models.Request;
+namespace Emote.Models.Request;
 
 public class EmoteUserUsageListRequest : IDictionaryObject
 {

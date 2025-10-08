@@ -1,7 +1,7 @@
 ﻿using Discord;
 using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.Emote.Models.Events.Guild;
+namespace Emote.Models.Events.Guild;
 
 public class GuildChannelDeletedPayload : IRabbitMessage
 {

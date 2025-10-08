@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.Emote.Models.Response.Guild;
+﻿namespace Emote.Models.Response.Guild;
 
 public record GuildData(
     string? SuggestionChannelId,

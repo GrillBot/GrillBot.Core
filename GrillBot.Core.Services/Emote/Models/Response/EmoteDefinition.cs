@@ -1,4 +1,4 @@
-﻿namespace GrillBot.Core.Services.Emote.Models.Response;
+﻿namespace Emote.Models.Response;
 
 public class EmoteDefinition
 {

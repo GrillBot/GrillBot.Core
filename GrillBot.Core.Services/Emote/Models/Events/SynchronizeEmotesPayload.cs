@@ -1,7 +1,7 @@
 ﻿using Discord;
 using GrillBot.Core.RabbitMQ.V2.Messages;
 
-namespace GrillBot.Core.Services.Emote.Models.Events;
+namespace Emote.Models.Events;
 
 public class SynchronizeEmotesPayload : IRabbitMessage
 {

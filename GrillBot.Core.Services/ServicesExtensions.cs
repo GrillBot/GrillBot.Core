@@ -3,7 +3,6 @@ using GrillBot.Core.Services.Common.Attributes;
 using GrillBot.Core.Services.Common.Exceptions;
 using GrillBot.Core.Services.Common.Executor;
 using GrillBot.Core.Services.Common.Formatters;
-using GrillBot.Core.Services.Emote;
 using GrillBot.Core.Services.Graphics;
 using GrillBot.Core.Services.ImageProcessing;
 using GrillBot.Core.Services.InviteService;
@@ -85,7 +84,7 @@ public static class ServicesExtensions
         services.AddScoped<Common.Handlers.HttpClientHandler>();
 
         services.RegisterService<AuditLog.IAuditLogServiceClient>(configuration);
-        services.RegisterService<IEmoteServiceClient>(configuration);
+        services.RegisterService<Emote.IEmoteServiceClient>(configuration);
         services.RegisterService<IImageProcessingClient>(configuration);
         services.RegisterService<IPointsServiceClient>(configuration);
         services.RegisterService<IRubbergodServiceClient>(configuration);

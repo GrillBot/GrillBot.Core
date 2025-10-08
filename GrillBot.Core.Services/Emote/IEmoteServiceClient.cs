@@ -1,15 +1,15 @@
 ﻿using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Services.Common;
 using GrillBot.Core.Services.Common.Attributes;
-using GrillBot.Core.Services.Emote.Models.Request;
-using GrillBot.Core.Services.Emote.Models.Request.EmoteSuggestions;
-using GrillBot.Core.Services.Emote.Models.Request.Guild;
-using GrillBot.Core.Services.Emote.Models.Response;
-using GrillBot.Core.Services.Emote.Models.Response.EmoteSuggestions;
-using GrillBot.Core.Services.Emote.Models.Response.Guild;
+using Emote.Models.Request;
+using Emote.Models.Request.EmoteSuggestions;
+using Emote.Models.Request.Guild;
+using Emote.Models.Response;
+using Emote.Models.Response.EmoteSuggestions;
+using Emote.Models.Response.Guild;
 using Refit;
 
-namespace GrillBot.Core.Services.Emote;
+namespace Emote;
 
 [Service("Emote")]
 public interface IEmoteServiceClient : IServiceClient

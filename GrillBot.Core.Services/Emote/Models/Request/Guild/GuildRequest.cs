@@ -1,7 +1,7 @@
 ﻿using GrillBot.Core.Infrastructure;
 using GrillBot.Core.Validation;
 
-namespace GrillBot.Core.Services.Emote.Models.Request.Guild;
+namespace Emote.Models.Request.Guild;
 
 public class GuildRequest : IDictionaryObject
 {

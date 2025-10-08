@@ -4,7 +4,7 @@ using GrillBot.Core.Models;
 using GrillBot.Core.Models.Pagination;
 using GrillBot.Core.Validation;
 
-namespace GrillBot.Core.Services.Emote.Models.Request.EmoteSuggestions;
+namespace Emote.Models.Request.EmoteSuggestions;
 
 public class EmoteSuggestionVoteListRequest : IDictionaryObject
 {
