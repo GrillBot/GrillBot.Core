@@ -20,8 +20,8 @@ public interface IUserMeasuresServiceClient : IServiceClient
     [Post("/api/measures/list")]
     Task<PaginatedResponse<MeasuresItem>> GetMeasuresListAsync(MeasuresListParams parameters, CancellationToken cancellationToken = default);
 
-    [Get("/api/user/{guildId}/{userId}")]
-    Task<UserInfo> GetUserInfoAsync(string guildId, string userId, CancellationToken cancellationToken = default);
+    [Get("/api/user/{userId}")]
+    Task<UserInfo> GetUserInfoAsync(string userId, [Query] string? guildId, CancellationToken cancellationToken = default);
 
     [Delete("/api/measures")]
     Task DeleteMeasureAsync([Query] DeleteMeasuresRequest request, CancellationToken cancellationToken = default);
