@@ -83,7 +83,8 @@ public class RabbitConsumerService(
             .Where(o => !string.IsNullOrEmpty(o.Value))
             .ToDictionary(o => o.Key, o => o.Value) ?? [];
 
-        _logger.LogInformation("Received new message. Length: {Length}, Handler: {Name}", body.Length, handlerType.Name);
+        if (_logger.IsEnabled(LogLevel.Information))
+            _logger.LogInformation("Received new message. Length: {Length}, Handler: {Name}", body.Length, handlerType.Name);
         _collector.IncrementConsumer(args.Exchange, queueName);
 
         var handlePolicy = Policy

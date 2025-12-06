@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
+#pragma warning disable S3267
 namespace GrillBot.Core.RabbitMQ.V2.Consumer;
 
 public abstract class RabbitMessageHandlerBase<TMessage>(
@@ -46,9 +47,14 @@ public abstract class RabbitMessageHandlerBase<TMessage>(
 
     public Task<RabbitConsumptionResult> HandleRawMessageAsync(string rawMessage, Dictionary<string, string> headers, CancellationToken cancellationToken = default)
     {
-        Logger.LogWarning("{Message}", rawMessage);
+        if (Logger.IsEnabled(LogLevel.Warning))
+            Logger.LogWarning("{Message}", rawMessage);
+
         foreach (var header in headers)
-            Logger.LogWarning("Header({Key}): {Value}", header.Key, header.Value);
+        {
+            if (Logger.IsEnabled(LogLevel.Warning))
+                Logger.LogWarning("Header({Key}): {Value}", header.Key, header.Value);
+        }
 
         return Task.FromResult(RabbitConsumptionResult.Success);
     }

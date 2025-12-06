@@ -31,7 +31,8 @@ public class RabbitPublisher(
             Headers = headers?.ToDictionary(o => o.Key, o => (object?)o.Value)
         };
 
-        _logger.LogInformation("Publishing messages to the topic {Topic}. Count: {Count}, Queue: \"{Queue}\"", topic, data.Count, queue);
+        if (_logger.IsEnabled(LogLevel.Information))
+            _logger.LogInformation("Publishing messages to the topic {Topic}. Count: {Count}, Queue: \"{Queue}\"", topic, data.Count, queue);
         foreach (var item in data)
         {
             var messageData = await _serializer.SerializeMessageAsync(item, cancellationToken: cancellationToken);
