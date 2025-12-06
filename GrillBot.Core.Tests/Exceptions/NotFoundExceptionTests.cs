@@ -3,6 +3,4 @@
 namespace GrillBot.Core.Tests.Exceptions;
 
 [TestClass]
-public class NotFoundExceptionTests : ExceptionTestBase<NotFoundException>
-{
-}
+public class NotFoundExceptionTests : ExceptionTestBase<NotFoundException>;

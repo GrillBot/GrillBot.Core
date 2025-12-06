@@ -9,7 +9,7 @@ public class LocalizedMessageResponseTests
     public void ImplicitOperator_StringToLocalizedMessageResponse_CreatesWithKeyAndEmptyArgs()
     {
         // Arrange
-        string key = "TestKey";
+        const string key = "TestKey";
 
         // Act
         LocalizedMessageContent response = key;
@@ -17,7 +17,7 @@ public class LocalizedMessageResponseTests
         // Assert
         Assert.AreEqual(key, response.Key);
         Assert.IsNotNull(response.Args);
-        Assert.AreEqual(0, response.Args.Length);
+        Assert.IsEmpty(response.Args);
     }
 
     [TestMethod]

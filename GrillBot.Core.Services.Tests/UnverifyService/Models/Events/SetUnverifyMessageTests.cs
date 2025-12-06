@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnverifyService.Models.Events;
 using UnverifyService.Models.Request;
 
@@ -24,7 +23,7 @@ public class SetUnverifyMessageTests
         Assert.IsFalse(message.TestRun);
         Assert.IsFalse(message.IsSelfUnverify);
         Assert.IsNotNull(message.RequiredKeepables);
-        Assert.AreEqual(0, message.RequiredKeepables.Count);
+        Assert.IsEmpty(message.RequiredKeepables);
     }
 
     [TestMethod]
@@ -68,6 +67,6 @@ public class SetUnverifyMessageTests
         var message = new SetUnverifyMessage(request);
 
         Assert.IsNotNull(message.RequiredKeepables);
-        Assert.AreEqual(0, message.RequiredKeepables.Count);
+        Assert.IsEmpty(message.RequiredKeepables);
     }
 }

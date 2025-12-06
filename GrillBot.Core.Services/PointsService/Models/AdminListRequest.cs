@@ -36,7 +36,7 @@ public class AdminListRequest : IValidatableObject, IDictionaryObject
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         if (CreatedFrom > CreatedTo)
-            yield return new ValidationResult("Invalid interval From-To", new[] { nameof(CreatedFrom), nameof(CreatedTo) });
+            yield return new ValidationResult("Invalid interval From-To", [nameof(CreatedFrom), nameof(CreatedTo)]);
     }
 
     public Dictionary<string, string?> ToDictionary()

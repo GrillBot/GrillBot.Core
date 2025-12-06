@@ -11,6 +11,8 @@ namespace GrillBot.Core.Tests.Extensions;
 [TestClass]
 public class EndpointConventionBuilderExtensionsTests
 {
+    public TestContext TestContext { get; set; }
+
     private class TestEndpointConventionBuilder : IEndpointConventionBuilder
     {
         public Action<EndpointBuilder>? CapturedAction { get; private set; }
@@ -27,7 +29,7 @@ public class EndpointConventionBuilderExtensionsTests
         var builder = new TestEndpointConventionBuilder();
         var originalDelegateCalled = false;
 
-        var endpointBuilder = new RouteEndpointBuilder(ctx =>
+        var endpointBuilder = new RouteEndpointBuilder(_ =>
         {
             originalDelegateCalled = true;
             return Task.CompletedTask;
@@ -52,7 +54,7 @@ public class EndpointConventionBuilderExtensionsTests
         var builder = new TestEndpointConventionBuilder();
         var originalDelegateCalled = false;
 
-        var endpointBuilder = new RouteEndpointBuilder(ctx =>
+        var endpointBuilder = new RouteEndpointBuilder(_ =>
         {
             originalDelegateCalled = true;
             return Task.CompletedTask;
@@ -73,7 +75,7 @@ public class EndpointConventionBuilderExtensionsTests
 
         context.Response.Body.Position = 0;
         using var reader = new StreamReader(context.Response.Body, leaveOpen: true);
-        var responseText = await reader.ReadToEndAsync();
+        var responseText = await reader.ReadToEndAsync(TestContext.CancellationToken);
         Assert.AreEqual("User-Agent header is required.", responseText);
     }
 
@@ -83,7 +85,7 @@ public class EndpointConventionBuilderExtensionsTests
         var builder = new TestEndpointConventionBuilder();
         var originalDelegateCalled = false;
 
-        var endpointBuilder = new RouteEndpointBuilder(ctx =>
+        var endpointBuilder = new RouteEndpointBuilder(_ =>
         {
             originalDelegateCalled = true;
             return Task.CompletedTask;
@@ -104,7 +106,7 @@ public class EndpointConventionBuilderExtensionsTests
 
         context.Response.Body.Position = 0;
         using var reader = new StreamReader(context.Response.Body, leaveOpen: true);
-        var responseText = await reader.ReadToEndAsync();
+        var responseText = await reader.ReadToEndAsync(TestContext.CancellationToken);
 
         var problem = JsonSerializer.Deserialize<ProblemDetails>(responseText);
         Assert.IsNotNull(problem);
@@ -119,7 +121,7 @@ public class EndpointConventionBuilderExtensionsTests
         var builder = new TestEndpointConventionBuilder();
         var originalDelegateCalled = false;
 
-        var endpointBuilder = new RouteEndpointBuilder(ctx =>
+        var endpointBuilder = new RouteEndpointBuilder(_ =>
         {
             originalDelegateCalled = true;
             return Task.CompletedTask;
@@ -141,7 +143,7 @@ public class EndpointConventionBuilderExtensionsTests
 
         context.Response.Body.Position = 0;
         using var reader = new StreamReader(context.Response.Body, leaveOpen: true);
-        var responseText = await reader.ReadToEndAsync();
+        var responseText = await reader.ReadToEndAsync(TestContext.CancellationToken);
         Assert.AreEqual("User-Agent header is required.", responseText);
     }
 
@@ -151,7 +153,7 @@ public class EndpointConventionBuilderExtensionsTests
         var builder = new TestEndpointConventionBuilder();
         var originalDelegateCalled = false;
 
-        var endpointBuilder = new RouteEndpointBuilder(ctx =>
+        var endpointBuilder = new RouteEndpointBuilder(_ =>
         {
             originalDelegateCalled = true;
             return Task.CompletedTask;
@@ -173,7 +175,7 @@ public class EndpointConventionBuilderExtensionsTests
 
         context.Response.Body.Position = 0;
         using var reader = new StreamReader(context.Response.Body, leaveOpen: true);
-        var responseText = await reader.ReadToEndAsync();
+        var responseText = await reader.ReadToEndAsync(TestContext.CancellationToken);
 
         var problem = JsonSerializer.Deserialize<ProblemDetails>(responseText);
         Assert.IsNotNull(problem);

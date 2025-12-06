@@ -4,12 +4,15 @@ using System.Text.Json.Nodes;
 using GrillBot.Core.RabbitMQ.V2.Serialization;
 using GrillBot.Core.RabbitMQ.V2.Serialization.Json;
 
+#pragma warning disable S1144
 namespace GrillBot.Core.RabbitMQ.V2.Tests.Serialization.Json;
 
 [TestClass]
 public class JsonRabbitMessageSerializerTests
 {
     private readonly JsonRabbitMessageSerializer _serializer = new();
+
+    public TestContext TestContext { get; set; }
 
     private class TestClass
     {
@@ -24,7 +27,7 @@ public class JsonRabbitMessageSerializerTests
     public async Task SerializeMessageAsync_SerializesObjectToJsonBytes_CamelCase()
     {
         var obj = new TestClass();
-        var bytes = await _serializer.SerializeMessageAsync(obj);
+        var bytes = await _serializer.SerializeMessageAsync(obj, cancellationToken: CancellationToken.None);
 
         var json = Encoding.UTF8.GetString(bytes);
         var node = JsonNode.Parse(json);
@@ -45,7 +48,7 @@ public class JsonRabbitMessageSerializerTests
     public async Task SerializeMessageAsync_DoesNotWriteIndented()
     {
         var obj = new TestClass();
-        var bytes = await _serializer.SerializeMessageAsync(obj);
+        var bytes = await _serializer.SerializeMessageAsync(obj, cancellationToken: TestContext.CancellationToken);
         var json = Encoding.UTF8.GetString(bytes);
 
         // Should not contain newlines or indentation
@@ -55,10 +58,10 @@ public class JsonRabbitMessageSerializerTests
     [TestMethod]
     public async Task DeserializeToJsonObjectAsync_DeserializesJsonBytesToJsonNode()
     {
-        var json = "{\"foo\":42}";
+        const string json = "{\"foo\":42}";
         var bytes = Encoding.UTF8.GetBytes(json);
 
-        var node = await _serializer.DeserializeToJsonObjectAsync(bytes);
+        var node = await _serializer.DeserializeToJsonObjectAsync(bytes, cancellationToken: TestContext.CancellationToken);
 
         Assert.IsNotNull(node);
         Assert.IsNotNull(node["foo"]);
@@ -68,11 +71,11 @@ public class JsonRabbitMessageSerializerTests
     [TestMethod]
     public async Task DeserializeToJsonObjectAsync_WithEncoding_UsesProvidedEncoding()
     {
-        var json = "{\"bar\":\"baz\"}";
+        const string json = "{\"bar\":\"baz\"}";
         var encoding = Encoding.Unicode;
         var bytes = encoding.GetBytes(json);
 
-        var node = await _serializer.DeserializeToJsonObjectAsync(bytes, encoding);
+        var node = await _serializer.DeserializeToJsonObjectAsync(bytes, encoding, TestContext.CancellationToken);
 
         Assert.IsNotNull(node);
         Assert.IsNotNull(node["bar"]);
@@ -82,10 +85,10 @@ public class JsonRabbitMessageSerializerTests
     [TestMethod]
     public async Task DeserializeToJsonObjectAsync_PropertyNameCaseInsensitive()
     {
-        var json = "{\"NORMALPROPERTY\":\"abc\",\"number\":123}";
+        const string json = "{\"NORMALPROPERTY\":\"abc\",\"number\":123}";
         var bytes = Encoding.UTF8.GetBytes(json);
 
-        var node = await _serializer.DeserializeToJsonObjectAsync(bytes);
+        var node = await _serializer.DeserializeToJsonObjectAsync(bytes, cancellationToken: TestContext.CancellationToken);
 
         // Should be able to access property regardless of case
         Assert.AreEqual("abc", node?["normalProperty"]?.ToString());
@@ -97,31 +100,31 @@ public class JsonRabbitMessageSerializerTests
     public async Task SerializeMessageAsync_IgnoreReadOnlyProperties()
     {
         var obj = new TestClass();
-        var bytes = await _serializer.SerializeMessageAsync(obj);
+        var bytes = await _serializer.SerializeMessageAsync(obj, cancellationToken: TestContext.CancellationToken);
         var json = Encoding.UTF8.GetString(bytes);
 
         // ReadOnly property should not be present
-        Assert.IsFalse(json.Contains("readOnly"));
+        Assert.DoesNotContain("readOnly", json);
     }
 
     [TestMethod]
     public async Task DeserializeToJsonObjectAsync_InvalidJson_ThrowsJsonException()
     {
-        var invalidJson = "not a json";
+        const string invalidJson = "not a json";
         var bytes = Encoding.UTF8.GetBytes(invalidJson);
 
-        await Assert.ThrowsExactlyAsync<JsonException>(() => _serializer.DeserializeToJsonObjectAsync(bytes));
+        await Assert.ThrowsExactlyAsync<JsonException>(() => _serializer.DeserializeToJsonObjectAsync(bytes, cancellationToken: TestContext.CancellationToken));
     }
 
     [TestMethod]
     public async Task Base_DeserializeToStringAsync_ReturnsString()
     {
-        var str = "hello";
+        const string str = "hello";
         var bytes = Encoding.UTF8.GetBytes(str);
 
         // Use as base class
         var baseSerializer = (BaseRabbitMessageSerializer)_serializer;
-        var result = await baseSerializer.DeserializeToStringAsync(bytes);
+        var result = await baseSerializer.DeserializeToStringAsync(bytes, cancellationToken: TestContext.CancellationToken);
 
         Assert.AreEqual(str, result);
     }
@@ -129,9 +132,9 @@ public class JsonRabbitMessageSerializerTests
     [TestMethod]
     public async Task Base_SerializeMessageAsync_UsesToString()
     {
-        var obj = 12345;
+        const int obj = 12345;
         var baseSerializer = new BaseRabbitMessageSerializer();
-        var bytes = await baseSerializer.SerializeMessageAsync(obj);
+        var bytes = await baseSerializer.SerializeMessageAsync(obj, cancellationToken: TestContext.CancellationToken);
 
         var result = Encoding.UTF8.GetString(bytes);
         Assert.AreEqual("12345", result);
@@ -141,7 +144,7 @@ public class JsonRabbitMessageSerializerTests
     public async Task Base_SerializeMessageAsync_Null_ReturnsEmpty()
     {
         var baseSerializer = new BaseRabbitMessageSerializer();
-        var bytes = await baseSerializer.SerializeMessageAsync<object>(null!);
+        var bytes = await baseSerializer.SerializeMessageAsync<object>(null!, cancellationToken: TestContext.CancellationToken);
 
         var result = Encoding.UTF8.GetString(bytes);
         Assert.AreEqual(string.Empty, result);

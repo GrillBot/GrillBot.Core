@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using GrillBot.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +9,25 @@ public class ValidationProblemDetailsExtensionsTests
 {
     [TestMethod]
     public void AggregateAndThrow_Null()
-        => ((ValidationProblemDetails?)null).AggregateAndThrow();
+    {
+        try
+        {
+            ((ValidationProblemDetails?)null).AggregateAndThrow();
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Expected no exception, but got: {ex}");
+        }
+    }
 
     [TestMethod]
     public void AggregateAndThrow_NoErrors()
-        => new ValidationProblemDetails().AggregateAndThrow();
+    {
+        var details = new ValidationProblemDetails();
+        details.AggregateAndThrow();
+
+        Assert.IsEmpty(details.Errors);
+    }
 
     [TestMethod]
     public void AggregateAndThrow()
@@ -27,11 +40,25 @@ public class ValidationProblemDetailsExtensionsTests
 
     [TestMethod]
     public void ThrowFirstError_Null()
-        => ((ValidationProblemDetails?)null).ThrowFirstError();
+    {
+        try
+        {
+            ((ValidationProblemDetails?)null).ThrowFirstError();
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Expected no exception, but got: {ex}");
+        }
+    }
 
     [TestMethod]
     public void ThrowFirstError_NoErrors()
-        => new ValidationProblemDetails().ThrowFirstError();
+    {
+        var details = new ValidationProblemDetails();
+        details.ThrowFirstError();
+
+        Assert.IsEmpty(details.Errors);
+    }
 
     [TestMethod]
     public void ThrowFirstError()

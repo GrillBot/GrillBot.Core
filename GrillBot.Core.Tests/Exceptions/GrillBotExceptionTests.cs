@@ -3,6 +3,4 @@
 namespace GrillBot.Core.Tests.Exceptions;
 
 [TestClass]
-public class GrillBotExceptionTests : ExceptionTestBase<GrillBotException>
-{
-}
+public class GrillBotExceptionTests : ExceptionTestBase<GrillBotException>;

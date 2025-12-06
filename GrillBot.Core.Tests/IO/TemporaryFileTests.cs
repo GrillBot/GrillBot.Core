@@ -1,11 +1,12 @@
 ﻿using GrillBot.Core.IO;
-using Microsoft.Testing.Platform.Extensions.Messages;
 
 namespace GrillBot.Core.Tests.IO;
 
 [TestClass]
 public class TemporaryFileTests
 {
+    public TestContext TestContext { get; set; }
+
     private static async Task InitFileAsync(TemporaryFile file)
         => await File.WriteAllTextAsync(file.Path, "ASDF");
 
@@ -36,8 +37,8 @@ public class TemporaryFileTests
         using var file = new TemporaryFile("txt");
         await InitFileAsync(file);
 
-        var result = await file.ReadAllBytesAsync();
-        Assert.AreEqual(4, result.Length);
+        var result = await file.ReadAllBytesAsync(TestContext.CancellationToken);
+        Assert.HasCount(4, result);
     }
 
     [TestMethod]
@@ -46,8 +47,8 @@ public class TemporaryFileTests
         using var file = new TemporaryFile("txt");
         await InitFileAsync(file);
 
-        var result = await file.ReadAllLinesAsync();
-        Assert.AreEqual(1, result.Length);
+        var result = await file.ReadAllLinesAsync(TestContext.CancellationToken);
+        Assert.HasCount(1, result);
     }
 
     [TestMethod]
@@ -56,7 +57,7 @@ public class TemporaryFileTests
         using var file = new TemporaryFile("txt");
         await InitFileAsync(file);
 
-        var result = await file.ReadAllTextAsync();
+        var result = await file.ReadAllTextAsync(TestContext.CancellationToken);
         Assert.AreEqual(4, result.Length);
     }
 
@@ -65,10 +66,10 @@ public class TemporaryFileTests
     {
         using var file = new TemporaryFile("txt");
 
-        await file.WriteAllBytesAsync([1, 2, 3, 4]);
-        var result = await file.ReadAllBytesAsync();
+        await file.WriteAllBytesAsync([1, 2, 3, 4], TestContext.CancellationToken);
+        var result = await file.ReadAllBytesAsync(TestContext.CancellationToken);
 
-        Assert.AreEqual(4, result.Length);
+        Assert.HasCount(4, result);
     }
 
     [TestMethod]
@@ -76,10 +77,10 @@ public class TemporaryFileTests
     {
         using var file = new TemporaryFile("txt");
 
-        await file.WriteAllLinesAsync(new[] { "1" });
-        var result = await file.ReadAllLinesAsync();
+        await file.WriteAllLinesAsync(["1"], TestContext.CancellationToken);
+        var result = await file.ReadAllLinesAsync(TestContext.CancellationToken);
 
-        Assert.AreEqual(1, result.Length);
+        Assert.HasCount(1, result);
     }
 
     [TestMethod]
@@ -87,8 +88,8 @@ public class TemporaryFileTests
     {
         using var file = new TemporaryFile("txt");
 
-        await file.WriteAllTextAsync("text");
-        var result = await file.ReadAllTextAsync();
+        await file.WriteAllTextAsync("text", TestContext.CancellationToken);
+        var result = await file.ReadAllTextAsync(TestContext.CancellationToken);
 
         Assert.AreEqual("text", result);
     }
@@ -109,9 +110,9 @@ public class TemporaryFileTests
         await using var sourceStream = new MemoryStream(data);
         using var file = new TemporaryFile("txt");
 
-        await file.WriteStreamAsync(sourceStream);
-        var result = await file.ReadAllBytesAsync();
+        await file.WriteStreamAsync(sourceStream, TestContext.CancellationToken);
+        var result = await file.ReadAllBytesAsync(TestContext.CancellationToken);
 
-        Assert.AreEqual(data.Length, result.Length);
+        Assert.HasCount(data.Length, result);
     }
 }

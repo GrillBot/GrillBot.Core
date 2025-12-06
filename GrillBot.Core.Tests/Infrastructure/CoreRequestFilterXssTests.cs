@@ -15,7 +15,7 @@ public class CoreRequestFilterXssTests
     [TestMethod]
     public async Task SetXssProtection()
     {
-        var filter = new RequestFilter(new DiagnosticsManager(), Enumerable.Empty<IRequestFilterAction>());
+        var filter = new RequestFilter(new DiagnosticsManager(), []);
         var context = CreateContext();
 
         await filter.OnActionExecutionAsync(context, () => Task.FromResult(CreateResult(context)));

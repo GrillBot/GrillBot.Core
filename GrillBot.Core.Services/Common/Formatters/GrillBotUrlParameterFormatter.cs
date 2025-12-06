@@ -1,6 +1,5 @@
 ﻿using Refit;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace GrillBot.Core.Services.Common.Formatters;
 

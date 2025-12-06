@@ -11,7 +11,7 @@ public class MessageHelperTests
         var result = MessageHelper.DiscordMessageUriRegex();
 
         Assert.IsNotNull(result);
-        Assert.IsTrue(result.ToString().Contains("discord\\.com"));
-        Assert.IsTrue(result.ToString().Contains("channels"));
+        Assert.Contains("discord\\.com", result.ToString());
+        Assert.Contains("channels", result.ToString());
     }
 }

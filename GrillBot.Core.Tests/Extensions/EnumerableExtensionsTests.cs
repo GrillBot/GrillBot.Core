@@ -14,7 +14,7 @@ public class EnumerableExtensionsTests
         var result = await collection.FindAllAsync(i => Task.FromResult(i % 2 == 0));
         var expected = new List<int> { 2, 4 };
 
-        Assert.AreEqual(2, result.Count);
+        Assert.HasCount(2, result);
         Assert.IsTrue(result.SequenceEqual(expected));
     }
 
@@ -47,7 +47,7 @@ public class EnumerableExtensionsTests
 
         var result = collection.Flatten(o => o.SubItems).ToList();
 
-        Assert.AreEqual(expected.Count, result.Count);
+        Assert.HasCount(expected.Count, result);
         for (var i = 0; i < result.Count; i++)
             Assert.AreEqual(expected[i].X, result[i].X);
     }
@@ -60,6 +60,6 @@ public class EnumerableExtensionsTests
 
         var result = first.IsSequenceEqual(second);
 
-        Assert.AreEqual(true, result);
+        Assert.IsTrue(result);
     }
 }

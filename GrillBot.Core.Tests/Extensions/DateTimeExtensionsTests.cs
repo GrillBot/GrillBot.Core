@@ -13,7 +13,7 @@ public class DateTimeExtensionsTests
 
         Assert.AreEqual(localTime.Year, result.Year);
         Assert.AreEqual(localTime.Month, result.Month);
-        Assert.AreEqual(localTime.Day, result.Day); ;
+        Assert.AreEqual(localTime.Day, result.Day);
         Assert.AreEqual(localTime.Hour, result.Hour);
         Assert.AreEqual(localTime.Minute, result.Minute);
         Assert.AreEqual(localTime.Second, result.Second);
@@ -28,7 +28,7 @@ public class DateTimeExtensionsTests
 
         Assert.AreEqual(localTime.Year, result.Year);
         Assert.AreEqual(localTime.Month, result.Month);
-        Assert.AreEqual(localTime.Day, result.Day); ;
+        Assert.AreEqual(localTime.Day, result.Day);
         Assert.AreEqual(localTime.Hour, result.Hour);
         Assert.AreEqual(localTime.Minute, result.Minute);
         Assert.AreEqual(localTime.Second, result.Second);

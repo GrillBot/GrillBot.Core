@@ -43,13 +43,13 @@ public class DiscordMessageEmbedTests
         Assert.AreEqual("https://footericon.com", built.Footer?.IconUrl);
         Assert.AreEqual("https://image.com", built.Image?.Url);
         Assert.AreEqual("https://thumb.com", built.Thumbnail?.Url);
-        Assert.AreEqual(2, built.Fields.Length);
-        Assert.AreEqual("Field1", built.Fields.ElementAt(0).Name);
-        Assert.AreEqual("Value1", built.Fields.ElementAt(0).Value);
-        Assert.IsTrue(built.Fields.ElementAt(0).Inline);
-        Assert.AreEqual("Field2", built.Fields.ElementAt(1).Name);
-        Assert.AreEqual("Value2", built.Fields.ElementAt(1).Value);
-        Assert.IsFalse(built.Fields.ElementAt(1).Inline);
+        Assert.HasCount(2, built.Fields);
+        Assert.AreEqual("Field1", built.Fields[0].Name);
+        Assert.AreEqual("Value1", built.Fields[0].Value);
+        Assert.IsTrue(built.Fields[0].Inline);
+        Assert.AreEqual("Field2", built.Fields[1].Name);
+        Assert.AreEqual("Value2", built.Fields[1].Value);
+        Assert.IsFalse(built.Fields[1].Inline);
 
         Assert.AreEqual(new DateTimeOffset(new DateTime(2024, 1, 1, 12, 0, 0, DateTimeKind.Utc)), built.Timestamp);
     }
@@ -70,7 +70,7 @@ public class DiscordMessageEmbedTests
         Assert.IsNull(built.Footer);
         Assert.IsNull(built.Image);
         Assert.IsNull(built.Thumbnail);
-        Assert.AreEqual(0, built.Fields.Length);
+        Assert.IsEmpty(built.Fields);
         Assert.IsNull(built.Timestamp);
     }
 
@@ -86,7 +86,7 @@ public class DiscordMessageEmbedTests
         var built = builder.Build();
 
         Assert.IsTrue(built.Timestamp.HasValue);
-        Assert.IsTrue((DateTimeOffset.UtcNow - built.Timestamp.Value).TotalSeconds < 5);
+        Assert.IsLessThan(5, (DateTimeOffset.UtcNow - built.Timestamp.Value).TotalSeconds);
     }
 
     [TestMethod]
@@ -118,7 +118,7 @@ public class DiscordMessageEmbedTests
         Assert.IsNull(built.Footer);
         Assert.IsNull(built.Image);
         Assert.IsNull(built.Thumbnail);
-        Assert.AreEqual(0, built.Fields.Length);
+        Assert.IsEmpty(built.Fields);
         Assert.IsNull(built.Timestamp);
     }
 }

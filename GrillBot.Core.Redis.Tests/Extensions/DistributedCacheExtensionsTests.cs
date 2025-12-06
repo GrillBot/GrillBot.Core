@@ -13,6 +13,8 @@ public class DistributedCacheExtensionsTests
 
     private const string CacheKey = "DistributedCacheTests";
 
+    public TestContext TestContext { get; set; }
+
     [TestInitialize]
     public void TestInitialize()
     {
@@ -24,9 +26,9 @@ public class DistributedCacheExtensionsTests
     public async Task WithoutExpiration()
     {
         var data = new FlattenClass();
-        await _cache!.SetAsync(CacheKey, data, null);
+        await _cache!.SetAsync(CacheKey, data, null, TestContext.CancellationToken);
 
-        var item = await _cache!.GetAsync<FlattenClass>(CacheKey);
+        var item = await _cache!.GetAsync<FlattenClass>(CacheKey, TestContext.CancellationToken);
         Assert.IsNotNull(item);
     }
 
@@ -34,10 +36,10 @@ public class DistributedCacheExtensionsTests
     public async Task WithExpiration()
     {
         var data = new FlattenClass();
-        await _cache!.SetAsync(CacheKey, data, TimeSpan.FromMilliseconds(10));
+        await _cache!.SetAsync(CacheKey, data, TimeSpan.FromMilliseconds(10), TestContext.CancellationToken);
 
-        await Task.Delay(TimeSpan.FromMilliseconds(50));
-        var item = await _cache!.GetAsync<FlattenClass>(CacheKey);
+        await Task.Delay(TimeSpan.FromMilliseconds(50), TestContext.CancellationToken);
+        var item = await _cache!.GetAsync<FlattenClass>(CacheKey, TestContext.CancellationToken);
         Assert.IsNull(item);
     }
 }

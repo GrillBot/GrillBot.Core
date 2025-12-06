@@ -52,7 +52,7 @@ public class PaginatedResponse<TModel>
         if (result.TotalItemsCount == 0 || request.OnlyCount)
             return result;
 
-        result.Data = data.Skip(request.Skip()).Take(request.PageSize).ToList();
+        result.Data = [.. data.Skip(request.Skip()).Take(request.PageSize)];
         return result;
     }
 }

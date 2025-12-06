@@ -46,6 +46,6 @@ public class MeasuresListParams : IDictionaryObject, IValidatableObject
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         if (CreatedFrom > CreatedTo)
-            yield return new ValidationResult("Invalid interval From-To", new[] { nameof(CreatedFrom), nameof(CreatedTo) });
+            yield return new ValidationResult("Invalid interval From-To", [nameof(CreatedFrom), nameof(CreatedTo)]);
     }
 }

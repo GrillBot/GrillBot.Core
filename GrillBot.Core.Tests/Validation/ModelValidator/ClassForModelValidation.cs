@@ -25,7 +25,7 @@ public class ClassForModelValidation : ModelValidator<DataModelClass>
     private static IEnumerable<ValidationResult> ValidateStringValue(DataModelClass request, ValidationContext _)
     {
         if (string.IsNullOrEmpty(request.Value1))
-            yield return new ValidationResult("String value is required", new[] { nameof(request.Value1) });
+            yield return new ValidationResult("String value is required", [nameof(request.Value1)]);
     }
 
     private static IEnumerable<ValidationResult> ValidateInt(DataModelClass request, ValidationContext _)

@@ -14,7 +14,7 @@ public class DiscordIdAttributeTests : ValidationAttributeTestBase<DiscordIdAttr
 
         Assert.IsNotNull(result);
         Assert.IsFalse(string.IsNullOrEmpty(result.ErrorMessage));
-        Assert.IsTrue(result.ErrorMessage.Contains("Unsupported type"));
+        Assert.Contains("Unsupported type", result.ErrorMessage);
     }
 
     [TestMethod]

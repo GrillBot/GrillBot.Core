@@ -5,6 +5,8 @@ namespace GrillBot.Core.Tests.Extensions;
 [TestClass]
 public class StreamExtensions
 {
+    public TestContext TestContext { get; set; }
+
     [TestMethod]
     public void ToByteArray()
     {
@@ -23,7 +25,7 @@ public class StreamExtensions
         var sourceData = new byte[] { 1, 2, 3 };
 
         await using var sourceStream = new MemoryStream(sourceData);
-        var result = await sourceStream.ToByteArrayAsync();
+        var result = await sourceStream.ToByteArrayAsync(TestContext.CancellationToken);
 
         Assert.IsNotNull(result);
         Assert.IsTrue(result.SequenceEqual(sourceData));

@@ -1,6 +1,4 @@
-using System;
 using Discord;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using UserManagementService.Models.Events;
 

@@ -3,6 +3,4 @@
 namespace GrillBot.Core.Tests.Exceptions;
 
 [TestClass]
-public class ForbiddenAccessExceptionTests : ExceptionTestBase<ForbiddenAccessException>
-{
-}
+public class ForbiddenAccessExceptionTests : ExceptionTestBase<ForbiddenAccessException>;

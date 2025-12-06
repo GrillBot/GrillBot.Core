@@ -1,6 +1,4 @@
 ﻿#pragma warning disable IDE0290 // Use primary constructor
-using Microsoft.AspNetCore.Http;
-
 namespace GrillBot.Core.IO;
 
 public sealed class TemporaryFile : IDisposable

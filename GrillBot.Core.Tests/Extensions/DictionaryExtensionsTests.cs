@@ -21,7 +21,7 @@ public class DictionaryExtensionsTests
 
         dict.MergeDictionaryObjects(dictionaryObject, "Child");
 
-        Assert.AreEqual(2, dict.Count);
+        Assert.HasCount(2, dict);
         Assert.AreEqual("A", dict.Keys.First());
         Assert.AreEqual("Child.B", dict.Keys.ElementAt(1));
     }

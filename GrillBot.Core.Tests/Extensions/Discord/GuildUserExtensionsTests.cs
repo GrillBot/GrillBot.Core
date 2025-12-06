@@ -34,7 +34,7 @@ public class GuildUserExtensionsTests
         var roles = user.GetRoles().ToList();
 
         // Assert
-        Assert.AreEqual(2, roles.Count);
+        Assert.HasCount(2, roles);
         Assert.IsFalse(roles.Any(r => r.Id == 1UL));
         Assert.IsTrue(roles.Any(r => r.Id == 2UL));
         Assert.IsTrue(roles.Any(r => r.Id == 3UL));
@@ -63,7 +63,7 @@ public class GuildUserExtensionsTests
         var roles = user.GetRoles(withEveryone: true).ToList();
 
         // Assert
-        Assert.AreEqual(2, roles.Count);
+        Assert.HasCount(2, roles);
         Assert.IsTrue(roles.Any(r => r.Id == 1UL));
         Assert.IsTrue(roles.Any(r => r.Id == 2UL));
     }
@@ -86,7 +86,7 @@ public class GuildUserExtensionsTests
         var roles = user.GetRoles().ToList();
 
         // Assert
-        Assert.AreEqual(0, roles.Count);
+        Assert.IsEmpty(roles);
     }
 
     [TestMethod]
@@ -113,9 +113,9 @@ public class GuildUserExtensionsTests
         var roles = user.GetRoles(withEveryone: true).ToList();
 
         // Assert
-        Assert.AreEqual(2, roles.Count);
+        Assert.HasCount(2, roles);
         Assert.IsTrue(roles.Any(r => r.Id == 1UL));
         Assert.IsTrue(roles.Any(r => r.Id == 2UL));
-        Assert.IsFalse(roles.Any(r => r == null));
+        Assert.Contains(r => r != null, roles);
     }
 }

@@ -48,7 +48,7 @@ public class CounterManager : ICounterManager
     {
         lock (_lock)
         {
-            return Stats.Values.Select(o => o.Clone()).ToList();
+            return [.. Stats.Values.Select(o => o.Clone())];
         }
     }
 }

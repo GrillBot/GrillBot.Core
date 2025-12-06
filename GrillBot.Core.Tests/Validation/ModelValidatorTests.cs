@@ -10,7 +10,7 @@ public class ModelValidatorTests
     public void NoValue()
     {
         var result = ProcessTest(new DataModelClass());
-        Assert.AreEqual(1, result.Count);
+        Assert.HasCount(1, result);
     }
 
     [TestMethod]
@@ -25,7 +25,7 @@ public class ModelValidatorTests
         };
 
         var result = ProcessTest(data);
-        Assert.AreEqual(5, result.Count);
+        Assert.HasCount(5, result);
     }
 
     [TestMethod]
@@ -41,7 +41,7 @@ public class ModelValidatorTests
         };
 
         var result = ProcessTest(data);
-        Assert.AreEqual(0, result.Count);
+        Assert.IsEmpty(result);
     }
 
     private List<ValidationResult> ProcessTest(DataModelClass data)
@@ -51,6 +51,6 @@ public class ModelValidatorTests
         var result = validator.Validate(data, context);
 
         Assert.IsNotNull(result);
-        return result.ToList();
+        return [.. result];
     }
 }

@@ -12,7 +12,7 @@ public class ExceptionTestBase<TException> where TException : Exception, new()
         catch (TException ex)
         {
             Assert.IsFalse(string.IsNullOrEmpty(ex.Message));
-            Assert.IsTrue(ex.Message.Contains("Exception of type"));
+            Assert.Contains("Exception of type", ex.Message);
             Assert.IsNull(ex.InnerException);
         }
     }

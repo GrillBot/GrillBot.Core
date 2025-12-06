@@ -20,7 +20,7 @@ public class HealthCheckWriterTests
         // Assert
         Assert.AreEqual(StatusCodes.Status503ServiceUnavailable, context.Response.StatusCode);
         Assert.AreEqual("application/json", context.Response.ContentType);
-        Assert.IsInstanceOfType(result, typeof(EmptyResult));
+        Assert.IsInstanceOfType<EmptyResult>(result);
     }
 
     [TestMethod]
@@ -38,6 +38,6 @@ public class HealthCheckWriterTests
         // Assert
         Assert.AreEqual(StatusCodes.Status200OK, context.Response.StatusCode);
         Assert.AreEqual("application/json", context.Response.ContentType);
-        Assert.IsInstanceOfType(result, typeof(EmptyResult));
+        Assert.IsInstanceOfType<EmptyResult>(result);
     }
 }

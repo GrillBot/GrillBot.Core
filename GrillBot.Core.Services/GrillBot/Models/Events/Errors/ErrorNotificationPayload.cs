@@ -18,7 +18,7 @@ public class ErrorNotificationPayload : IRabbitMessage
     public ErrorNotificationPayload(string? title, IEnumerable<ErrorNotificationField> fields, ulong? userId)
     {
         Title = title;
-        Fields = fields.Where(o => o is not null).ToList();
+        Fields = [.. fields.Where(o => o is not null)];
         UserId = userId;
     }
 }
