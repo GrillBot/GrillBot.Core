@@ -6,7 +6,7 @@ This library contains common interfaces and implementations for all services and
 
 ## Requirements
 
-- [.NET 7.0](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+- [.NET 10.0](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 
 ### Development requirements
 
