@@ -27,4 +27,8 @@ public class ClientNotAcceptableException : ClientException
     public ClientNotAcceptableException(string? message, Exception? inner, HttpStatusCode? statusCode) : base(message, inner, statusCode)
     {
     }
+
+    public ClientNotAcceptableException(HttpRequestError httpRequestError, string? message = null, Exception? inner = null, HttpStatusCode? statusCode = null) : base(httpRequestError, message, inner, statusCode)
+    {
+    }
 }

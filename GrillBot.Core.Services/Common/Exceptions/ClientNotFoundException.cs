@@ -27,4 +27,8 @@ public class ClientNotFoundException : ClientException
     public ClientNotFoundException(HttpStatusCode statusCode) : base(statusCode)
     {
     }
+
+    public ClientNotFoundException(HttpRequestError httpRequestError, string? message = null, Exception? inner = null, HttpStatusCode? statusCode = null) : base(httpRequestError, message, inner, statusCode)
+    {
+    }
 }

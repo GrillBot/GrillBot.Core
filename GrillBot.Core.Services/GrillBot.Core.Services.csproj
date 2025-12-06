@@ -10,9 +10,17 @@
         <PackageProjectUrl>https://grillbot.eu/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/GrillBot/GrillBot.Core.Services</RepositoryUrl>
         <RepositoryType>GitHub</RepositoryType>
-        <Version>2.12.1</Version>
+        <Version>2.2.0</Version>
         <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
         <CopyDocumentationFilesFromPackages>true</CopyDocumentationFilesFromPackages>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <NoWarn>1701;1702;S107</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <NoWarn>1701;1702;S107</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

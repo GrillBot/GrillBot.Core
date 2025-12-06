@@ -31,4 +31,8 @@ public class ClientException : HttpRequestException
     )
     {
     }
+
+    public ClientException(HttpRequestError httpRequestError, string? message = null, Exception? inner = null, HttpStatusCode? statusCode = null) : base(httpRequestError, message, inner, statusCode)
+    {
+    }
 }
