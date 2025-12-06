@@ -26,7 +26,7 @@ public static class HealthCheckExtensions
         };
 
         // Detailed health check endpoint that returns JSON response. Only for certified purposes.
-        var fullEndpoint = HealthCheckEndpointRouteBuilderExtensions.MapHealthChecks(endpoints, $"{pattern}/json", options).RequireUserAgent();
+        var fullEndpoint = endpoints.MapHealthChecks($"{pattern}/json", options).RequireUserAgent();
         return new(simpleEndpoint, fullEndpoint);
     }
 }
