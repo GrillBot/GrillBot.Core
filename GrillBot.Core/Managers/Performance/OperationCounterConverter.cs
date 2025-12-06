@@ -56,7 +56,7 @@ public static class OperationCounterConverter
         return ConvertItemsToTree(levels);
     }
 
-    private static OperationStatItem ConvertItemsToTree(IReadOnlyList<OperationStatItem> levels)
+    private static OperationStatItem ConvertItemsToTree(List<OperationStatItem> levels)
     {
         var before = levels[0];
         for (var i = 1; i < levels.Count; i++)

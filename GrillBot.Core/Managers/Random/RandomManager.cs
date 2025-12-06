@@ -2,12 +2,12 @@
 
 public class RandomManager : IRandomManager
 {
-    private readonly object _locker = new();
+    private readonly Lock _locker = new();
     private Dictionary<string, System.Random> Generators { get; } = [];
 
     private System.Random GetOrCreate(string key)
     {
-        lock (_locker)
+        using (_locker.EnterScope())
         {
             if (!Generators.ContainsKey(key))
                 Generators.Add(key, new System.Random());

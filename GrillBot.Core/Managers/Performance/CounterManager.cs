@@ -1,14 +1,15 @@
-﻿namespace GrillBot.Core.Managers.Performance;
+﻿
+namespace GrillBot.Core.Managers.Performance;
 
 public class CounterManager : ICounterManager
 {
     private List<CounterItem> ActiveCounters { get; } = [];
     private Dictionary<string, CounterStats> Stats { get; } = [];
-    private readonly object _lock = new();
+    private readonly Lock _lock = new();
 
     public CounterItem Create(string section)
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             var item = new CounterItem(this, section);
 
@@ -19,7 +20,7 @@ public class CounterManager : ICounterManager
 
     public void Complete(CounterItem item)
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             ActiveCounters.RemoveAll(o => o.Section == item.Section && o.Id == item.Id);
 
@@ -33,7 +34,7 @@ public class CounterManager : ICounterManager
 
     public Dictionary<string, int> GetActiveCounters()
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             return ActiveCounters
                 .GroupBy(o => o.Section)
@@ -46,7 +47,7 @@ public class CounterManager : ICounterManager
 
     public List<CounterStats> GetStatistics()
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             return [.. Stats.Values.Select(o => o.Clone())];
         }
