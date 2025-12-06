@@ -5,11 +5,11 @@ namespace GrillBot.Core.Metrics.Components;
 public class TelemetryCounterContainer(string name, string? description = null) : TelemetryCollectorComponent(name, null, description)
 {
     private readonly Dictionary<string, TelemetryCounter> _counters = [];
-    private readonly object _lock = new();
+    private readonly Lock _lock = new();
 
     public void Increment(string name, Dictionary<string, object?>? tags = null, string? description = null)
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             if (!_counters.TryGetValue(name, out var gauge))
             {
@@ -23,7 +23,7 @@ public class TelemetryCounterContainer(string name, string? description = null) 
 
     public IEnumerable<Measurement<long>> Get()
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             return [.. _counters.Values.Select(o => o.Get())];
         }

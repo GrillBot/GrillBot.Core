@@ -8,7 +8,7 @@ public abstract class TelemetryCollectorComponent(
     string? description = null
 )
 {
-    private readonly object _lock = new();
+    private readonly Lock _lock = new();
 
     protected string Name => name;
     protected Dictionary<string, object?> Tags => tags ?? [];
@@ -16,7 +16,7 @@ public abstract class TelemetryCollectorComponent(
 
     protected void WithLock(Action action)
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             action();
         }
@@ -24,7 +24,7 @@ public abstract class TelemetryCollectorComponent(
 
     protected TValue WithLock<TValue>(Func<TValue> func)
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             return func();
         }
