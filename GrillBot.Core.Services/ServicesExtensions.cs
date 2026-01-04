@@ -38,21 +38,24 @@ public static class ServicesExtensions
                     if (response.IsSuccessStatusCode)
                         return null;
 
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var url = response.RequestMessage?.RequestUri?.ToString() ?? "unknown_url";
+                    var method = response.RequestMessage?.Method?.Method ?? "unknown_method";
+                    var responseData = $"{method} {url}\n{responseContent}";
+
                     if (response.StatusCode == HttpStatusCode.BadRequest)
                     {
-                        var rawData = await response.Content.ReadAsStringAsync();
-                        var problemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(rawData);
-                        return new ClientBadRequestException(problemDetails!, rawData);
+                        var problemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(responseContent);
+                        return new ClientBadRequestException(problemDetails!, responseData);
                     }
 
                     if (response.StatusCode == HttpStatusCode.NotFound)
-                        return new ClientNotFoundException();
+                        return new ClientNotFoundException(HttpStatusCode.NotFound, responseData);
 
                     if (response.StatusCode == HttpStatusCode.NotAcceptable)
-                        return new ClientNotAcceptableException();
+                        return new ClientNotAcceptableException(HttpStatusCode.NotAcceptable, responseData);
 
-                    var content = await response.Content.ReadAsStringAsync();
-                    return new ClientException(response.StatusCode, content);
+                    return new ClientException(response.StatusCode, responseData);
                 },
                 HttpRequestMessageOptions = new Dictionary<string, object>
                 {
